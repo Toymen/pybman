@@ -1,18 +1,33 @@
+# byte code / caches
+__pycache__/
 *.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# packaging
+/dist/
+/build/
+*.egg-info/
+
+# environments
+/env/
+/.venv/
+/venv/
+
+# editors
+.idea/
+.vscode/
 *.swp
 
-.idea
+# docs build
+docs/build/
 
-/env
-/dist
-/build
-/pybman.egg-info
-
-__pycache__
-
+# local data & credentials — never commit
 conf/
-docs/build
-
-dev*.py
 secret.json
+.env
+dev*.py
 _/

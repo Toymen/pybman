@@ -1,0 +1,103 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pybman"
+version = "2026.7.0"
+description = "Python client for MPG.PuRe, the publication repository of the Max Planck Society (PubMan REST API)"
+readme = "README.rst"
+license = "GPL-3.0-or-later"
+license-files = ["COPYING"]
+requires-python = ">=3.10"
+authors = [
+    { name = "Donatus Herre", email = "pypi@herre.io" },
+]
+maintainers = [
+    { name = "Andre Brandenburg" },
+]
+keywords = ["pubman", "mpg.pure", "max-planck", "repository", "rest-api", "bibliographic-data"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Typed",
+]
+dependencies = [
+    "requests>=2.28",
+]
+
+[project.urls]
+Homepage = "https://github.com/Toymen/pybman"
+Repository = "https://github.com/Toymen/pybman"
+Issues = "https://github.com/Toymen/pybman/issues"
+Upstream = "https://github.com/herreio/pybman"
+"API Reference" = "https://pure.mpg.de/rest/swagger-ui/index.html"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=5",
+    "responses>=0.25",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "types-requests",
+]
+
+[tool.hatch.build.targets.sdist]
+include = ["pybman", "tests", "COPYING", "README.rst"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["pybman"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "SIM",    # flake8-simplify
+    "RUF",    # ruff-specific
+]
+ignore = [
+    "SIM108", # ternary is not always clearer
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["SIM117"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+files = ["pybman"]
+
+[[tool.mypy.overrides]]
+module = "pybman.data"
+# legacy record-dict helpers work on untyped JSON structures
+disallow_any_expr = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+    "live: tests that talk to the real MPG.PuRe service (need network and PYBMAN_LIVE_TESTS=1)",
+]
+
+[tool.coverage.run]
+source = ["pybman"]
