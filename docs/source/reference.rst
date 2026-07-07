@@ -1,66 +1,68 @@
 Reference
 =========
 
-pybman.client module
---------------------
+Client
+------
 
 .. automodule:: pybman.client
     :members:
-    :undoc-members:
     :show-inheritance:
 
-pybman.data module
+Resource APIs
+-------------
+
+.. automodule:: pybman.api.items
+    :members:
+
+.. automodule:: pybman.api.ous
+    :members:
+
+.. automodule:: pybman.api.contexts
+    :members:
+
+.. automodule:: pybman.api.feeds
+    :members:
+
+.. automodule:: pybman.api.staging
+    :members:
+
+.. automodule:: pybman.api.cone
+    :members:
+
+Query builders
+--------------
+
+.. automodule:: pybman.queries
+    :members:
+
+Models and exceptions
+---------------------
+
+.. automodule:: pybman.models
+    :members:
+    :undoc-members:
+
+.. automodule:: pybman.exceptions
+    :members:
+    :show-inheritance:
+
+Record collections
 ------------------
 
 .. automodule:: pybman.data
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-pybman.extract module
-------------------
 
 .. automodule:: pybman.extract
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-pybman.inspector module
------------------------
 
 .. automodule:: pybman.inspector
     :members:
-    :undoc-members:
-    :show-inheritance:
-
-pybman.local module
--------------------
 
 .. automodule:: pybman.local
     :members:
-    :undoc-members:
-    :show-inheritance:
 
-pybman.query module
--------------------
-
-.. automodule:: pybman.query
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pybman.rest module
-------------------
-
-.. automodule:: pybman.rest
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-pybman.utils module
--------------------
+Utilities
+---------
 
 .. automodule:: pybman.utils
     :members:
-    :undoc-members:
-    :show-inheritance:

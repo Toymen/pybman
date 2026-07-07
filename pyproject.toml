@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "pybman"
 version = "2026.7.0"
 description = "Python client for MPG.PuRe, the publication repository of the Max Planck Society (PubMan REST API)"
-readme = "README.rst"
+readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["COPYING"]
 requires-python = ">=3.10"
@@ -54,7 +54,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.sdist]
-include = ["pybman", "tests", "COPYING", "README.rst"]
+include = ["pybman", "tests", "COPYING", "README.md", "CHANGELOG.md", "MIGRATION.md"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["pybman"]
