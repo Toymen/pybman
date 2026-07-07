@@ -1,107 +1,78 @@
+"""Storage and retrieval of PubMan data in a local directory tree."""
+
+from __future__ import annotations
+
+import logging
 import os
-
 from datetime import date
+from typing import Any
 
-from pybman import data
 from pybman import utils
+from pybman.data import DataSet
+
+logger = logging.getLogger(__name__)
+
+_DATA_SUFFIXES = (".txt", ".json", ".csv")
 
 
 class LocalData:
+    """A local directory holding downloaded PubMan data files."""
 
-    def __init__(self, base_dir='./data/', ous_dir='ous', ctx_dir='ctx', pers_dir='pers', create=False):
-
+    def __init__(
+        self,
+        base_dir: str = "./data/",
+        ous_dir: str = "ous",
+        ctx_dir: str = "ctx",
+        pers_dir: str = "pers",
+        create: bool = False,
+    ) -> None:
         self.data_dir = os.path.realpath(base_dir)
-        self.data_exists = True
-
         self.ou_dir = os.path.join(self.data_dir, ous_dir)
         self.ctx_dir = os.path.join(self.data_dir, ctx_dir)
         self.pers_dir = os.path.join(self.data_dir, pers_dir)
 
-        self.ou_exists = True
-        self.ctx_exists = True
-        self.pers_exists = True
+        self.data_exists = os.path.exists(self.data_dir)
+        self.ou_exists = os.path.exists(self.ou_dir)
+        self.ctx_exists = os.path.exists(self.ctx_dir)
+        self.pers_exists = os.path.exists(self.pers_dir)
 
-        self.data_paths = []
+        if create:
+            for directory in (self.data_dir, self.ou_dir, self.ctx_dir, self.pers_dir):
+                os.makedirs(directory, exist_ok=True)
 
-        if not os.path.exists(self.data_dir):
-            self.data_exists = False
-            self.ou_exists = False
-            self.ctx_exists = False
-            self.pers_exists = False
-            if create:
-                os.mkdir(self.data_dir)
-                os.mkdir(self.ou_dir)
-                os.mkdir(self.ctx_dir)
-                os.mkdir(self.pers_dir)
-
-        if not os.path.exists(self.ou_dir) and self.ou_exists:
-            self.ou_exists = False
-            if create:
-                os.mkdir(self.ou_dir)
-
-        if not os.path.exists(self.ctx_dir) and self.ctx_exists:
-            self.ctx_exists = False
-            if create:
-                os.mkdir(self.ctx_dir)
-
-        if not os.path.exists(self.pers_dir) and self.pers_exists:
-            self.pers_exists = False
-            if create:
-                os.mkdir(self.pers_dir)
-
+        self.data_paths: list[str] = []
         if self.data_exists:
-            for root, dirs, files in os.walk(self.data_dir):
+            for root, _dirs, files in os.walk(self.data_dir):
                 for name in files:
-                    if name.endswith(".txt"):
+                    if name.endswith(_DATA_SUFFIXES):
                         self.data_paths.append(os.path.join(root, name))
-                    elif name.endswith(".json"):
-                        self.data_paths.append(os.path.join(root, name))
-                    elif name.endswith(".csv"):
-                        self.data_paths.append(os.path.join(root, name))
-                    else:
-                        continue
-            if self.data_paths:
-                self.data_paths.sort()
-                print('local pulication data:')
-                for p in self.data_paths[:25]:
-                    print(p)
-                if len(self.data_paths) > 25:
-                    print(". . .")
+            self.data_paths.sort()
+            for p in self.data_paths[:25]:
+                logger.debug("local publication data: %s", p)
 
-    # find path by given pattern
-    def find_data_path(self, pattern):
-        found_paths = []
-        if self.data_paths:
-            for p in self.data_paths:
-                if pattern in p:
-                    found_paths.append(p)
-            if not found_paths:
-                print("could not find path containing", pattern)
-            return found_paths
-        else:
-            print('no local data!')
-            return found_paths
+    def find_data_path(self, pattern: str) -> list[str]:
+        """Paths of local data files whose path contains *pattern*."""
+        found = [p for p in self.data_paths if pattern in p]
+        if not found:
+            logger.info("could not find path containing %s", pattern)
+        return found
 
-    # get local data
-    def get_data(self, pattern):
+    def get_data(self, pattern: str) -> list[DataSet]:
+        """Load matching local JSON data files as :class:`DataSet` objects."""
         data_sets = []
-        paths = self.find_data_path(pattern)
-        if paths:
-            for path in paths:
-                json_data = utils.read_json(path)
-                data_idx = path.split("/")[-1].split(".")[0]
-                data_sets.append(data.DataSet(data_idx, data=json_data))
-        else:
-            print("could not find local data!")
+        for path in self.find_data_path(pattern):
+            json_data = utils.read_json(path)
+            data_idx = os.path.basename(path).split(".")[0]
+            data_sets.append(DataSet(data_idx, data=json_data))
         return data_sets
 
-    # write local data file
-    def store_data(self, idx, dict_data):
-        print("store local data of", idx)
-        # self.change_data_path(idx)
+    def store_data(self, idx: str, dict_data: dict[str, Any]) -> str:
+        """Write *dict_data* to a dated JSON file named after *idx*."""
         path = self.generate_data_path(idx)
+        logger.info("store local data of %s at %s", idx, path)
         utils.write_json(path, dict_data)
+        return path
 
-    # get data path for given id
-    def generate_data_path(self, data_id):
-        return self.data_dir + data_id + "--" + date.today().isoformat() + ".json"
+    def generate_data_path(self, data_id: str) -> str:
+        """The dated file path used to store data for *data_id*."""
+        return os.path.join(self.data_dir, f"{data_id}--{date.today().isoformat()}.json")

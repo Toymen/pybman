@@ -1,146 +1,114 @@
-from copy import deepcopy
-from pybman import utils
+"""Deprecated query template classes.
+
+This module preserves the classic pybman query classes as thin wrappers
+around :mod:`pybman.queries`. New code should call those builder functions
+directly.
+"""
+
+from __future__ import annotations
+
+import warnings
+from typing import Any
+
+from pybman import queries
+
+Query = dict[str, Any]
 
 
-class Query:
-
-    def __init__(self):
-        pass
-
-
-class ConeQuery:
-
-    def __init__(self):
-        pass
+def _deprecated(name: str) -> None:
+    warnings.warn(
+        f"pybman.query.{name} is deprecated, use the builder functions in pybman.queries instead",
+        DeprecationWarning,
+        stacklevel=3,
+    )
 
 
 class AllQuery:
+    def __init__(self) -> None:
+        _deprecated("AllQuery")
 
-    def __init__(self):
-        self.files_query_fp = utils.resolve_path('static/elastic/item-all-files-released.json')
-        self.locators_query_fp = utils.resolve_path('static/elastic/item-all-locators-released.json')
+    def get_files_query(self) -> Query:
+        return {"query": queries.with_files(), "size": "5000", "from": "0"}
 
-        self.files_query = utils.read_json(self.files_query_fp)
-        self.locators_query = utils.read_json(self.locators_query_fp)
-
-    def get_files_query(self):
-        data = deepcopy(self.files_query)
-        return data
-
-    def get_locators_query(self):
-        data = deepcopy(self.locators_query)
-        return data
+    def get_locators_query(self) -> Query:
+        return {"query": queries.with_locators(), "size": "5000", "from": "0"}
 
 
 class ContextQuery:
+    def __init__(self) -> None:
+        _deprecated("ContextQuery")
 
-    def __init__(self):
+    def get_item_query(self, ctx_id: str) -> Query:
+        return {"query": queries.by_context(ctx_id), "size": "50", "from": "0"}
 
-        self.item_query_fp = utils.resolve_path('static/elastic/item-ctx.json')
-        self.item_released_query_fp = utils.resolve_path('static/elastic/item-ctx-released.json')
-
-        self.item_query = utils.read_json(self.item_query_fp)
-        self.item_released_query = utils.read_json(self.item_released_query_fp)
-
-    def get_item_query(self, ctx_id):
-        data = deepcopy(self.item_query)
-        data['query']['term']['context.objectId']['value'] = ctx_id
-        return data
-
-    def get_released_item_query(self, ctx_id):
-        data = deepcopy(self.item_released_query)
-        data['query']['bool']['must'][2]['term']['context.objectId']['value'] = ctx_id
-        return data
+    def get_released_item_query(self, ctx_id: str) -> Query:
+        return {
+            "query": queries.by_context(ctx_id, released_only=True),
+            "size": "500",
+            "from": "0",
+        }
 
 
 class OrgUnitQuery:
+    def __init__(self) -> None:
+        _deprecated("OrgUnitQuery")
 
-    def __init__(self):
+    def get_item_query(self, ou_id: str) -> Query:
+        return {"query": queries.by_organization(ou_id), "size": "50", "from": "0"}
 
-        self.item_query_fp = utils.resolve_path('static/elastic/item-ou.json')
-        self.item_released_query_fp = utils.resolve_path('static/elastic/item-ou-released.json')
+    def get_item_released_query(self, ou_id: str) -> Query:
+        return {
+            "query": queries.by_organization(ou_id, released_only=True),
+            "size": "500",
+            "from": "0",
+        }
 
-        self.item_query = utils.read_json(self.item_query_fp)
-        self.item_released_query = utils.read_json(self.item_released_query_fp)
-
-    def get_item_query(self, ou_id):
-        data = deepcopy(self.item_query)
-        term = data['query']['bool']['should'][0]['term']
-        term['metadata.creators.person.organizations.identifierPath']['value'] = ou_id
-        term = data['query']['bool']['should'][1]['term']
-        term['metadata.creators.organization.identifierPath']['value'] = ou_id
-        return data
-
-    def get_item_released_query(self, ou_id):
-        data = deepcopy(self.item_released_query)
-        term = data['query']['bool']['must'][2]['bool']['should'][0]['term']
-        term['metadata.creators.person.organizations.identifierPath']['value'] = ou_id
-        term = data['query']['bool']['must'][2]['bool']['should'][1]['term']
-        term['metadata.creators.organization.identifierPath']['value'] = ou_id
-        return data
+    # the classic API was inconsistent about this method name
+    get_released_item_query = get_item_released_query
 
 
 class PersQuery:
+    def __init__(self) -> None:
+        _deprecated("PersQuery")
 
-    def __init__(self):
+    def get_item_query(self, cone_id: str) -> Query:
+        return {"query": queries.by_person(cone_id), "size": "50", "from": "0"}
 
-        self.item_query_fp = utils.resolve_path('static/elastic/item-pers.json')
-        self.item_released_query_fp = utils.resolve_path('static/elastic/item-pers-released.json')
+    def get_item_released_query(self, cone_id: str) -> Query:
+        return {
+            "query": queries.by_person(cone_id, released_only=True),
+            "size": "500",
+            "from": "0",
+        }
 
-        self.item_query = utils.read_json(self.item_query_fp)
-        self.item_released_query = utils.read_json(self.item_released_query_fp)
-
-        self.cone_id_format = '/persons/resource/'
-
-    def get_item_query(self, cone_id):
-        data = deepcopy(self.item_query)
-        data['query']['term']['metadata.creators.person.identifier.id']['value'] = self.cone_id_format + cone_id
-        return data
-
-    def get_item_released_query(self, cone_id):
-        data = deepcopy(self.item_released_query)
-        term = data['query']['bool']['must'][2]['term']
-        term['metadata.creators.person.identifier.id']['value'] = self.cone_id_format + cone_id
-        return data
+    get_released_item_query = get_item_released_query
 
 
 class LangQuery:
+    def __init__(self) -> None:
+        _deprecated("LangQuery")
 
-    def __init__(self):
-        self.item_query_fp = utils.resolve_path('static/elastic/item-lang.json')
-        self.item_released_query_fp = utils.resolve_path('static/elastic/item-lang-released.json')
+    def get_item_query(self, lang_id: str) -> Query:
+        return {"query": queries.by_language(lang_id), "size": "50", "from": "0"}
 
-        self.item_query = utils.read_json(self.item_query_fp)
-        self.item_released_query = utils.read_json(self.item_released_query_fp)
-
-    def get_item_query(self, lang_id):
-        data = deepcopy(self.item_query)
-        data['query']['term']['metadata.languages']['value'] = lang_id
-        return data
-
-    def get_released_item_query(self, lang_id):
-        data = deepcopy(self.item_released_query)
-        data['query']['bool']['must'][2]['term']['metadata.languages']['value'] = lang_id
-        return data
+    def get_released_item_query(self, lang_id: str) -> Query:
+        return {
+            "query": queries.by_language(lang_id, released_only=True),
+            "size": "500",
+            "from": "0",
+        }
 
 
 class JournalQuery:
+    def __init__(self) -> None:
+        _deprecated("JournalQuery")
 
-    def __init__(self):
-        self.item_query_fp = utils.resolve_path('static/elastic/item-jour.json')
-        self.item_released_query_fp = utils.resolve_path('static/elastic/item-jour-released.json')
+    def get_item_query(self, jour_name: str) -> Query:
+        return {"query": queries.by_journal(jour_name), "size": "50", "from": "0"}
 
-        self.item_query = utils.read_json(self.item_query_fp)
-        self.item_released_query = utils.read_json(self.item_released_query_fp)
-
-    def get_item_query(self, jour_name):
-        data = deepcopy(self.item_query)
-        data['query']['bool']['should'][0]['match_phrase']['metadata.sources.title']['query'] = jour_name
-        data['query']['bool']['should'][1]['match_phrase']['metadata.sources.alternativeTitles.value']['query'] = jour_name
-        return data
-
-    def get_released_item_query(self, jour_name):
-        data = deepcopy(self.item_released_query)
-        data['query']['bool']['must'][2]['bool']['should'][0]['match_phrase']['metadata.sources.title']['query'] = jour_name
-        data['query']['bool']['must'][2]['bool']['should'][1]['match_phrase']['metadata.sources.alternativeTitles.value']['query'] = jour_name
-        return data
+    def get_released_item_query(self, jour_name: str) -> Query:
+        return {
+            "query": queries.by_journal(jour_name, released_only=True),
+            "size": "500",
+            "from": "0",
+        }

@@ -1,13 +1,17 @@
-.. Pybman documentation master file, created by
-   sphinx-quickstart on Mon Mar  4 14:34:02 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+pybman documentation
+====================
 
-Welcome to Pybman's documentation!
-==================================
+Python client for `MPG.PuRe <https://pure.mpg.de>`_, the publication
+repository of the Max Planck Society, via the
+`PubMan REST API <https://pure.mpg.de/rest/swagger-ui/index.html>`_.
+
+See the `README <https://github.com/Toymen/pybman#readme>`_ for
+installation and usage examples, and the
+`migration guide <https://github.com/Toymen/pybman/blob/master/MIGRATION.md>`_
+when upgrading from pybman ≤ 2019.x.
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
 
    reference
 

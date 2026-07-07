@@ -1,342 +1,213 @@
+"""Batch inspection and cleanup of PubMan records.
+
+The :class:`Inspector` walks a list of records, detects (and optionally
+fixes) common metadata problems, and pushes fixes back to the repository via
+an authenticated :class:`pybman.client.Client`.
+"""
+
+from __future__ import annotations
+
+import logging
 import re
+from typing import TYPE_CHECKING, Any
 
 from pybman import utils
 
+if TYPE_CHECKING:
+    from pybman.client import Client
+
+logger = logging.getLogger(__name__)
+
+Record = dict[str, Any]
+
+#: Matches "[et al.]" style omission markers in publisher/place values.
+_ET_AL = re.compile(r"\s\[et\.? ?al\.?\s?\]|\s\[u\.?\s?a\.?\]|\s\[etc\.?\]")
+
 
 class Inspector:
+    """Check and clean records, writing fixes back through *client*."""
 
-    def __init__(self, client, records):
-        self.records = records
+    def __init__(self, client: Client, records: list[Record]) -> None:
         self.client = client
+        self.records = records
 
-    def check_publication_titles(self, clean=False):
-        updates = {}
+    # -- checks -----------------------------------------------------------
+
+    def check_publication_titles(self, clean: bool = False) -> dict[str, Record]:
+        """Records whose title has surplus whitespace or control characters."""
+        updates: dict[str, Record] = {}
         for record in self.records:
-            publication_title = record['data']['metadata']['title']
-            if publication_title != utils.clean_string(publication_title):
-                item_id = record['data']['objectId']
+            metadata = record["data"]["metadata"]
+            title = metadata["title"]
+            if title != utils.clean_string(title):
                 if clean:
-                    record['data']['metadata']['title'] = utils.clean_string(publication_title)
-                updates[item_id] = record
+                    metadata["title"] = utils.clean_string(title)
+                updates[record["data"]["objectId"]] = record
         return updates
 
-    def check_source_titles(self, clean=False):
-        updates = {}
+    def check_source_titles(self, clean: bool = False) -> dict[str, Record]:
+        """Records with unclean source titles."""
+        updates: dict[str, Record] = {}
         for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source['title'] != utils.clean_string(source['title']):
-                        item_id = record['data']['objectId']
-                        if clean:
-                            source['title'] = utils.clean_string(source['title'])
-                        updates[item_id] = record
+            for source in record["data"]["metadata"].get("sources") or []:
+                if source["title"] != utils.clean_string(source["title"]):
+                    if clean:
+                        source["title"] = utils.clean_string(source["title"])
+                    updates[record["data"]["objectId"]] = record
         return updates
 
-    def check_publishers(self, clean=False):
-        updates = {}
+    def _check_pubinfo_field(self, field: str, transform: Any, clean: bool) -> dict[str, Record]:
+        updates: dict[str, Record] = {}
         for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'publisher' in record['data']['metadata']['publishingInfo']:
-                    publisher = record['data']['metadata']['publishingInfo']['publisher']
-                    if publisher != utils.clean_string(publisher):
-                        item_id = record['data']['objectId']
-                        if clean:
-                            record['data']['metadata']['publishingInfo']['publisher'] = utils.clean_string(publisher)
-                        updates[item_id] = record
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'publisher' in source['publishingInfo']:
-                            publisher = source['publishingInfo']['publisher']
-                            if publisher != utils.clean_string(publisher):
-                                item_id = record['data']['objectId']
-                                if clean:
-                                    source['publishingInfo']['publisher'] = utils.clean_string(publisher)
-                                updates[item_id] = record
+            metadata = record["data"]["metadata"]
+            levels = [metadata, *(metadata.get("sources") or [])]
+            for level in levels:
+                pubinfo = level.get("publishingInfo")
+                if not pubinfo or field not in pubinfo:
+                    continue
+                value = pubinfo[field]
+                if value != transform(value):
+                    if clean:
+                        pubinfo[field] = transform(value)
+                    updates[record["data"]["objectId"]] = record
         return updates
 
-    def check_publishers_omission(self, clean=False):
-        et_al = re.compile(r"\s\[et\.? ?al\.?\s?\]|\s\[u\.?\s?a\.?\]|\s\[etc\.?\]")
-        updates = {}
+    def check_publishers(self, clean: bool = False) -> dict[str, Record]:
+        """Records with unclean publisher values (item or source level)."""
+        return self._check_pubinfo_field("publisher", utils.clean_string, clean)
+
+    def check_publishers_omission(self, clean: bool = False) -> dict[str, Record]:
+        """Records whose publisher carries an "[et al.]" marker."""
+        return self._check_pubinfo_field("publisher", lambda v: _ET_AL.sub("", v), clean)
+
+    def check_publishing_places(self, clean: bool = False) -> dict[str, Record]:
+        """Records with unclean publishing places (item or source level)."""
+        return self._check_pubinfo_field("place", utils.clean_string, clean)
+
+    def check_publishing_places_omission(self, clean: bool = False) -> dict[str, Record]:
+        """Records whose publishing place carries an "[et al.]" marker."""
+        return self._check_pubinfo_field("place", lambda v: _ET_AL.sub("", v), clean)
+
+    def check_publication_uri(self) -> dict[str, str]:
+        """Record ids mapped to unreachable URI identifiers."""
+        updates: dict[str, str] = {}
         for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'publisher' in record['data']['metadata']['publishingInfo']:
-                    publisher = record['data']['metadata']['publishingInfo']['publisher']
-                    if publisher != et_al.sub("", publisher):
-                        item_id = record['data']['objectId']
-                        if clean:
-                            record['data']['metadata']['publishingInfo']['publisher'] = et_al.sub("", publisher)
-                        updates[item_id] = record
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'publisher' in source['publishingInfo']:
-                            publisher = source['publishingInfo']['publisher']
-                            if publisher != et_al.sub("", publisher):
-                                item_id = record['data']['objectId']
-                                if clean:
-                                    source['publishingInfo']['publisher'] = et_al.sub("", publisher)
-                                updates[item_id] = record
+            for idx in record["data"]["metadata"].get("identifiers") or []:
+                if idx.get("type") == "URI" and not utils.url_exists(idx["id"]):
+                    updates[record["data"]["objectId"]] = idx["id"]
         return updates
 
-    def check_publishing_places(self, clean=False):
-        updates = {}
+    def check_publication_url(self) -> dict[str, str]:
+        """Record ids mapped to unreachable external file URLs."""
+        updates: dict[str, str] = {}
         for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'place' in record['data']['metadata']['publishingInfo']:
-                    place = record['data']['metadata']['publishingInfo']['place']
-                    if place != utils.clean_string(place):
-                        item_id = record['data']['objectId']
-                        if clean:
-                            record['data']['metadata']['publishingInfo']['place'] = utils.clean_string(place)
-                        updates[item_id] = record
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'place' in source['publishingInfo']:
-                            place = source['publishingInfo']['place']
-                            if place != utils.clean_string(place):
-                                item_id = record['data']['objectId']
-                                if clean:
-                                    source['publishingInfo']['place'] = utils.clean_string(place)
-                                updates[item_id] = record
+            for f in record["data"].get("files") or []:
+                if f.get("storage") == "EXTERNAL_URL" and not utils.url_exists(f["content"]):
+                    updates[record["data"]["objectId"]] = f["content"]
         return updates
 
-    def check_publishing_places_omission(self, clean=False):
-        et_al = re.compile(r"\s\[et\.? ?al\.?\s?\]|\s\[u\.?\s?a\.?\]|\s\[etc\.?\]")
-        updates = {}
-        for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'place' in record['data']['metadata']['publishingInfo']:
-                    place = record['data']['metadata']['publishingInfo']['place']
-                    if place != et_al.sub("", place):
-                        item_id = record['data']['objectId']
-                        if clean:
-                            record['data']['metadata']['publishingInfo']['place'] = et_al.sub("", place)
-                        updates[item_id] = record
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'place' in source['publishingInfo']:
-                            place = source['publishingInfo']['place']
-                            if place != et_al.sub("", place):
-                                item_id = record['data']['objectId']
-                                if clean:
-                                    source['publishingInfo']['place'] = et_al.sub("", place)
-                                updates[item_id] = record
-        return updates
+    # -- transformations --------------------------------------------------
 
-    def check_publication_date(self):
-        # dateAccepted
-        # dateCreated
-        # dateModified
-        # datePublishedInPrint
-        # datePublishedOnline
-        # dateSubmitted
-        pass
-
-    def check_publication_uri(self):
-        # was ist wenn zwei uri's auftauchen? eine geht, eine nicht, beide gehen?
-        updates = {}
+    def change_genre(self, new_genre: str, old_genre: str) -> dict[str, Record]:
+        """Change the genre of matching records (in memory)."""
+        updates: dict[str, Record] = {}
         for record in self.records:
-            if 'identifiers' in record['data']['metadata']:
-                identifiers = record['data']['metadata']['identifiers']
-                for idx in identifiers:
-                    if idx['type'] == 'URI':
-                        url = idx['id']
-                        if not utils.url_exists(url):
-                            item_id = record['data']['objectId']
-                            updates[item_id] = url
-        return updates
-
-    def check_publication_url(self):
-        updates = {}
-        for record in self.records:
-            if 'files' in record['data']:
-                for f in record['data']['files']:
-                    if f['storage'] == 'EXTERNAL_URL':
-                        url = f['content']
-                        # check = utils.check_url(url)
-                        # if url != check:
-                        #    item_id = record['data']['objectId']
-                        #    updates[item_id] = check
-                        if not utils.url_exists(url):
-                            item_id = record['data']['objectId']
-                            updates[item_id] = url
-                        # if 'name' in f:
-                        #    url = f['name']
-                        #    if not utils.url_exists(url):
-                        #        item_id = record['data']['objectId']
-                        #        updates[item_id] = url
-                        # else:
-                        #    print("")
-                        #    print("no name given for", record['data']['objectId'])
-                        #    print(record['data']['files'])
-                        #    print("")
-        return updates
-
-    def change_genre(self, new_genre, old_genre):
-        updates = {}
-        for record in self.records:
-            if old_genre == record['data']['metadata']['genre']:
-                record['data']['metadata']['genre'] = new_genre
-                updates[record['data']['objectId']] = record
+            if record["data"]["metadata"]["genre"] == old_genre:
+                record["data"]["metadata"]["genre"] = new_genre
+                updates[record["data"]["objectId"]] = record
             else:
-                print("skipping item", record['data']['objectId'])
+                logger.debug("skipping item %s", record["data"]["objectId"])
         return updates
 
-    def change_source_genre(self, new_genre, old_genre):
-        updates = {}
+    def change_source_genre(self, new_genre: str, old_genre: str) -> dict[str, Record]:
+        """Change the source genre of matching records (in memory)."""
+        updates: dict[str, Record] = {}
         for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                sources = record['data']['metadata']['sources']
-                found = False
-                for source in sources:
-                    if source['genre'] == old_genre:
-                        source['genre'] = new_genre
-                        updates[record['data']['objectId']] = record
-                        found = True
-                        break
-                if not found:
-                    print("skipping item", record['data']['objectId'])
+            for source in record["data"]["metadata"].get("sources") or []:
+                if source["genre"] == old_genre:
+                    source["genre"] = new_genre
+                    updates[record["data"]["objectId"]] = record
+                    break
             else:
-                print("skipping item", record['data']['objectId'], "without sources!")
+                logger.debug("skipping item %s", record["data"]["objectId"])
         return updates
 
-    def change_pers_name(self, old_family_name=None, new_family_name=None, old_given_name=None, new_given_name=None):
-        updates = {}
+    def change_pers_name(
+        self,
+        old_family_name: str | None = None,
+        new_family_name: str | None = None,
+        old_given_name: str | None = None,
+        new_given_name: str | None = None,
+    ) -> dict[str, Record]:
+        """Rename a person across records (in memory)."""
+        updates: dict[str, Record] = {}
         if old_family_name and new_family_name:
-            for record in self.records:
-                creators = record['data']['metadata']['creators']
-                for creator in creators:
-                    if creator['type'] == 'PERSON':
-                        if creator['person']['familyName'] == old_family_name:
-                            creator['person']['familyName'] = new_family_name
-                            updates[record['data']['objectId']] = record
-            return updates
-
+            field, old, new = "familyName", old_family_name, new_family_name
         elif old_given_name and new_given_name:
-            for record in self.records:
-                creators = record['data']['metadata']['creators']
-                for creator in creators:
-                    if creator['type'] == 'PERSON':
-                        if creator['person']['givenName'] == old_given_name:
-                            creator['person']['givenName'] = new_given_name
-                            updates[record['data']['objectId']] = record
-            return updates
-
+            field, old, new = "givenName", old_given_name, new_given_name
         else:
-            print("please pass either new and old family name or given name!")
-            return updates
+            raise ValueError("pass either old and new family name or old and new given name")
+        for record in self.records:
+            for creator in record["data"]["metadata"].get("creators") or []:
+                if creator.get("type") == "PERSON" and creator["person"].get(field) == old:
+                    creator["person"][field] = new
+                    updates[record["data"]["objectId"]] = record
+        return updates
 
-    def update_genre(self, new_genre, old_genre):
+    # -- write-back operations ------------------------------------------------
 
-        print("start changing genre from", old_genre, "to", new_genre)
-
-        clean_data = self.change_genre(new_genre, old_genre)
+    def _push(self, updates: dict[str, Record], comment: str) -> int:
         total = 0
-        if clean_data:
-            comment = 'auto-update: change genre of item from ' + old_genre + " to " + new_genre
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-            print("updated genre of", total, "items!")
-        else:
-            print("genre is correctly chosen already!")
-            print("nothing to do...")
-            return 0
-
-    def update_source_genre(self, new_genre, old_genre):
-
-        print("start changing source genre from", old_genre, "to", new_genre)
-
-        clean_data = self.change_source_genre(new_genre, old_genre)
-        total = 0
-        if clean_data:
-            comment = 'auto-update: change source genre of item from ' + old_genre + " to " + new_genre
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-            print("updated genre of", total, "items!")
-        else:
-            print("source genre is correctly chosen already!")
-            print("nothing to do...")
-            return 0
-
-    def clean_titles(self):
-
-        print("start cleaning title data!")
-
-        clean_data = self.check_publication_titles(clean=True)
-        total = 0
-        if clean_data:
-            comment = 'auto-update: publication title stripped'
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-            print("updated", total, "publication titles!")
-        else:
-            print("publication title data is already clean!")
-            print("nothing to do...")
-
+        for item_id, record in updates.items():
+            self.client.update_and_release(item_id, record["data"], comment)
+            total += 1
         return total
 
-    def clean_source_titles(self):
-
-        print("start cleaning source titles!")
-
-        clean_data = self.check_source_titles(clean=True)
-        total = 0
-        if clean_data:
-            comment = 'auto-update: source title stripped'
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-            print("updated", total, "source titles!")
-        else:
-            print("source title data is already clean!")
-            print("nothing to do...")
-
+    def update_genre(self, new_genre: str, old_genre: str) -> int:
+        """Change genres and push the updates to the repository."""
+        updates = self.change_genre(new_genre, old_genre)
+        total = self._push(
+            updates, f"auto-update: change genre of item from {old_genre} to {new_genre}"
+        )
+        logger.info("updated genre of %d items", total)
         return total
 
-    def clean_publishers(self):
-
-        print("start cleaning publisher data!")
-
-        clean_data = self.check_publishers(clean=True)
-        total = 0
-        if clean_data:
-            comment = 'auto-update: remove control characters from publisher value'
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-        else:
-            print("publisher data is already clean!")
-            print("nothing to do...")
-
-        print("updated", total, "items!")
+    def update_source_genre(self, new_genre: str, old_genre: str) -> int:
+        """Change source genres and push the updates to the repository."""
+        updates = self.change_source_genre(new_genre, old_genre)
+        total = self._push(
+            updates,
+            f"auto-update: change source genre of item from {old_genre} to {new_genre}",
+        )
+        logger.info("updated source genre of %d items", total)
         return total
 
-    def clean_publishing_places(self):
+    def clean_titles(self) -> int:
+        """Strip publication titles and push the updates."""
+        updates = self.check_publication_titles(clean=True)
+        total = self._push(updates, "auto-update: publication title stripped")
+        logger.info("updated %d publication titles", total)
+        return total
 
-        print("start cleaning publishing place data!")
+    def clean_source_titles(self) -> int:
+        """Strip source titles and push the updates."""
+        updates = self.check_source_titles(clean=True)
+        total = self._push(updates, "auto-update: source title stripped")
+        logger.info("updated %d source titles", total)
+        return total
 
-        clean_data = self.check_publishing_places(clean=True)
-        total = 0
-        if clean_data:
-            comment = 'auto-update: remove control characters from publishing place value'
-            for k in clean_data:
-                updated = self.client.update_data(k, clean_data[k]['data'], comment)
-                if updated:
-                    total += 1
-        else:
-            print("publishing place data is already clean!")
-            print("nothing to do...")
+    def clean_publishers(self) -> int:
+        """Clean publisher values and push the updates."""
+        updates = self.check_publishers(clean=True)
+        total = self._push(updates, "auto-update: remove control characters from publisher value")
+        logger.info("updated %d publishers", total)
+        return total
 
-        print("updated", total, "items!")
+    def clean_publishing_places(self) -> int:
+        """Clean publishing place values and push the updates."""
+        updates = self.check_publishing_places(clean=True)
+        total = self._push(
+            updates, "auto-update: remove control characters from publishing place value"
+        )
+        logger.info("updated %d publishing places", total)
         return total
