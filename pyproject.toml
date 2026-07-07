@@ -87,10 +87,10 @@ strict = true
 warn_unreachable = true
 files = ["pybman"]
 
+# the record helpers operate on untyped JSON structures by design
 [[tool.mypy.overrides]]
-module = "pybman.data"
-# legacy record-dict helpers work on untyped JSON structures
-disallow_any_expr = false
+module = ["pybman.extract", "pybman.data"]
+warn_return_any = false
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

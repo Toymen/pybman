@@ -1,626 +1,418 @@
+"""In-memory collections of PubMan records with grouping/extraction helpers."""
+
+from __future__ import annotations
+
+import logging
+from collections.abc import Callable, Iterable
+from typing import Any
+
 from pybman import extract
 
+logger = logging.getLogger(__name__)
+
+Record = dict[str, Any]
+
+#: Metadata date fields in order of preference for determining the year.
+_DATE_FIELDS = (
+    "datePublishedInPrint",
+    "datePublishedOnline",
+    "dateModified",
+    "dateAccepted",
+    "dateSubmitted",
+    "dateCreated",
+)
+
+
 class DataSet:
+    """A set of PubMan item records (as returned by the search endpoints).
 
-    def __init__(self, data_id, data=None, raw=None):
+    Construct from raw record lists (``raw=[...]``) or from a search
+    response body (``data={"records": [...], ...}``).
+    """
 
+    def __init__(
+        self,
+        data_id: str,
+        data: dict[str, Any] | None = None,
+        raw: list[Record] | None = None,
+    ) -> None:
         self.idx = data_id
-
-        if raw:
-            self.collection = {"numberOfRecords": len(raw), "records": raw}
-            self.num = len(raw)
-            self.records = raw
-            self.persons = self.get_cone_persons()
-
-        elif data:
-            self.collection = data
-            self.num = len(data['records'])
-            self.records = data['records']
-            self.persons = self.get_cone_persons()
-
+        if raw is not None:
+            self.records: list[Record] = raw
+        elif data is not None:
+            self.records = data.get("records") or []
         else:
-            self.collection = {}
-            self.num = 0
             self.records = []
-            self.persons = {}
+        self.collection: dict[str, Any] = {
+            "numberOfRecords": len(self.records),
+            "records": self.records,
+        }
+        self.num = len(self.records)
+        self.persons = self.get_cone_persons()
 
-    def get_creators(self):
-        """
-        extract data of creators from records
-        """
-        creators = []
+    def __len__(self) -> int:
+        return self.num
+
+    def __iter__(self) -> Any:
+        return iter(self.records)
+
+    def __repr__(self) -> str:
+        return f"<pybman.DataSet {self.idx!r} ({self.num} records)>"
+
+    # -- generic grouping helpers ------------------------------------------
+
+    def _group(
+        self,
+        keys_for_record: Callable[[Record], Iterable[str]],
+        value_for_record: Callable[[Record], Any],
+    ) -> dict[str, list[Any]]:
+        groups: dict[str, list[Any]] = {}
         for record in self.records:
-            if 'creators' in record['data']['metadata']:
-                creators_list = record['data']['metadata']['creators']
-                for creator in creators_list:
-                    creators.append(creator)
+            for key in keys_for_record(record):
+                groups.setdefault(key, []).append(value_for_record(record))
+        return groups
+
+    # -- creators / persons ---------------------------------------------------
+
+    def get_creators(self) -> list[dict[str, Any]]:
+        """All creator entries across records."""
+        creators: list[dict[str, Any]] = []
+        for record in self.records:
+            creators.extend(record["data"]["metadata"].get("creators") or [])
         return creators
 
-    def get_creators_from_records(self):
-        """
-        extract creators lists from records
-        """
-        creators = []
+    def get_creators_from_records(self) -> list[list[dict[str, Any]]]:
+        """The creators list of each record that has one."""
+        return [
+            record["data"]["metadata"]["creators"]
+            for record in self.records
+            if "creators" in record["data"]["metadata"]
+        ]
+
+    def get_creators_data(self) -> dict[str, list[Record]]:
+        """Persons' CoNE ids mapped to their records."""
+        creators: dict[str, list[Record]] = {}
         for record in self.records:
-            if 'creators' in record['data']['metadata']:
-                creators.append(record['data']['metadata']['creators'])
+            found = False
+            for creator in record["data"]["metadata"].get("creators") or []:
+                person = creator.get("person")
+                if person is None:
+                    continue
+                found = True
+                identifier = person.get("identifier")
+                if identifier and "id" in identifier:
+                    idx = identifier["id"].split("/")[-1]
+                    creators.setdefault(idx, []).append(record)
+            if not found:
+                logger.debug("no person found for %s", record["data"]["objectId"])
         return creators
 
-    def get_creators_data(self):
-        """
-        extract persons’ CoNE IDs and associated records
-        """
-        creators = {}
-        for record in self.records:
-            if 'creators' in record['data']['metadata']:
-                creators_list = record['data']['metadata']['creators']
-                found = False
-                for creator in creators_list:
-                    if 'person' in creator:
-                        found = True
-                        if 'identifier' in creator['person']:
-                            idx = creator['person']['identifier']['id'].split("/")[-1]
-                            if idx in creators:
-                                creators[idx].append(record)
-                            else:
-                                creators[idx] = [record]
-                        else:
-                            continue
-                if not found:
-                    print("no person found for", record['data']['objectId'])
-        return creators
-
-    def get_cone_persons(self):
-        """
-        extract persons’ CoNE IDs and associated names
-        """
-        persons = {}
+    def get_cone_persons(self) -> dict[str, str]:
+        """Persons' CoNE ids mapped to their names."""
+        persons: dict[str, str] = {}
         for creator in self.get_creators():
-            if creator['type'] == 'PERSON':
-                if 'identifier' in creator['person']:
-                    if creator['person']['identifier']['type'] == 'CONE':
-                        if creator['person']['identifier']['id'] not in persons:
-                            cone_id = creator['person']['identifier']['id'].split("/")[-1]
-                            if 'givenName' in creator['person']:
-                                name = creator['person']['givenName']
-                                if 'familyName' in creator['person']:
-                                    name += ' ' + creator['person']['familyName']
-                            else:
-                                if 'familyName' in creator['person']:
-                                    name = creator['person']['familyName']
-                                else:
-                                    print('no name found for', cone_id)
-                                    name = ''
-                            persons[cone_id] = name
+            if creator.get("type") != "PERSON":
+                continue
+            person = creator.get("person") or {}
+            identifier = person.get("identifier")
+            if not identifier or identifier.get("type") != "CONE":
+                continue
+            cone_id = identifier["id"].split("/")[-1]
+            if cone_id in persons:
+                continue
+            name_parts = [person.get("givenName", ""), person.get("familyName", "")]
+            name = " ".join(part for part in name_parts if part)
+            if not name:
+                logger.debug("no name found for %s", cone_id)
+            persons[cone_id] = name
         return persons
 
-    def get_organizations(self):
-        """
-        extract organizations of creators and associated IDs of records
-        """
-        organizations = {}
+    def get_organizations(self) -> dict[str, list[str]]:
+        """Creator organizations mapped to record ids."""
+        organizations: dict[str, list[str]] = {}
         for record in self.records:
-            if 'creators' in record['data']['metadata']:
-                creators_list = record['data']['metadata']['creators']
-                for creator in creators_list:
-                    if creator['type'] == 'PERSON':
-                        person = creator['person']
-                        if 'organizations' in person:
-                            for organization in person['organizations']:
-                                if organization['name'] in organizations:
-                                    organizations[organization['name']].append(record['data']['objectId'])
-                                else:
-                                    organizations[organization['name']] = [record['data']['objectId']]
-                    elif creator['type'] == 'ORGANIZATION':
-                        organization = creator['organization']
-                        if organization['name'] in organizations:
-                            organizations[organization['name']].append(record['data']['objectId'])
-                        else:
-                            organizations[organization['name']] = [record['data']['objectId']]
-                    else:
-                        print("unknown creator type", creator['type'])
-            else:
-                print(record['data']['objectId'], "has no creator!")
+            metadata = record["data"]["metadata"]
+            if "creators" not in metadata:
+                logger.debug("%s has no creator", record["data"]["objectId"])
+                continue
+            for creator in metadata["creators"]:
+                if creator.get("type") == "PERSON":
+                    for organization in creator["person"].get("organizations") or []:
+                        organizations.setdefault(organization["name"], []).append(
+                            record["data"]["objectId"]
+                        )
+                elif creator.get("type") == "ORGANIZATION":
+                    organizations.setdefault(creator["organization"]["name"], []).append(
+                        record["data"]["objectId"]
+                    )
+                else:
+                    logger.debug("unknown creator type %s", creator.get("type"))
         return organizations
 
-    def get_titles(self):
-        """
-        extract titles and associated IDs of records
-        """
-        titles = {}
-        for record in self.records:
-            title = record['data']['metadata']['title']
-            if title in titles:
-                titles[title].append(record['data']['objectId'])
-            else:
-                titles[title] = [record['data']['objectId']]
-        return titles
+    # -- titles ---------------------------------------------------------------
 
-    def get_titles_from_source(self):
-        """
-        extract titles of sources and associated IDs of records
-        """
-        source_titles = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source['title'] in source_titles:
-                        source_titles[source['title']].append(record['data']['objectId'])
-                    else:
-                        source_titles[source['title']] = [record['data']['objectId']]
-        return source_titles
+    def get_titles(self) -> dict[str, list[str]]:
+        """Titles mapped to record ids."""
+        return self._group(
+            lambda r: [r["data"]["metadata"]["title"]],
+            lambda r: r["data"]["objectId"],
+        )
 
-    def get_genres(self):
-        """
-        extract genres and associated IDs of records
-        """
-        genres = {}
+    def get_titles_from_source(self) -> dict[str, list[str]]:
+        """Source titles mapped to record ids."""
+        return self._group(
+            lambda r: [s["title"] for s in r["data"]["metadata"].get("sources") or []],
+            lambda r: r["data"]["objectId"],
+        )
+
+    get_sources_titles = get_titles_from_source
+
+    # -- genres -----------------------------------------------------------------
+
+    def get_genres(self) -> dict[str, list[str]]:
+        """Genres mapped to record ids."""
+        return self._group(
+            lambda r: [r["data"]["metadata"]["genre"]],
+            lambda r: r["data"]["objectId"],
+        )
+
+    def get_genre_data(self) -> dict[str, list[Record]]:
+        """Genres mapped to records."""
+        return self._group(lambda r: [r["data"]["metadata"]["genre"]], lambda r: r)
+
+    def get_genre_relationships(self) -> dict[str, dict[str, list[str]]]:
+        """Genres mapped to source genres mapped to record ids."""
+        genres: dict[str, dict[str, list[str]]] = {}
         for record in self.records:
-            if record['data']['metadata']['genre'] in genres:
-                genres[record['data']['metadata']['genre']].append(record['data']['objectId'])
+            genre = record["data"]["metadata"]["genre"]
+            by_source = genres.setdefault(genre, {})
+            sources = record["data"]["metadata"].get("sources")
+            if sources:
+                for source in sources:
+                    by_source.setdefault(source["genre"], []).append(record["data"]["objectId"])
             else:
-                genres[record['data']['metadata']['genre']] = [record['data']['objectId']]
+                by_source.setdefault("NONE", []).append(record["data"]["objectId"])
         return genres
 
-    def get_genre_data(self):
-        """
-        extract genres and associated records
-        """
-        genres = {}
-        for record in self.records:
-            if record['data']['metadata']['genre'] in genres:
-                genres[record['data']['metadata']['genre']].append(record)
-            else:
-                genres[record['data']['metadata']['genre']] = [record]
-        return genres
+    def get_source_genres(self) -> dict[str, list[str]]:
+        """Source genres mapped to record ids."""
+        return self._group(
+            lambda r: [s["genre"] for s in r["data"]["metadata"].get("sources") or []],
+            lambda r: r["data"]["objectId"],
+        )
 
-    def get_genre_relationships(self):
-        """
-        extract genres and associated source genres
-        """
-        genres = {}
-        for record in self.records:
-            genre = record['data']['metadata']['genre']
-            if genre not in genres:
-                genres[genre] = {}
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source['genre'] not in genres[genre]:
-                        genres[genre][source['genre']] = []
-                    genres[genre][source['genre']].append(record['data']['objectId'])
-            else:
-                if 'NONE' not in genres[genre]:
-                    genres[genre]['NONE'] = []
-                genres[genre]['NONE'].append(record['data']['objectId'])
-        return genres
+    def get_source_genres_data(self) -> dict[str, list[Record]]:
+        """Source genres mapped to records."""
+        return self._group(
+            lambda r: [s["genre"] for s in r["data"]["metadata"].get("sources") or []],
+            lambda r: r,
+        )
 
-    def get_places(self):
-        """
-        extract publication places and associated IDs of records
-        """
-        places = {}
-        for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'place' in record['data']['metadata']['publishingInfo']:
-                    place = record['data']['metadata']['publishingInfo']['place']
-                    if place in places:
-                        places[place].append(record['data']['objectId'])
-                    else:
-                        places[place] = [record['data']['objectId']]
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'place' in source['publishingInfo']:
-                            place = source['publishingInfo']['place']
-                            if place in places:
-                                places[place].append(record['data']['objectId'])
-                            else:
-                                places[place] = [record['data']['objectId']]
-        return places
+    # -- publishing info ----------------------------------------------------------
 
-    def get_contexts(self):
-        """
-        extract IDs of records an associated IDs of collection
-        """
-        contexts = {}
-        for record in self.records:
-            item_idx = record['data']['objectId']
-            ctx_idx = record['data']['context']['objectId']
-            contexts[item_idx] = ctx_idx
-        return contexts
+    @staticmethod
+    def _pubinfo_values(record: Record, field: str) -> list[str]:
+        values = []
+        metadata = record["data"]["metadata"]
+        if field in metadata.get("publishingInfo", {}):
+            values.append(metadata["publishingInfo"][field])
+        for source in metadata.get("sources") or []:
+            if field in source.get("publishingInfo", {}):
+                values.append(source["publishingInfo"][field])
+        return values
 
-    def get_publishers(self):
-        """
-        extract publishers and associated IDs of records
-        """
-        publishers = {}
-        for record in self.records:
-            if 'publishingInfo' in record['data']['metadata']:
-                if 'publisher' in record['data']['metadata']['publishingInfo']:
-                    publisher = record['data']['metadata']['publishingInfo']['publisher']
-                    if publisher in publishers:
-                        publishers[publisher].append(record['data']['objectId'])
-                    else:
-                        publishers[publisher] = [record['data']['objectId']]
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'publishingInfo' in source:
-                        if 'publisher' in source['publishingInfo']:
-                            publisher = source['publishingInfo']['publisher']
-                            if publisher in publishers:
-                                publishers[publisher].append(record['data']['objectId'])
-                            else:
-                                publishers[publisher] = [record['data']['objectId']]
-        return publishers
+    def get_places(self) -> dict[str, list[str]]:
+        """Publication places mapped to record ids."""
+        return self._group(
+            lambda r: self._pubinfo_values(r, "place"),
+            lambda r: r["data"]["objectId"],
+        )
 
-    def get_journals(self):
-        """
-        extract publication sources from records with JOURNAL as source genre
-        """
-        journals = {}
-        items = self.get_source_from_items_with_source_genre("JOURNAL")
-        for k in items:
-            if items[k]['title'] in journals:
-                journals[items[k]['title']].append(k)
-            else:
-                journals[items[k]['title']] = [k]
+    def get_publishers(self) -> dict[str, list[str]]:
+        """Publishers mapped to record ids."""
+        return self._group(
+            lambda r: self._pubinfo_values(r, "publisher"),
+            lambda r: r["data"]["objectId"],
+        )
+
+    # -- contexts ------------------------------------------------------------------
+
+    def get_contexts(self) -> dict[str, str]:
+        """Record ids mapped to their context id."""
+        return {
+            record["data"]["objectId"]: record["data"]["context"]["objectId"]
+            for record in self.records
+        }
+
+    # -- journals / series ------------------------------------------------------------
+
+    def get_journals(self) -> dict[str, list[str]]:
+        """Journal titles mapped to record ids (source genre JOURNAL)."""
+        journals: dict[str, list[str]] = {}
+        for item_id, source in self.get_source_from_items_with_source_genre("JOURNAL").items():
+            journals.setdefault(source["title"], []).append(item_id)
         return journals
 
-    def get_journals_data(self):
-        """
-        extract records with JOURNAL as source genre
-        """
-        journals = {}
-        items = self.get_source_from_items_with_source_genre("JOURNAL")
-        for k in items:
-            if items[k]['title'] in journals:
-                journals[items[k]['title']].append(self.get_item(k))
-            else:
-                journals[items[k]['title']] = [self.get_item(k)]
+    def get_journals_data(self) -> dict[str, list[Record]]:
+        """Journal titles mapped to records (source genre JOURNAL)."""
+        journals: dict[str, list[Record]] = {}
+        for item_id, source in self.get_source_from_items_with_source_genre("JOURNAL").items():
+            journals.setdefault(source["title"], []).append(self.get_item(item_id))
         return journals
 
-    def get_series(self):
-        """
-        extract publication source from records with SERIES as source genre
-        """
-        series = {}
-        items = self.get_source_from_items_with_source_genre("SERIES")
-        for k in items:
-            if items[k]['title'] in series:
-                series[items[k]['title']].append(k)
-            else:
-                series[items[k]['title']] = [k]
+    def get_series(self) -> dict[str, list[str]]:
+        """Series titles mapped to record ids (source genre SERIES)."""
+        series: dict[str, list[str]] = {}
+        for item_id, source in self.get_source_from_items_with_source_genre("SERIES").items():
+            series.setdefault(source["title"], []).append(item_id)
         return series
 
-    def get_years(self):
-        """
-        extract publication years and associated record IDs
-        """
-        years = {}
-        for record in self.records:
-            if 'datePublishedInPrint' in record['data']['metadata']:
-                year = record['data']['metadata']['datePublishedInPrint'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            elif 'datePublishedOnline' in record['data']['metadata']:
-                year = record['data']['metadata']['datePublishedOnline'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            elif 'dateModified' in record['data']['metadata']:
-                year = record['data']['metadata']['dateModified'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            elif 'dateAccepted' in record['data']['metadata']:
-                year = record['data']['metadata']['dateAccepted'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            elif 'dateSubmitted' in record['data']['metadata']:
-                year = record['data']['metadata']['dateSubmitted'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            elif 'dateCreated' in record['data']['metadata']:
-                year = record['data']['metadata']['dateCreated'].split("-")[0]
-                if year in years:
-                    years[year].append(record['data']['objectId'])
-                else:
-                    years[year] = [record['data']['objectId']]
-            else:
-                print("no publication date found for", record['data']['objectId']+"!")
-        return years
+    # -- dates ---------------------------------------------------------------------------
 
-    def get_years_data(self):
-        """
-        extract publication years and associated records
-        """
-        years = {}
-        for record in self.records:
-            if 'datePublishedInPrint' in record['data']['metadata']:
-                year = record['data']['metadata']['datePublishedInPrint'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            elif 'datePublishedOnline' in record['data']['metadata']:
-                year = record['data']['metadata']['datePublishedOnline'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            elif 'dateModified' in record['data']['metadata']:
-                year = record['data']['metadata']['dateModified'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            elif 'dateAccepted' in record['data']['metadata']:
-                year = record['data']['metadata']['dateAccepted'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            elif 'dateSubmitted' in record['data']['metadata']:
-                year = record['data']['metadata']['dateSubmitted'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            elif 'dateCreated' in record['data']['metadata']:
-                year = record['data']['metadata']['dateCreated'].split("-")[0]
-                if year in years:
-                    years[year].append(record)
-                else:
-                    years[year] = [record]
-            else:
-                print("no publication date found for", record['data']['objectId']+"!")
-        return years
+    @staticmethod
+    def _year(record: Record) -> str | None:
+        metadata = record["data"]["metadata"]
+        for field in _DATE_FIELDS:
+            if field in metadata:
+                return str(metadata[field]).split("-")[0]
+        logger.debug("no publication date found for %s", record["data"]["objectId"])
+        return None
 
-    def get_languages(self):
+    def get_years(self) -> dict[str, list[str]]:
+        """Publication years mapped to record ids."""
+        return self._group(
+            lambda r: [y] if (y := self._year(r)) else [],
+            lambda r: r["data"]["objectId"],
+        )
+
+    def get_years_data(self) -> dict[str, list[Record]]:
+        """Publication years mapped to records."""
+        return self._group(lambda r: [y] if (y := self._year(r)) else [], lambda r: r)
+
+    def get_items_from_year(self, year: str) -> list[str]:
+        """Record ids with the given publication year."""
+        return self.get_years().get(year, [])
+
+    def get_items_from_year_data(self, year: str) -> list[Record]:
+        """Records with the given publication year."""
+        return self.get_years_data().get(year, [])
+
+    # -- languages -----------------------------------------------------------------------
+
+    @staticmethod
+    def _language(record: Record) -> str:
+        if "languages" not in extract.metadata(record):
+            return "NONE"
+        langs = extract.languages_from_item(record)
+        if len(langs) == 1:
+            return langs[0]
+        return "MULTI"
+
+    def get_languages(self) -> dict[str, list[Any]]:
+        """Languages mapped to record ids.
+
+        Records without language data are grouped under ``"NONE"``; records
+        with several languages under ``"MULTI"`` as ``(id, languages)``.
         """
-        extract publication languages and associated record IDs
-        """
-        languages = {}
-        total = 0
+        languages: dict[str, list[Any]] = {}
         for record in self.records:
+            lang = self._language(record)
             item_idx = extract.idx_from_item(record)
-            if 'languages' in extract.metadata(record):
-                langs = extract.languages_from_item(record)
-                if len(langs) == 1:
-                    lang = langs[0]
-                    if lang in languages:
-                        languages[lang].append(item_idx)
-                    else:
-                        languages[lang] = [item_idx]
-                else:
-                    if 'MULTI' in languages:
-                        languages['MULTI'].append( (item_idx, langs)) 
-                    else:
-                        languages['MULTI'] = [ (item_idx, langs) ]
-                #for lang in langs:
-                #    if lang in languages:
-                #        languages[lang].append(item_idx)
-                #    else:
-                #        languages[lang] = [item_idx]
+            if lang == "MULTI":
+                languages.setdefault(lang, []).append(
+                    (item_idx, extract.languages_from_item(record))
+                )
             else:
-                # print(record['data']['objectId'], "has no language!")
-                if 'NONE' in languages:
-                    languages['NONE'].append(item_idx)
-                else:
-                    languages['NONE'] = [item_idx]
+                languages.setdefault(lang, []).append(item_idx)
         return languages
 
-    def get_languages_data(self):
-        """
-        extract publication languages and associated records
-        """
-        languages = {}
+    def get_languages_data(self) -> dict[str, list[Record]]:
+        """Languages mapped to records (``NONE``/``MULTI`` as in get_languages)."""
+        return self._group(lambda r: [self._language(r)], lambda r: r)
+
+    # -- identifiers -------------------------------------------------------------------------
+
+    def get_sources_identifiers(self) -> dict[str, list[str]]:
+        """Source identifier types mapped to record ids."""
+        return self._group(
+            lambda r: [
+                identifier["type"]
+                for source in r["data"]["metadata"].get("sources") or []
+                for identifier in source.get("identifiers") or []
+            ],
+            lambda r: r["data"]["objectId"],
+        )
+
+    # -- item selection --------------------------------------------------------------------------
+
+    def get_item(self, item_id: str) -> Record:
+        """The record with the given id (empty dict when absent)."""
         for record in self.records:
-            item_idx = extract.idx_from_item(record)
-            if 'languages' in extract.metadata(record):
-                langs = extract.languages_from_item(record)
-                if len(langs) == 1:
-                    lang = langs[0]
-                    if lang in languages:
-                        languages[lang].append(record)
-                    else:
-                        languages[lang] = [record]
-                else:
-                    if 'MULTI' in languages:
-                        languages['MULTI'].append(record) 
-                    else:
-                        languages['MULTI'] = [record]
-                #for lang in langs:
-                #    if lang in languages:
-                #        languages[lang].append(record)
-                #    else:
-                #        languages[lang] = [record]
-            else:
-                # print(item_idx, "has no language!")
-                if 'NONE' in languages:
-                    languages['NONE'].append(record)
-                else:
-                    languages['NONE'] = [record]
-        return languages
+            if record["data"]["objectId"] == item_id:
+                return record
+        return {}
 
-    def get_source_genres(self):
-        """
-        extract genres of publication sources and associated record IDs
-        """
-        genres = {}
+    def get_items_with_genre(self, genre: str) -> dict[str, Record]:
+        """Record ids mapped to records with the given genre."""
+        return {
+            record["data"]["objectId"]: record
+            for record in self.records
+            if record["data"]["metadata"]["genre"] == genre
+        }
+
+    def get_items_released(self) -> list[Record]:
+        """Records whose public and version state are RELEASED."""
+        return [
+            record
+            for record in self.records
+            if record["data"].get("publicState") == "RELEASED"
+            and record["data"].get("versionState") == "RELEASED"
+        ]
+
+    def get_items_submitted(self) -> dict[str, Any]:
+        """Persistence ids mapped to item data with state SUBMITTED."""
+        return {
+            record["persistenceId"]: record["data"]
+            for record in self.records
+            if record["data"].get("publicState") == "SUBMITTED"
+            and record["data"].get("versionState") == "SUBMITTED"
+        }
+
+    def get_items_with_external_url(self) -> dict[str, Record]:
+        """Record ids mapped to records with EXTERNAL_URL file entries."""
+        return {
+            record["data"]["objectId"]: record
+            for record in self.records
+            if any(f.get("storage") == "EXTERNAL_URL" for f in record["data"].get("files") or [])
+        }
+
+    def get_items_with_identifier_uri(self) -> dict[str, Record]:
+        """Record ids mapped to records carrying a URI identifier."""
+        return {
+            record["data"]["objectId"]: record
+            for record in self.records
+            if any(
+                identifier.get("type") == "URI"
+                for identifier in record["data"]["metadata"].get("identifiers") or []
+            )
+        }
+
+    def get_items_with_source_genre(self, source_genre: str) -> dict[str, Record]:
+        """Record ids mapped to records with the given source genre."""
+        return {
+            record["data"]["objectId"]: record
+            for record in self.records
+            if any(
+                source.get("genre") == source_genre
+                for source in record["data"]["metadata"].get("sources") or []
+            )
+        }
+
+    def get_source_from_items_with_source_genre(self, source_genre: str) -> dict[str, Any]:
+        """Record ids mapped to the (last) source entry of the given genre."""
+        records: dict[str, Any] = {}
         for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source['genre'] in genres:
-                        genres[source['genre']].append(record['data']['objectId'])
-                    else:
-                        genres[source['genre']] = [record['data']['objectId']]
-        return genres
-
-    def get_source_genres_data(self):
-        """
-        extract genres of publication sources and associated records
-        """
-        genres = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source['genre'] in genres:
-                        genres[source['genre']].append(record)
-                    else:
-                        genres[source['genre']] = [record]
-        return genres
-
-    def get_sources_identifiers(self):
-        """
-        extract identifers of publication sources and associated record IDs
-        """
-        source_idx = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if 'identifiers' in source:
-                        for identifier in source['identifiers']:
-                            identifier_type = identifier['type']
-                            if identifier_type in source_idx:
-                                source_idx[identifier_type].append(record['data']['objectId'])
-                            else:
-                                source_idx[identifier_type] = [record['data']['objectId']]
-        return source_idx
-
-    def get_sources_titles(self):
-        """
-        extract titles of publication sources and associated record IDs
-        """
-        source_titles = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    title = source['title']
-                    if title in source_titles:
-                        source_titles[title].append(record['data']['objectId'])
-                    else:
-                        source_titles[title] = [record['data']['objectId']]
-        return source_titles
-
-    def get_item(self, item_id):
-        """
-        extract record with given record ID
-        """
-        item = {}
-        for record in self.records:
-            if item_id == record['data']['objectId']:
-                item = record
-                break
-        return item
-
-    # get items from collection with given genre
-    def get_items_with_genre(self, genre):
-        """
-        extract IDs of records with state 'released' and associated records
-        """
-        records = {}
-        for record in self.records:
-            if genre == record['data']['metadata']['genre']:
-                records[record['data']['objectId']] = record
-        return records
-
-    def get_items_released(self):
-        """
-        extract IDs of records with state 'released' and associated records
-        """
-        released = []
-        for record in self.records:
-            if record['data']['publicState'] == 'RELEASED':
-                if record['data']['versionState'] == 'RELEASED':
-                    released.append(record)
-        return released
-
-    # get items with state 'submitted'
-    def get_items_submitted(self):
-        """
-        extract records with state 'submitted' and associated IDs
-        """
-        submitted = {}
-        for record in self.records:
-            if record['data']['publicState'] == 'SUBMITTED':
-                if record['data']['versionState'] == 'SUBMITTED':
-                    submitted[record['persistenceId']] = record['data']
-        return submitted
-
-    def get_items_from_year(self, year):
-        """
-        extract IDs of records with given publication year
-        """
-        years = self.get_years()
-        if year in years:
-            return years[year]
-        else:
-            return []
-
-    def get_items_from_year_data(self, year):
-        """
-        extract records with given publication year
-        """
-        years = self.get_years_data()
-        if year in years:
-            return years[year]
-        else:
-            return []
-
-    def get_items_with_external_url(self):
-        """
-        extract records with external url
-        """
-        records = {}
-        for record in self.records:
-            if 'files' in record['data']:
-                for f in record['data']['files']:
-                    if f['storage'] == 'EXTERNAL_URL':
-                        records[record['data']['objectId']] = record
-        return records
-
-    def get_items_with_identifier_uri(self):
-        """
-        extract records with identifier uri
-        """
-        records = {}
-        for record in self.records:
-            if 'identifiers' in record['data']['metadata']:
-                identifiers = record['data']['metadata']['identifiers']
-                for idx in identifiers:
-                    if idx['type'] == 'URI':
-                        records[record['data']['objectId']] = record
-        return records
-
-    def get_items_with_source_genre(self, source_genre):
-        """
-        extract records with given source genre
-        """
-        records = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source_genre == source['genre']:
-                        records[record['data']['objectId']] = record
-        return records
-
-    def get_source_from_items_with_source_genre(self, source_genre):
-        """
-        extract data of record’s source with given source genre
-        """
-        records = {}
-        for record in self.records:
-            if 'sources' in record['data']['metadata']:
-                for source in record['data']['metadata']['sources']:
-                    if source_genre == source['genre']:
-                        records[record['data']['objectId']] = source
+            for source in record["data"]["metadata"].get("sources") or []:
+                if source.get("genre") == source_genre:
+                    records[record["data"]["objectId"]] = source
         return records
