@@ -32,9 +32,6 @@ class LocalData:
         self.pers_dir = os.path.join(self.data_dir, pers_dir)
 
         self.data_exists = os.path.exists(self.data_dir)
-        self.ou_exists = os.path.exists(self.ou_dir)
-        self.ctx_exists = os.path.exists(self.ctx_dir)
-        self.pers_exists = os.path.exists(self.pers_dir)
 
         if create:
             for directory in (self.data_dir, self.ou_dir, self.ctx_dir, self.pers_dir):
