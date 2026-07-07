@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import logging
 import re
@@ -33,50 +34,23 @@ def write_json(path: str, data: Any) -> str:
     return path
 
 
-def read_plain_clean(path: str) -> list[str]:
-    """Read a text file into a list of lines (without newlines)."""
-    with open(path, encoding="utf-8") as f:
-        return [line.rstrip("\n") for line in f]
-
-
 def read_csv_with_header(path: str) -> dict[str, list[str]]:
-    """Read a simple quoted CSV file into a column-name → values mapping."""
-    lines = read_plain_clean(path)
-    if not lines:
-        return {}
-    columns = [name.replace('"', "") for name in lines[0].split(",")]
-    values: dict[str, list[str]] = {name: [] for name in columns}
-    for row in lines[1:]:
-        for i, v in enumerate(row.split(",", 1)):
-            values[columns[i]].append(v.replace('"', ""))
-    return values
+    """Read a quoted CSV file into a column-name → values mapping."""
+    with open(path, encoding="utf-8", newline="") as f:
+        reader = csv.DictReader(f)
+        columns = reader.fieldnames or []
+        values: dict[str, list[str]] = {name: [] for name in columns}
+        for row in reader:
+            for name in columns:
+                values[name].append(row[name])
+        return values
 
 
 def write_csv(path: str, results: list[list[str]]) -> None:
     """Write rows of strings as a quoted CSV file."""
     logger.debug("write csv to file %s", path)
-    with open(path, "w", encoding="utf-8") as f:
-        for row in results:
-            cleaned = [clean_string(r.replace('"', "'")) for r in row]
-            f.write('"' + '","'.join(cleaned) + '"\n')
-
-
-def write_list(path: str, results: list[str] | list[list[str]]) -> None:
-    """Write a list of strings (or of string lists) to a text file."""
-    logger.debug("write list to file %s", path)
-    if not results:
-        return
-    with open(path, "w", encoding="utf-8") as f:
-        if isinstance(results[0], str):
-            f.write("\n".join(results))
-        else:
-            for res in results:
-                f.write('"' + '"\n"'.join(res) + '"\n')
-
-
-def add_value(d: dict[str, list[Any]], dkey: str = "", dvalue: Any = "") -> None:
-    """Append *dvalue* to the list at *dkey*, creating it when missing."""
-    d.setdefault(dkey, []).append(dvalue)
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        csv.writer(f, quoting=csv.QUOTE_ALL).writerows(results)
 
 
 def url_exists(url: str, *, timeout: float = 15.0) -> bool:

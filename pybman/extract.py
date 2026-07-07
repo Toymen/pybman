@@ -130,25 +130,6 @@ def role_from_creator(creator: dict[str, Any]) -> str:
     return value_from_level("role", creator)
 
 
-def organizations_from_item(item: Record) -> list[dict[str, Any]]:
-    """Creators of an item that are organizations."""
-    return [
-        creator
-        for creator in creators_from_item(item)
-        if field_from_creator("organization", creator)
-    ]
-
-
-def organizations_name_from_creator(creator: dict[str, Any]) -> str:
-    """Name of an organization creator."""
-    return value_from_level("name", creator["organization"])
-
-
-def organizations_identifier_from_creator(creator: dict[str, Any]) -> Any:
-    """Identifier of an organization creator."""
-    return value_from_level("identifier", creator["organization"])
-
-
 def field_from_metadata(field: str, item: Record, value: bool = True) -> Any:
     """Field from the metadata of an item (``""``/``[]`` when absent)."""
     if value:
@@ -286,14 +267,6 @@ def sources_persons_id_from_item(
             )
         result.append(entries)
     return result
-
-
-def sources_persons_affiliations_from_item(item: Record) -> list[list[Any]]:
-    """Affiliations of person creators per source of an item."""
-    return [
-        [persons_affiliation_from_creator(person) for person in source]
-        for source in sources_persons_from_item(item)
-    ]
 
 
 def sources_identifiers_from_item(item: Record) -> list[list[tuple[str, str]]]:

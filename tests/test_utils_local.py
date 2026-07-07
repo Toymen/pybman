@@ -17,25 +17,12 @@ def test_json_roundtrip(tmp_path):
     assert utils.read_json(path) == {"a": [1, 2]}
 
 
-def test_write_list_and_read_plain(tmp_path):
-    path = str(tmp_path / "list.txt")
-    utils.write_list(path, ["a", "b"])
-    assert utils.read_plain_clean(path) == ["a", "b"]
-
-
 def test_write_csv_and_read_with_header(tmp_path):
     path = str(tmp_path / "table.csv")
     utils.write_csv(path, [["id", "name"], ["1", 'quo"ted']])
     table = utils.read_csv_with_header(path)
     assert table["id"] == ["1"]
-    assert table["name"] == ["quo'ted"]
-
-
-def test_add_value():
-    d: dict = {}
-    utils.add_value(d, "k", 1)
-    utils.add_value(d, "k", 2)
-    assert d == {"k": [1, 2]}
+    assert table["name"] == ['quo"ted']
 
 
 def test_url_exists(responses):
