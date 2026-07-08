@@ -71,6 +71,16 @@ def _columns_from_request() -> tuple[tuple[str, str], ...]:
     return selected or COLUMNS
 
 
+def _sort_from_request() -> tuple[str, str]:
+    sort_by = request.args.get("sort", "date_modified")
+    if sort_by not in store.SORTABLE_COLUMNS:
+        sort_by = "date_modified"
+    sort_dir = request.args.get("dir", "desc").lower()
+    if sort_dir not in {"asc", "desc"}:
+        sort_dir = "desc"
+    return sort_by, sort_dir
+
+
 def _url_with_args(endpoint: str, **updates: object) -> str:
     args = request.args.to_dict(flat=False)
     for key, value in updates.items():
@@ -89,6 +99,11 @@ def _with_selected_option(options: list[str], selected: str) -> list[str]:
     if selected and selected not in options:
         return [selected, *options]
     return options
+
+
+def _sort_url(column: str, current_sort: str, current_dir: str) -> str:
+    next_dir = "desc" if column == current_sort and current_dir == "asc" else "asc"
+    return _url_with_args("index", sort=column, dir=next_dir, page=1)
 
 
 def sync_now(client: Client, cfg: Config, app: Flask) -> None:
@@ -124,6 +139,7 @@ def create_app(client: Client, cfg: Config) -> Flask:
         group_tag = _tag_from_request("group_tag")
         field_filters = _field_filters_from_request()
         visible_columns = _columns_from_request()
+        sort_by, sort_dir = _sort_from_request()
         q = request.args.get("q", "")
         page = max(int(request.args.get("page", 1) or 1), 1)
         page_size = 50
@@ -136,6 +152,8 @@ def create_app(client: Client, cfg: Config) -> Flask:
                 cone_id=cone_id,
                 local_tag=local_tag,
                 group_tag=group_tag,
+                sort_by=sort_by,
+                sort_dir=sort_dir,
                 limit=page_size,
                 offset=(page - 1) * page_size,
             )
@@ -174,6 +192,9 @@ def create_app(client: Client, cfg: Config) -> Flask:
             page_size=page_size,
             pages=max((total + page_size - 1) // page_size, 1),
             page_url=lambda target: _url_with_args("index", page=target),
+            sort_url=lambda column: _sort_url(column, sort_by, sort_dir),
+            sort_by=sort_by,
+            sort_dir=sort_dir,
             export_url=_url_with_args("export_xlsx", page=None),
             last_synced=last_synced,
             syncing=app.config["SYNCING"],
@@ -186,6 +207,7 @@ def create_app(client: Client, cfg: Config) -> Flask:
         local_tag = _tag_from_request("local_tag")
         group_tag = _tag_from_request("group_tag")
         field_filters = _field_filters_from_request()
+        sort_by, sort_dir = _sort_from_request()
         q = request.args.get("q", "")
         with store.connect(cfg.db_path) as conn:
             rows, _total = store.query_items(
@@ -196,6 +218,8 @@ def create_app(client: Client, cfg: Config) -> Flask:
                 cone_id=cone_id,
                 local_tag=local_tag,
                 group_tag=group_tag,
+                sort_by=sort_by,
+                sort_dir=sort_dir,
                 limit=50_000,
                 offset=0,
             )

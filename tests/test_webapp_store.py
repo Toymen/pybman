@@ -124,6 +124,35 @@ def test_task_columns_support_prime_group_tags_and_research_data(tmp_path):
     assert rows[0]["research_data_links"] == "https://zenodo.org/records/12345"
 
 
+def test_query_can_sort_by_tags_and_research_data_flag(tmp_path):
+    db_path = str(tmp_path / "pubman.db")
+    store.init_db(db_path)
+    with store.connect(db_path) as conn:
+        store.upsert_item(conn, make_record("item_1", title="One", local_tags=["zeta"]))
+        store.upsert_item(
+            conn,
+            make_record(
+                "item_2",
+                title="Two",
+                local_tags=["alpha"],
+                files=[
+                    {
+                        "content": "https://zenodo.org/records/1",
+                        "metadata": {"contentCategory": "research-data"},
+                    }
+                ],
+            ),
+        )
+
+        rows, _total = store.query_items(conn, {}, sort_by="local_tags", sort_dir="asc")
+        assert [row["object_id"] for row in rows] == ["item_2", "item_1"]
+
+        rows, _total = store.query_items(
+            conn, {}, sort_by="research_data_flag", sort_dir="desc"
+        )
+        assert [row["object_id"] for row in rows] == ["item_2", "item_1"]
+
+
 def test_filters_reject_unknown_columns(tmp_path):
     db_path = str(tmp_path / "pubman.db")
     store.init_db(db_path)

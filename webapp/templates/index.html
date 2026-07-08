@@ -334,6 +334,22 @@
     white-space: nowrap;
   }
 
+  th a {
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  th a:hover { color: var(--brand-dark); }
+
+  .sort-indicator {
+    color: var(--brand);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
   td {
     border-bottom: 1px solid #edf0f3;
     padding: 9px 10px;
@@ -723,7 +739,16 @@
         <table>
           <thead>
             <tr>
-              {% for _col, label in columns %}<th>{{ label }}</th>{% endfor %}
+              {% for col, label in columns %}
+              <th>
+                <a href="{{ sort_url(col) }}" title="Sort by {{ label }}">
+                  {{ label }}
+                  {% if sort_by == col %}
+                  <span class="sort-indicator">{% if sort_dir == "asc" %}▲{% else %}▼{% endif %}</span>
+                  {% endif %}
+                </a>
+              </th>
+              {% endfor %}
               <th>Raw JSON</th>
             </tr>
           </thead>

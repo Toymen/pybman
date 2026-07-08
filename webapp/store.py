@@ -117,6 +117,29 @@ FILTERABLE_COLUMNS = (
     "research_data_flag",
 )
 
+SORTABLE_COLUMNS = (
+    "object_id",
+    "title",
+    "genre",
+    "year",
+    "creators",
+    "creator_cone_ids",
+    "creator_cone_bindings",
+    "local_tags",
+    "prime_tag",
+    "research_group_tags",
+    "research_data_flag",
+    "research_data_links",
+    "research_data_details",
+    "source_title",
+    "publisher",
+    "language",
+    "doi",
+    "context_id",
+    "public_state",
+    "date_modified",
+)
+
 SUMMARY_COLUMNS = (
     "object_id",
     "title",
@@ -718,6 +741,8 @@ def query_items(
     cone_id: str = "",
     local_tag: str = "",
     group_tag: str = "",
+    sort_by: str = "date_modified",
+    sort_dir: str = "desc",
     limit: int = 50,
     offset: int = 0,
 ) -> tuple[list[sqlite3.Row], int]:
@@ -777,9 +802,14 @@ def query_items(
         like = f"%{q}%"
         params.extend([like, like, like, like, like, like, like, like, like, like])
     where_sql = f"WHERE {' AND '.join(where)}" if where else ""
+    if sort_by not in SORTABLE_COLUMNS:
+        sort_by = "date_modified"
+    direction = "ASC" if sort_dir.lower() == "asc" else "DESC"
     total = conn.execute(f"SELECT COUNT(*) AS n FROM items {where_sql}", params).fetchone()["n"]
     rows = conn.execute(
-        f"SELECT * FROM items {where_sql} ORDER BY date_modified DESC LIMIT ? OFFSET ?",
+        f"""SELECT * FROM items {where_sql}
+            ORDER BY {sort_by} {direction}, object_id ASC
+            LIMIT ? OFFSET ?""",
         [*params, limit, offset],
     ).fetchall()
     return rows, int(total)
