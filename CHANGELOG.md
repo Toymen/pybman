@@ -6,6 +6,12 @@ Modernization release. See [MIGRATION.md](MIGRATION.md) for upgrade notes.
 
 ### Added
 
+- `webapp/`: a companion sync + web service (`pip install .[web]`, or the
+  provided `Dockerfile` / `docker-compose.yml`). Fetches every publication
+  into a local SQLite store, indexes nested metadata including creator CoNE
+  IDs, can optionally dereference CoNE persons and organizational units,
+  refreshes every 24h or on demand, and serves a filterable table with Excel
+  export.
 - Resource-oriented client API: `client.items`, `client.ous`,
   `client.contexts`, `client.feeds`, `client.staging`, `client.cone`.
 - Full item lifecycle: `create`, `update`, `delete`, `submit`, `release`,

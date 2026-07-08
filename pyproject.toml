@@ -52,6 +52,12 @@ dev = [
     "mypy>=1.11",
     "types-requests",
 ]
+# webapp/: sync-to-SQLite + Flask table/Excel UI (see webapp/README or the
+# top-level README's Docker section). Not part of the published pybman wheel.
+web = [
+    "flask>=3.0",
+    "openpyxl>=3.1",
+]
 
 [tool.hatch.build.targets.sdist]
 include = ["pybman", "tests", "COPYING", "README.md", "CHANGELOG.md", "MIGRATION.md"]

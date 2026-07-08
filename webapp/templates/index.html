@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PubMan Explorer</title>
+<style>
+  :root {
+    --bg: #f6f7f8;
+    --panel: #ffffff;
+    --text: #17202a;
+    --muted: #617080;
+    --line: #d9dee5;
+    --line-strong: #b9c2ce;
+    --brand: #0f6f68;
+    --brand-dark: #0a504c;
+    --accent: #d8ece9;
+    --warn: #8a5b00;
+    --shadow: 0 10px 30px rgba(20, 35, 50, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+  }
+
+  a { color: var(--brand-dark); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .app-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+  }
+
+  .topbar {
+    background: #0f252f;
+    color: #fff;
+    padding: 18px 24px;
+  }
+
+  .topbar-inner {
+    max-width: 1680px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .identity h1 {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .identity p {
+    margin: 5px 0 0;
+    color: #c7d2d9;
+    font-size: 13px;
+  }
+
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .button {
+    border: 1px solid transparent;
+    border-radius: 7px;
+    min-height: 36px;
+    padding: 8px 12px;
+    background: var(--brand);
+    color: #fff;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .button:hover { background: var(--brand-dark); text-decoration: none; }
+  .button:disabled { cursor: wait; opacity: 0.65; }
+
+  .button.secondary {
+    background: #fff;
+    color: #102630;
+    border-color: #fff;
+  }
+
+  .button.secondary:hover { background: #eef3f5; }
+
+  .button.ghost {
+    background: transparent;
+    border-color: var(--line-strong);
+    color: var(--text);
+  }
+
+  .button.ghost:hover { background: #eef3f5; }
+
+  .status-band {
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .status-grid {
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .metric {
+    min-width: 0;
+    border-right: 1px solid var(--line);
+    padding-right: 14px;
+  }
+
+  .metric:last-child { border-right: 0; }
+
+  .metric-label {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .metric-value {
+    margin-top: 4px;
+    font-size: 17px;
+    font-weight: 750;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .workspace {
+    width: 100%;
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 18px 24px 28px;
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+
+  .filters-panel {
+    align-self: start;
+    position: sticky;
+    top: 16px;
+  }
+
+  .panel-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .panel-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 750;
+  }
+
+  .panel-subtitle {
+    margin: 3px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .filter-form {
+    padding: 16px;
+    display: grid;
+    gap: 16px;
+  }
+
+  .field {
+    display: grid;
+    gap: 6px;
+  }
+
+  label {
+    color: #2b3945;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  input, select {
+    width: 100%;
+    min-height: 36px;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    padding: 7px 9px;
+  }
+
+  input:focus, select:focus {
+    outline: 2px solid var(--accent);
+    border-color: var(--brand);
+  }
+
+  .filter-section {
+    display: grid;
+    gap: 10px;
+  }
+
+  .column-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px 10px;
+  }
+
+  .check-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #2b3945;
+    font-size: 12px;
+    font-weight: 650;
+    min-width: 0;
+  }
+
+  .check-option input {
+    width: 15px;
+    min-height: 15px;
+    flex: 0 0 auto;
+  }
+
+  .check-option span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .filter-section-title {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .filter-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 8px;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .content-panel {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .results-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .results-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 760;
+  }
+
+  .results-note {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .table-wrap {
+    overflow: auto;
+    max-height: calc(100vh - 250px);
+    background: #fff;
+  }
+
+  table {
+    width: 100%;
+    min-width: 1260px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+  }
+
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #eef2f4;
+    color: #25313b;
+    border-bottom: 1px solid var(--line-strong);
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 9px 10px;
+    white-space: nowrap;
+  }
+
+  td {
+    border-bottom: 1px solid #edf0f3;
+    padding: 9px 10px;
+    vertical-align: top;
+    max-width: 280px;
+  }
+
+  tbody tr:hover { background: #f7fbfb; }
+
+  .cell-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .id-cell {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+
+  .cone-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 340px;
+  }
+
+  .cone-id {
+    border: 1px solid #b7d8d4;
+    border-radius: 999px;
+    background: #f4fbfa;
+    color: #0b514d;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 750;
+    padding: 2px 7px;
+  }
+
+  .cone-binding {
+    display: block;
+    max-width: 360px;
+    margin-bottom: 4px;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #0b514d;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  details.raw-json {
+    max-width: 420px;
+  }
+
+  details.raw-json summary {
+    cursor: pointer;
+    color: var(--brand-dark);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  details.raw-json code {
+    display: block;
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #f7f9fa;
+    color: #26313b;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 280px;
+    overflow: auto;
+  }
+
+  .empty-state {
+    padding: 46px 18px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .pager {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--line);
+    background: #fbfcfd;
+  }
+
+  .pager-status {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .pager-links {
+    display: flex;
+    gap: 8px;
+  }
+
+  .sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 999px;
+    padding: 5px 9px;
+    background: #edf7f6;
+    color: #0b514d;
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  .sync-pill.waiting {
+    background: #fff4d6;
+    color: var(--warn);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  @media (max-width: 980px) {
+    .topbar-inner,
+    .results-header,
+    .pager {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .status-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .metric:nth-child(2) { border-right: 0; }
+
+    .workspace {
+      grid-template-columns: 1fr;
+    }
+
+    .filters-panel {
+      position: static;
+    }
+
+    .table-wrap {
+      max-height: none;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .topbar,
+    .status-grid,
+    .workspace {
+      padding-left: 14px;
+      padding-right: 14px;
+    }
+
+    .status-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .metric {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 0 0 10px;
+    }
+
+    .metric:last-child { border-bottom: 0; }
+
+    .filter-pair {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="identity">
+        <h1>PubMan Explorer</h1>
+        <p>Browse synced publication records, filter any indexed field, and export the current result set.</p>
+      </div>
+      <div class="top-actions">
+        <span class="sync-pill {% if syncing %}waiting{% endif %}">
+          <span class="dot"></span>
+          {% if syncing %}Refresh running{% else %}Cache ready{% endif %}
+        </span>
+        <a class="button secondary" href="{{ export_url }}">Download Excel</a>
+        <form method="post" action="{{ url_for('refresh') }}">
+          <button class="button" type="submit" {% if syncing %}disabled{% endif %}>Refresh now</button>
+        </form>
+      </div>
+    </div>
+  </header>
+
+  <section class="status-band" aria-label="Sync status">
+    <div class="status-grid">
+      <div class="metric">
+        <div class="metric-label">Matching Rows</div>
+        <div class="metric-value">{{ "{:,}".format(total) }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Stored Publications</div>
+        <div class="metric-value">{{ "{:,}".format(item_count) }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Indexed JSON Paths</div>
+        <div class="metric-value">{{ "{:,}".format(field_count) }}</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Last Sync</div>
+        <div class="metric-value" title="{{ last_synced }}">{{ last_synced }}</div>
+      </div>
+    </div>
+  </section>
+
+  <main class="workspace">
+    <aside class="panel filters-panel">
+      <div class="panel-header">
+        <div>
+          <h2 class="panel-title">Filters</h2>
+          <p class="panel-subtitle">Flat columns and nested JSON values can be combined.</p>
+        </div>
+      </div>
+
+      <form class="filter-form" method="get" id="filter-form">
+        <div class="field">
+          <label for="q">Search text</label>
+          <input id="q" type="search" name="q" placeholder="Title, creator, source, any indexed value" value="{{ q }}">
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-section-title">Common fields</div>
+          {% for col, label in all_columns %}
+            {% if col in options %}
+            <div class="field">
+              <label for="filter-{{ col }}">{{ label }}</label>
+              <select id="filter-{{ col }}" name="{{ col }}">
+                <option value="">Any</option>
+                {% for value in options[col] %}
+                <option value="{{ value }}" {% if filters.get(col) == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-section-title">Visible table columns</div>
+          <div class="column-grid">
+            {% for col, label in all_columns %}
+            <label class="check-option" title="{{ label }}">
+              <input type="checkbox" name="columns" value="{{ col }}" {% if col in selected_column_ids %}checked{% endif %}>
+              <span>{{ label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="filter-section-title">Nested JSON filters</div>
+          <div id="nested-filters">
+            {% for path, value in field_filters %}
+            <div class="filter-pair nested-filter">
+              <div class="field">
+                <label>Path</label>
+                <select name="field_path">
+                  <option value="">Choose path</option>
+                  {% for candidate in field_paths %}
+                  <option value="{{ candidate }}" {% if path == candidate %}selected{% endif %}>{{ candidate }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Contains</label>
+                <input type="text" name="field_value" value="{{ value }}" placeholder="value">
+              </div>
+            </div>
+            {% endfor %}
+
+            <div class="filter-pair nested-filter" id="blank-nested-filter">
+              <div class="field">
+                <label>Path</label>
+                <select name="field_path">
+                  <option value="">Choose path</option>
+                  {% for path in field_paths %}
+                  <option value="{{ path }}">{{ path }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="field">
+                <label>Contains</label>
+                <input type="text" name="field_value" placeholder="value">
+              </div>
+            </div>
+          </div>
+          <button class="button ghost" type="button" id="add-filter">Add nested filter</button>
+        </div>
+
+        <div class="form-actions">
+          <button class="button" type="submit">Apply filters</button>
+          <a class="button ghost" href="{{ url_for('index') }}">Reset</a>
+        </div>
+      </form>
+    </aside>
+
+    <section class="panel content-panel">
+      <div class="results-header">
+        <div>
+          <h2 class="results-title">Publication Records</h2>
+          <p class="results-note">
+            Showing {{ rows|length }} rows on page {{ page }} of {{ pages }}.
+            Excel export uses the same filters and includes all indexed JSON paths.
+          </p>
+        </div>
+        <div class="top-actions">
+          <a class="button ghost" href="{{ export_url }}">Export filtered XLSX</a>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              {% for _col, label in columns %}<th>{{ label }}</th>{% endfor %}
+              <th>Raw JSON</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr>
+              {% for col, _label in columns %}
+              <td>
+                {% if col == "object_id" %}
+                <span class="cell-text id-cell" title="{{ row[col] }}">{{ row[col] }}</span>
+                {% elif col == "creator_cone_ids" and row[col] %}
+                <span class="cone-cell">
+                  {% for cone_id in row[col].split("; ") %}
+                  <span class="cone-id">{{ cone_id }}</span>
+                  {% endfor %}
+                </span>
+                {% elif col == "creator_cone_bindings" and row[col] %}
+                {% for binding in row[col].split("; ") %}
+                <span class="cone-binding">{{ binding }}</span>
+                {% endfor %}
+                {% elif col in ("genre", "public_state", "language", "year") and row[col] %}
+                <span class="badge" title="{{ row[col] }}">{{ row[col] }}</span>
+                {% else %}
+                <span class="cell-text" title="{{ row[col] }}">{{ row[col] }}</span>
+                {% endif %}
+              </td>
+              {% endfor %}
+              <td>
+                <details class="raw-json">
+                  <summary>Inspect JSON</summary>
+                  <code>{{ row["data"] }}</code>
+                </details>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="{{ columns|length + 1 }}">
+                <div class="empty-state">
+                  No matching publications yet. Adjust filters or wait for the first sync to finish.
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="pager" aria-label="Pagination">
+        <div class="pager-status">
+          Page {{ page }} of {{ pages }} · {{ "{:,}".format(total) }} matching rows
+        </div>
+        <div class="pager-links">
+          {% if page > 1 %}
+          <a class="button ghost" href="{{ page_url(page - 1) }}">Previous</a>
+          {% endif %}
+          {% if page < pages %}
+          <a class="button ghost" href="{{ page_url(page + 1) }}">Next</a>
+          {% endif %}
+        </div>
+      </nav>
+    </section>
+  </main>
+</div>
+
+<script>
+  const addButton = document.querySelector("#add-filter");
+  const filters = document.querySelector("#nested-filters");
+  const blank = document.querySelector("#blank-nested-filter");
+  const form = document.querySelector("#filter-form");
+
+  addButton?.addEventListener("click", () => {
+    const clone = blank.cloneNode(true);
+    clone.removeAttribute("id");
+    clone.querySelectorAll("select, input").forEach((control) => {
+      control.value = "";
+    });
+    filters.appendChild(clone);
+    clone.querySelector("select")?.focus();
+  });
+
+  form?.addEventListener("submit", () => {
+    const checkedColumns = form.querySelectorAll('input[name="columns"]:checked');
+    if (checkedColumns.length === 0) {
+      form.querySelectorAll('input[name="columns"]').forEach((input) => {
+        input.checked = true;
+      });
+    }
+  });
+</script>
+</body>
+</html>

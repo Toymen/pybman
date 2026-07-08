@@ -172,6 +172,34 @@ inspector = Inspector(client, dataset.get_items_released())
 inspector.clean_titles()
 ```
 
+## Sync + web service (Docker)
+
+`webapp/` is a small companion app built on top of the client: it fetches
+every publication matching a query (default: everything), stores the raw JSON
+plus a flattened index of every nested scalar value in a local SQLite
+database, and serves a filterable table with Excel export. It refreshes every
+24 hours (configurable) or on demand via a "Refresh now" button; the first
+fetch runs immediately on startup. CoNE person and organizational-unit
+dereferencing is optional because an unrestricted PubMan sync is very large.
+
+```bash
+docker compose up --build
+```
+
+Then open <http://localhost:8000>. Data persists in the `pubman-data`
+volume. Configuration is via environment variables (see
+`docker-compose.yml`):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `PUBMAN_BASE_URL` | `https://pure.mpg.de` | PubMan instance to sync from |
+| `SYNC_CONTEXT_ID` / `SYNC_OU_ID` / `SYNC_QUERY` | unset (= every item) | narrow the sync scope |
+| `REFRESH_INTERVAL_HOURS` | `24` | time between automatic refreshes |
+| `DEREFERENCE_AUTHORITIES` | `0` | also fetch full CoNE person / OU authority records |
+| `DB_PATH` | `/data/pubman.db` | SQLite file location |
+
+Without Docker: `pip install -e ".[web]"` then `python -m webapp.app`.
+
 ## Development
 
 ```bash

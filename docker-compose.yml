@@ -1,0 +1,25 @@
+services:
+  pybman-web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      PUBMAN_BASE_URL: https://pure.mpg.de
+      REFRESH_INTERVAL_HOURS: "24"
+      DEREFERENCE_AUTHORITIES: "0"
+      # Narrow the sync to one collection or organization; unset = every item.
+      # SYNC_CONTEXT_ID: ctx_924547
+      # SYNC_OU_ID: ou_907574
+      # SYNC_QUERY: '{"term": {"metadata.genre": {"value": "ARTICLE"}}}'
+    volumes:
+      - pubman-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/status')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+
+volumes:
+  pubman-data:
