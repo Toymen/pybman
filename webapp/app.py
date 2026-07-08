@@ -42,6 +42,10 @@ def _filters_from_request() -> dict[str, str]:
     return {col: request.args.get(col, "") for col in store.FILTERABLE_COLUMNS}
 
 
+def _cone_id_from_request() -> str:
+    return request.args.get("cone_id", "").strip()
+
+
 def _field_filters_from_request() -> list[tuple[str, str]]:
     paths = request.args.getlist("field_path")
     values = request.args.getlist("field_value")
@@ -99,6 +103,7 @@ def create_app(client: Client, cfg: Config) -> Flask:
     @app.get("/")
     def index():
         filters = _filters_from_request()
+        cone_id = _cone_id_from_request()
         field_filters = _field_filters_from_request()
         visible_columns = _columns_from_request()
         q = request.args.get("q", "")
@@ -110,6 +115,7 @@ def create_app(client: Client, cfg: Config) -> Flask:
                 filters,
                 q,
                 field_filters=field_filters,
+                cone_id=cone_id,
                 limit=page_size,
                 offset=(page - 1) * page_size,
             )
@@ -128,6 +134,7 @@ def create_app(client: Client, cfg: Config) -> Flask:
             all_columns=COLUMNS,
             selected_column_ids={column for column, _label in visible_columns},
             filters=filters,
+            cone_id=cone_id,
             field_filters=field_filters,
             field_paths=field_paths,
             q=q,
@@ -147,11 +154,18 @@ def create_app(client: Client, cfg: Config) -> Flask:
     @app.get("/export.xlsx")
     def export_xlsx():
         filters = _filters_from_request()
+        cone_id = _cone_id_from_request()
         field_filters = _field_filters_from_request()
         q = request.args.get("q", "")
         with store.connect(cfg.db_path) as conn:
             rows, _total = store.query_items(
-                conn, filters, q, field_filters=field_filters, limit=50_000, offset=0
+                conn,
+                filters,
+                q,
+                field_filters=field_filters,
+                cone_id=cone_id,
+                limit=50_000,
+                offset=0,
             )
             paths = store.field_paths(conn)
             object_ids = [row["object_id"] for row in rows]

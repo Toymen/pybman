@@ -54,6 +54,15 @@ CREATE TABLE IF NOT EXISTS item_fields (
 );
 CREATE INDEX IF NOT EXISTS idx_item_fields_path_value ON item_fields(path, value);
 CREATE INDEX IF NOT EXISTS idx_item_fields_object_id ON item_fields(object_id);
+CREATE TABLE IF NOT EXISTS item_creator_cones (
+    object_id TEXT NOT NULL,
+    creator_name TEXT NOT NULL,
+    cone_id TEXT NOT NULL,
+    role TEXT NOT NULL,
+    FOREIGN KEY(object_id) REFERENCES items(object_id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_item_creator_cones_cone_id ON item_creator_cones(cone_id);
+CREATE INDEX IF NOT EXISTS idx_item_creator_cones_object_id ON item_creator_cones(object_id);
 CREATE TABLE IF NOT EXISTS persons (
     cone_id TEXT PRIMARY KEY,
     name TEXT,
@@ -156,8 +165,20 @@ def _creator_names(metadata: dict[str, Any]) -> str:
 
 
 def _creator_cone_data(metadata: dict[str, Any]) -> tuple[str, str]:
+    entries = _creator_cone_entries(metadata)
     ids: list[str] = []
     bindings: list[str] = []
+    for entry in entries:
+        label = entry["creator_name"] or entry["cone_id"]
+        if entry["role"]:
+            label = f"{label} ({entry['role']})"
+        ids.append(entry["cone_id"])
+        bindings.append(f"{label}: {entry['cone_id']}")
+    return "; ".join(dict.fromkeys(ids)), "; ".join(dict.fromkeys(bindings))
+
+
+def _creator_cone_entries(metadata: dict[str, Any]) -> list[dict[str, str]]:
+    entries = []
     for creator in metadata.get("creators") or []:
         person = creator.get("person") or {}
         identifier = person.get("identifier") or {}
@@ -168,12 +189,24 @@ def _creator_cone_data(metadata: dict[str, Any]) -> tuple[str, str]:
             continue
         name = f"{person.get('givenName', '')} {person.get('familyName', '')}".strip()
         role = creator.get("role", "")
-        label = name or cone_id
-        if role:
-            label = f"{label} ({role})"
-        ids.append(cone_id)
-        bindings.append(f"{label}: {cone_id}")
-    return "; ".join(dict.fromkeys(ids)), "; ".join(dict.fromkeys(bindings))
+        entries.append({"creator_name": name, "cone_id": cone_id, "role": role})
+    return list({(e["creator_name"], e["cone_id"], e["role"]): e for e in entries}.values())
+
+
+def _replace_creator_cones(
+    conn: sqlite3.Connection, object_id: str, metadata: dict[str, Any]
+) -> None:
+    conn.execute("DELETE FROM item_creator_cones WHERE object_id = ?", (object_id,))
+    rows = [
+        (object_id, entry["creator_name"], entry["cone_id"], entry["role"])
+        for entry in _creator_cone_entries(metadata)
+    ]
+    if rows:
+        conn.executemany(
+            """INSERT INTO item_creator_cones (object_id, creator_name, cone_id, role)
+               VALUES (?, ?, ?, ?)""",
+            rows,
+        )
 
 
 def _flatten_json(value: Any, path: str = "") -> Iterator[tuple[str, str]]:
@@ -263,6 +296,7 @@ def upsert_item(conn: sqlite3.Connection, record: dict[str, Any]) -> None:
         ),
     )
     _replace_fields(conn, "item_fields", {"object_id": object_id}, record)
+    _replace_creator_cones(conn, object_id, metadata)
 
 
 def backfill_creator_cone_columns(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
@@ -279,6 +313,7 @@ def backfill_creator_cone_columns(conn: sqlite3.Connection, *, batch_size: int =
             metadata = record.get("data", {}).get("metadata", {})
             creator_cone_ids, creator_cone_bindings = _creator_cone_data(metadata)
             updates.append((creator_cone_ids, creator_cone_bindings, row["object_id"]))
+            _replace_creator_cones(conn, row["object_id"], metadata)
         conn.executemany(
             """UPDATE items
                SET creator_cone_ids = ?, creator_cone_bindings = ?
@@ -292,6 +327,26 @@ def backfill_creator_cone_columns(conn: sqlite3.Connection, *, batch_size: int =
                WHERE creator_cone_ids IS NULL OR creator_cone_bindings IS NULL"""
         ).fetchmany(batch_size)
     return total
+
+
+def rebuild_creator_cones(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
+    conn.execute("DELETE FROM item_creator_cones")
+    offset = 0
+    total = 0
+    while True:
+        rows = conn.execute(
+            "SELECT object_id, data FROM items ORDER BY object_id LIMIT ? OFFSET ?",
+            (batch_size, offset),
+        ).fetchall()
+        if not rows:
+            return total
+        for row in rows:
+            record = json.loads(row["data"])
+            metadata = record.get("data", {}).get("metadata", {})
+            _replace_creator_cones(conn, row["object_id"], metadata)
+        total += len(rows)
+        offset += len(rows)
+        conn.commit()
 
 
 def _payload_dict(payload: Any) -> dict[str, Any]:
@@ -400,6 +455,7 @@ def query_items(
     q: str = "",
     *,
     field_filters: list[tuple[str, str]] | None = None,
+    cone_id: str = "",
     limit: int = 50,
     offset: int = 0,
 ) -> tuple[list[sqlite3.Row], int]:
@@ -411,6 +467,14 @@ def query_items(
         if value and column in FILTERABLE_COLUMNS:
             where.append(f"{column} = ?")
             params.append(value)
+    if cone_id:
+        where.append(
+            """object_id IN (
+                   SELECT c.object_id FROM item_creator_cones c
+                   WHERE c.cone_id = ? OR c.cone_id LIKE ?
+               )"""
+        )
+        params.extend([cone_id, f"%{cone_id}%"])
     for path, value in field_filters or []:
         if not path or not value:
             continue

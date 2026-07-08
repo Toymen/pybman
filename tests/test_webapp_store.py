@@ -81,6 +81,16 @@ def test_creator_cone_ids_are_bound_to_creator_names(tmp_path):
     assert rows[0]["creator_cone_ids"] == "persons100"
     assert rows[0]["creator_cone_bindings"] == "Ada Lovelace (AUTHOR): persons100"
 
+    with store.connect(db_path) as conn:
+        rows, total = store.query_items(conn, {}, cone_id="persons100")
+        binding = conn.execute(
+            "SELECT * FROM item_creator_cones WHERE cone_id = 'persons100'"
+        ).fetchone()
+    assert total == 1
+    assert rows[0]["object_id"] == "item_1"
+    assert binding["creator_name"] == "Ada Lovelace"
+    assert binding["role"] == "AUTHOR"
+
 
 def test_filters_reject_unknown_columns(tmp_path):
     db_path = str(tmp_path / "pubman.db")

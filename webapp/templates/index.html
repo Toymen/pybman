@@ -581,6 +581,11 @@
           <input id="q" type="search" name="q" placeholder="Title, creator, source, any indexed value" value="{{ q }}">
         </div>
 
+        <div class="field">
+          <label for="cone_id">Creator CoNE ID</label>
+          <input id="cone_id" type="search" name="cone_id" placeholder="persons80382" value="{{ cone_id }}">
+        </div>
+
         <div class="filter-section">
           <div class="filter-section-title">Common fields</div>
           {% for col, label in all_columns %}
