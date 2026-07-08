@@ -28,6 +28,12 @@ COLUMNS = (
     ("creators", "Creators"),
     ("creator_cone_ids", "Creator CoNE IDs"),
     ("creator_cone_bindings", "Creator <-> CoNE"),
+    ("local_tags", "Local Tags"),
+    ("prime_tag", "Prime / Target Journal"),
+    ("research_group_tags", "Group Tags"),
+    ("research_data_flag", "Research Data?"),
+    ("research_data_links", "Research Data Links"),
+    ("research_data_details", "Research Data Evidence"),
     ("source_title", "Journal / Source"),
     ("publisher", "Publisher"),
     ("language", "Language"),
@@ -44,6 +50,10 @@ def _filters_from_request() -> dict[str, str]:
 
 def _cone_id_from_request() -> str:
     return request.args.get("cone_id", "").strip()
+
+
+def _tag_from_request(name: str) -> str:
+    return request.args.get(name, "").strip()
 
 
 def _field_filters_from_request() -> list[tuple[str, str]]:
@@ -75,6 +85,12 @@ def _url_with_args(endpoint: str, **updates: object) -> str:
     return f"{url}?{query}" if query else url
 
 
+def _with_selected_option(options: list[str], selected: str) -> list[str]:
+    if selected and selected not in options:
+        return [selected, *options]
+    return options
+
+
 def sync_now(client: Client, cfg: Config, app: Flask) -> None:
     """Run one sync pass, tracking progress in ``app.config['SYNCING']``.
 
@@ -104,6 +120,8 @@ def create_app(client: Client, cfg: Config) -> Flask:
     def index():
         filters = _filters_from_request()
         cone_id = _cone_id_from_request()
+        local_tag = _tag_from_request("local_tag")
+        group_tag = _tag_from_request("group_tag")
         field_filters = _field_filters_from_request()
         visible_columns = _columns_from_request()
         q = request.args.get("q", "")
@@ -116,10 +134,16 @@ def create_app(client: Client, cfg: Config) -> Flask:
                 q,
                 field_filters=field_filters,
                 cone_id=cone_id,
+                local_tag=local_tag,
+                group_tag=group_tag,
                 limit=page_size,
                 offset=(page - 1) * page_size,
             )
             options = {col: store.distinct_values(conn, col) for col in store.FILTERABLE_COLUMNS}
+            local_tag_options = _with_selected_option(store.local_tag_values(conn), local_tag)
+            group_tag_options = _with_selected_option(
+                store.local_tag_values(conn, include_prime=False), group_tag
+            )
             field_paths = store.field_paths(conn)
             last_synced = store.get_meta(conn, "last_synced_at", "never")
             item_count = store.item_count(conn)
@@ -135,6 +159,10 @@ def create_app(client: Client, cfg: Config) -> Flask:
             selected_column_ids={column for column, _label in visible_columns},
             filters=filters,
             cone_id=cone_id,
+            local_tag=local_tag,
+            group_tag=group_tag,
+            local_tag_options=local_tag_options,
+            group_tag_options=group_tag_options,
             field_filters=field_filters,
             field_paths=field_paths,
             q=q,
@@ -155,6 +183,8 @@ def create_app(client: Client, cfg: Config) -> Flask:
     def export_xlsx():
         filters = _filters_from_request()
         cone_id = _cone_id_from_request()
+        local_tag = _tag_from_request("local_tag")
+        group_tag = _tag_from_request("group_tag")
         field_filters = _field_filters_from_request()
         q = request.args.get("q", "")
         with store.connect(cfg.db_path) as conn:
@@ -164,6 +194,8 @@ def create_app(client: Client, cfg: Config) -> Flask:
                 q,
                 field_filters=field_filters,
                 cone_id=cone_id,
+                local_tag=local_tag,
+                group_tag=group_tag,
                 limit=50_000,
                 offset=0,
             )

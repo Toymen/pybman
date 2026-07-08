@@ -11,6 +11,7 @@ web UI can filter nested metadata without knowing the PubMan schema upfront.
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
@@ -35,6 +36,12 @@ CREATE TABLE IF NOT EXISTS items (
     creators TEXT,
     creator_cone_ids TEXT,
     creator_cone_bindings TEXT,
+    local_tags TEXT,
+    prime_tag TEXT,
+    research_group_tags TEXT,
+    research_data_flag TEXT,
+    research_data_links TEXT,
+    research_data_details TEXT,
     data TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_items_genre ON items(genre);
@@ -63,6 +70,15 @@ CREATE TABLE IF NOT EXISTS item_creator_cones (
 );
 CREATE INDEX IF NOT EXISTS idx_item_creator_cones_cone_id ON item_creator_cones(cone_id);
 CREATE INDEX IF NOT EXISTS idx_item_creator_cones_object_id ON item_creator_cones(object_id);
+CREATE TABLE IF NOT EXISTS item_tags (
+    object_id TEXT NOT NULL,
+    tag TEXT NOT NULL,
+    is_prime INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY(object_id) REFERENCES items(object_id) ON DELETE CASCADE
+);
+CREATE INDEX IF NOT EXISTS idx_item_tags_tag ON item_tags(tag);
+CREATE INDEX IF NOT EXISTS idx_item_tags_is_prime_tag ON item_tags(is_prime, tag);
+CREATE INDEX IF NOT EXISTS idx_item_tags_object_id ON item_tags(object_id);
 CREATE TABLE IF NOT EXISTS persons (
     cone_id TEXT PRIMARY KEY,
     name TEXT,
@@ -97,6 +113,8 @@ FILTERABLE_COLUMNS = (
     "language",
     "publisher",
     "source_title",
+    "prime_tag",
+    "research_data_flag",
 )
 
 SUMMARY_COLUMNS = (
@@ -107,6 +125,12 @@ SUMMARY_COLUMNS = (
     "creators",
     "creator_cone_ids",
     "creator_cone_bindings",
+    "local_tags",
+    "prime_tag",
+    "research_group_tags",
+    "research_data_flag",
+    "research_data_links",
+    "research_data_details",
     "source_title",
     "publisher",
     "language",
@@ -115,6 +139,34 @@ SUMMARY_COLUMNS = (
     "public_state",
     "date_modified",
 )
+
+DATA_REPOSITORY_TERMS = (
+    "zenodo",
+    "edmond",
+    "github",
+    "gitlab",
+    "figshare",
+    "dryad",
+    "osf.io",
+    "dataverse",
+    "pangaea",
+    "pride",
+    "proteomexchange",
+    "proteosafe",
+    "psycharchives",
+    "rdm-bib",
+    "data.bris.ac.uk",
+    "marineinfo.org/id/dataset",
+    "nomad-repository",
+    "fluxnet",
+    "copernicus",
+)
+RESEARCH_DATA_TEXT_RE = re.compile(
+    r"\b(research data|forschungsdaten|dataset|data set|raw data|primary data|"
+    r"replication data|data and code|data available|data availability)\b",
+    re.IGNORECASE,
+)
+URL_RE = re.compile(r"https?://[^\s,;<>\"']+")
 
 
 @contextmanager
@@ -140,11 +192,21 @@ def _ensure_item_columns(conn: sqlite3.Connection) -> None:
     additions = {
         "creator_cone_ids": "TEXT",
         "creator_cone_bindings": "TEXT",
+        "local_tags": "TEXT",
+        "prime_tag": "TEXT",
+        "research_group_tags": "TEXT",
+        "research_data_flag": "TEXT",
+        "research_data_links": "TEXT",
+        "research_data_details": "TEXT",
     }
     for column, definition in additions.items():
         if column not in existing:
             conn.execute(f"ALTER TABLE items ADD COLUMN {column} {definition}")
     conn.execute("CREATE INDEX IF NOT EXISTS idx_items_creator_cone_ids ON items(creator_cone_ids)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_items_prime_tag ON items(prime_tag)")
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_items_research_data_flag ON items(research_data_flag)"
+    )
 
 
 def _first(values: list[str]) -> str:
@@ -191,6 +253,88 @@ def _creator_cone_entries(metadata: dict[str, Any]) -> list[dict[str, str]]:
         role = creator.get("role", "")
         entries.append({"creator_name": name, "cone_id": cone_id, "role": role})
     return list({(e["creator_name"], e["cone_id"], e["role"]): e for e in entries}.values())
+
+
+def _local_tags(item: dict[str, Any]) -> list[str]:
+    return [str(tag).strip() for tag in item.get("localTags") or [] if str(tag).strip()]
+
+
+def _tag_contains(tags: list[str], needle: str) -> bool:
+    needle = needle.lower()
+    return any(tag.lower() == needle or needle in tag.lower() for tag in tags)
+
+
+def _research_group_tags(tags: list[str]) -> str:
+    return "; ".join(dict.fromkeys(tag for tag in tags if "prime" not in tag.lower()))
+
+
+def _replace_item_tags(conn: sqlite3.Connection, object_id: str, tags: list[str]) -> None:
+    conn.execute("DELETE FROM item_tags WHERE object_id = ?", (object_id,))
+    rows = [
+        (object_id, tag, 1 if "prime" in tag.lower() else 0)
+        for tag in dict.fromkeys(tags)
+    ]
+    if rows:
+        conn.executemany(
+            "INSERT INTO item_tags (object_id, tag, is_prime) VALUES (?, ?, ?)",
+            rows,
+        )
+
+
+def _urls_from_values(values: list[str]) -> list[str]:
+    urls = []
+    for value in values:
+        urls.extend(URL_RE.findall(value))
+    return list(dict.fromkeys(urls))
+
+
+def _research_data_from_item(item: dict[str, Any]) -> tuple[str, str, str]:
+    details = []
+    links = []
+    for file_entry in item.get("files") or []:
+        metadata = file_entry.get("metadata") or {}
+        content_category = str(metadata.get("contentCategory") or "")
+        values = [
+            content_category,
+            str(metadata.get("title") or ""),
+            str(metadata.get("description") or ""),
+            str(metadata.get("rights") or ""),
+            str(metadata.get("license") or ""),
+            str(file_entry.get("name") or ""),
+            str(file_entry.get("content") or ""),
+            str(file_entry.get("pid") or ""),
+        ]
+        for identifier in metadata.get("identifiers") or []:
+            values.append(str(identifier.get("id") or ""))
+        joined = " | ".join(value for value in values if value)
+        lower_joined = joined.lower()
+        category_signal = content_category in {"research-data", "code"}
+        repository_signal = any(term in lower_joined for term in DATA_REPOSITORY_TERMS)
+        text_signal = bool(RESEARCH_DATA_TEXT_RE.search(joined))
+        if not (category_signal or repository_signal or text_signal):
+            continue
+        file_links = _urls_from_values(values)
+        links.extend(file_links)
+        title = str(
+            metadata.get("title") or file_entry.get("name") or file_entry.get("content") or ""
+        )
+        evidence = []
+        if content_category:
+            evidence.append(f"category={content_category}")
+        if title:
+            evidence.append(f"title={title}")
+        if repository_signal:
+            evidence.append("repository-link")
+        if text_signal:
+            evidence.append("research-data-text")
+        if file_links:
+            evidence.append(f"links={', '.join(file_links[:3])}")
+        details.append("; ".join(evidence))
+    return (
+        "yes" if details else "no",
+        "; ".join(dict.fromkeys(links)),
+        " || ".join(dict.fromkeys(details)),
+    )
 
 
 def _replace_creator_cones(
@@ -261,12 +405,19 @@ def upsert_item(conn: sqlite3.Connection, record: dict[str, Any]) -> None:
     doi = next((i["id"] for i in metadata.get("identifiers") or [] if i.get("type") == "DOI"), "")
     object_id = item.get("objectId", "")
     creator_cone_ids, creator_cone_bindings = _creator_cone_data(metadata)
+    tags = _local_tags(item)
+    local_tags = "; ".join(tags)
+    prime_tag = "yes" if _tag_contains(tags, "prime") else "no"
+    research_group_tags = _research_group_tags(tags)
+    research_data_flag, research_data_links, research_data_details = _research_data_from_item(item)
     conn.execute(
         """INSERT INTO items (object_id, title, genre, year, context_id, public_state,
                                version_state, language, doi, source_title, publisher,
                                date_modified, creators, creator_cone_ids,
-                               creator_cone_bindings, data)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               creator_cone_bindings, local_tags, prime_tag,
+                               research_group_tags, research_data_flag,
+                               research_data_links, research_data_details, data)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
            ON CONFLICT(object_id) DO UPDATE SET
                title=excluded.title, genre=excluded.genre, year=excluded.year,
                context_id=excluded.context_id, public_state=excluded.public_state,
@@ -275,6 +426,11 @@ def upsert_item(conn: sqlite3.Connection, record: dict[str, Any]) -> None:
                publisher=excluded.publisher, date_modified=excluded.date_modified,
                creators=excluded.creators, creator_cone_ids=excluded.creator_cone_ids,
                creator_cone_bindings=excluded.creator_cone_bindings,
+               local_tags=excluded.local_tags, prime_tag=excluded.prime_tag,
+               research_group_tags=excluded.research_group_tags,
+               research_data_flag=excluded.research_data_flag,
+               research_data_links=excluded.research_data_links,
+               research_data_details=excluded.research_data_details,
                data=excluded.data""",
         (
             object_id,
@@ -292,11 +448,18 @@ def upsert_item(conn: sqlite3.Connection, record: dict[str, Any]) -> None:
             _creator_names(metadata),
             creator_cone_ids,
             creator_cone_bindings,
+            local_tags,
+            prime_tag,
+            research_group_tags,
+            research_data_flag,
+            research_data_links,
+            research_data_details,
             json.dumps(record),
         ),
     )
     _replace_fields(conn, "item_fields", {"object_id": object_id}, record)
     _replace_creator_cones(conn, object_id, metadata)
+    _replace_item_tags(conn, object_id, tags)
 
 
 def backfill_creator_cone_columns(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
@@ -327,6 +490,84 @@ def backfill_creator_cone_columns(conn: sqlite3.Connection, *, batch_size: int =
                WHERE creator_cone_ids IS NULL OR creator_cone_bindings IS NULL"""
         ).fetchmany(batch_size)
     return total
+
+
+def backfill_task_columns(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
+    _ensure_item_columns(conn)
+    rows = conn.execute(
+        """SELECT object_id, data FROM items
+           WHERE local_tags IS NULL
+              OR prime_tag IS NULL
+              OR research_group_tags IS NULL
+              OR research_data_flag IS NULL
+              OR research_data_links IS NULL
+              OR research_data_details IS NULL"""
+    ).fetchmany(batch_size)
+    total = 0
+    while rows:
+        updates = []
+        for row in rows:
+            record = json.loads(row["data"])
+            item = record.get("data", {})
+            tags = _local_tags(item)
+            _replace_item_tags(conn, row["object_id"], tags)
+            research_data_flag, research_data_links, research_data_details = (
+                _research_data_from_item(item)
+            )
+            updates.append(
+                (
+                    "; ".join(tags),
+                    "yes" if _tag_contains(tags, "prime") else "no",
+                    _research_group_tags(tags),
+                    research_data_flag,
+                    research_data_links,
+                    research_data_details,
+                    row["object_id"],
+                )
+            )
+        conn.executemany(
+            """UPDATE items
+               SET local_tags = ?,
+                   prime_tag = ?,
+                   research_group_tags = ?,
+                   research_data_flag = ?,
+                   research_data_links = ?,
+                   research_data_details = ?
+               WHERE object_id = ?""",
+            updates,
+        )
+        total += len(rows)
+        conn.commit()
+        rows = conn.execute(
+            """SELECT object_id, data FROM items
+               WHERE local_tags IS NULL
+                  OR prime_tag IS NULL
+                  OR research_group_tags IS NULL
+                  OR research_data_flag IS NULL
+                  OR research_data_links IS NULL
+                  OR research_data_details IS NULL"""
+        ).fetchmany(batch_size)
+    return total
+
+
+def rebuild_item_tags(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
+    conn.execute("DELETE FROM item_tags")
+    offset = 0
+    total = 0
+    while True:
+        rows = conn.execute(
+            "SELECT object_id, data FROM items ORDER BY object_id LIMIT ? OFFSET ?",
+            (batch_size, offset),
+        ).fetchall()
+        if not rows:
+            return total
+        for row in rows:
+            record = json.loads(row["data"])
+            tags = _local_tags(record.get("data", {}))
+            _replace_item_tags(conn, row["object_id"], tags)
+        total += len(rows)
+        offset += len(rows)
+        conn.commit()
 
 
 def rebuild_creator_cones(conn: sqlite3.Connection, *, batch_size: int = 5000) -> int:
@@ -429,6 +670,25 @@ def field_values(conn: sqlite3.Connection, path: str, *, limit: int = 500) -> li
     return [row["value"] for row in rows]
 
 
+def local_tag_values(
+    conn: sqlite3.Connection, *, include_prime: bool = True, limit: int = 500
+) -> list[str]:
+    where = "tag != ''"
+    params: list[Any] = []
+    if not include_prime:
+        where += " AND is_prime = 0"
+    rows = conn.execute(
+        f"""SELECT tag AS value, COUNT(DISTINCT object_id) AS n
+            FROM item_tags
+            WHERE {where}
+            GROUP BY tag
+            ORDER BY n DESC, tag
+            LIMIT ?""",
+        [*params, limit],
+    ).fetchall()
+    return [row["value"] for row in rows]
+
+
 def export_field_matrix(
     conn: sqlite3.Connection, object_ids: list[str], paths: list[str]
 ) -> dict[str, dict[str, str]]:
@@ -456,6 +716,8 @@ def query_items(
     *,
     field_filters: list[tuple[str, str]] | None = None,
     cone_id: str = "",
+    local_tag: str = "",
+    group_tag: str = "",
     limit: int = 50,
     offset: int = 0,
 ) -> tuple[list[sqlite3.Row], int]:
@@ -475,6 +737,22 @@ def query_items(
                )"""
         )
         params.extend([cone_id, f"%{cone_id}%"])
+    if local_tag:
+        where.append(
+            """object_id IN (
+                   SELECT t.object_id FROM item_tags t
+                   WHERE t.tag = ? OR t.tag LIKE ?
+               )"""
+        )
+        params.extend([local_tag, f"%{local_tag}%"])
+    if group_tag:
+        where.append(
+            """object_id IN (
+                   SELECT t.object_id FROM item_tags t
+                   WHERE t.is_prime = 0 AND (t.tag = ? OR t.tag LIKE ?)
+               )"""
+        )
+        params.extend([group_tag, f"%{group_tag}%"])
     for path, value in field_filters or []:
         if not path or not value:
             continue
@@ -489,13 +767,15 @@ def query_items(
         where.append(
             """(title LIKE ? OR creators LIKE ? OR creator_cone_ids LIKE ?
                 OR creator_cone_bindings LIKE ? OR source_title LIKE ?
+                OR local_tags LIKE ? OR research_group_tags LIKE ?
+                OR research_data_links LIKE ? OR research_data_details LIKE ?
                 OR EXISTS (
                     SELECT 1 FROM item_fields f
                     WHERE f.object_id = items.object_id AND f.value LIKE ?
                 ))"""
         )
         like = f"%{q}%"
-        params.extend([like, like, like, like, like, like])
+        params.extend([like, like, like, like, like, like, like, like, like, like])
     where_sql = f"WHERE {' AND '.join(where)}" if where else ""
     total = conn.execute(f"SELECT COUNT(*) AS n FROM items {where_sql}", params).fetchone()["n"]
     rows = conn.execute(

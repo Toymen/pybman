@@ -41,6 +41,7 @@ def make_record(
     creators: list[dict[str, Any]] | None = None,
     sources: list[dict[str, Any]] | None = None,
     files: list[dict[str, Any]] | None = None,
+    local_tags: list[str] | None = None,
     public_state: str = "RELEASED",
     version_state: str = "RELEASED",
     **metadata: Any,
@@ -83,6 +84,8 @@ def make_record(
     }
     if files is not None:
         data["files"] = files
+    if local_tags is not None:
+        data["localTags"] = local_tags
     return {
         "schema": "test",
         "packing": "test",

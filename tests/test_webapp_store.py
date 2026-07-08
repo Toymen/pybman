@@ -92,6 +92,38 @@ def test_creator_cone_ids_are_bound_to_creator_names(tmp_path):
     assert binding["role"] == "AUTHOR"
 
 
+def test_task_columns_support_prime_group_tags_and_research_data(tmp_path):
+    db_path = str(tmp_path / "pubman.db")
+    store.init_db(db_path)
+    with store.connect(db_path) as conn:
+        store.upsert_item(
+            conn,
+            make_record(
+                "item_1",
+                local_tags=["prime", "Sutter", "some-other-group"],
+                files=[
+                    {
+                        "name": "data-link",
+                        "content": "https://zenodo.org/records/12345",
+                        "metadata": {
+                            "contentCategory": "research-data",
+                            "title": "Research Data on ZENODO",
+                            "description": "Dataset",
+                        },
+                    }
+                ],
+            ),
+        )
+
+        rows, total = store.query_items(conn, {}, local_tag="prime", group_tag="Sutter")
+
+    assert total == 1
+    assert rows[0]["prime_tag"] == "yes"
+    assert rows[0]["research_group_tags"] == "Sutter; some-other-group"
+    assert rows[0]["research_data_flag"] == "yes"
+    assert rows[0]["research_data_links"] == "https://zenodo.org/records/12345"
+
+
 def test_filters_reject_unknown_columns(tmp_path):
     db_path = str(tmp_path / "pubman.db")
     store.init_db(db_path)

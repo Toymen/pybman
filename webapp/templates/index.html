@@ -362,15 +362,26 @@
     max-width: 340px;
   }
 
-  .cone-id {
+  .cone-id,
+  .tag-chip {
     border: 1px solid #b7d8d4;
     border-radius: 999px;
     background: #f4fbfa;
     color: #0b514d;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     font-size: 12px;
     font-weight: 750;
     padding: 2px 7px;
+  }
+
+  .cone-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  .tag-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 420px;
   }
 
   .cone-binding {
@@ -391,6 +402,18 @@
     padding: 2px 8px;
     font-size: 12px;
     font-weight: 700;
+  }
+
+  .badge.no {
+    background: #eef1f4;
+    color: #536270;
+  }
+
+  .wrap-cell {
+    display: block;
+    max-width: 420px;
+    white-space: normal;
+    word-break: break-word;
   }
 
   details.raw-json {
@@ -586,6 +609,26 @@
           <input id="cone_id" type="search" name="cone_id" placeholder="persons80382" value="{{ cone_id }}">
         </div>
 
+        <div class="field">
+          <label for="local_tag">Local Tag</label>
+          <input id="local_tag" name="local_tag" list="local-tag-options" placeholder="prime, Sutter, ..." value="{{ local_tag }}">
+          <datalist id="local-tag-options">
+            {% for tag in local_tag_options %}
+            <option value="{{ tag }}"></option>
+            {% endfor %}
+          </datalist>
+        </div>
+
+        <div class="field">
+          <label for="group_tag">Research group tag</label>
+          <input id="group_tag" name="group_tag" list="group-tag-options" placeholder="type any non-prime tag" value="{{ group_tag }}">
+          <datalist id="group-tag-options">
+            {% for tag in group_tag_options %}
+            <option value="{{ tag }}"></option>
+            {% endfor %}
+          </datalist>
+        </div>
+
         <div class="filter-section">
           <div class="filter-section-title">Common fields</div>
           {% for col, label in all_columns %}
@@ -701,6 +744,16 @@
                 {% for binding in row[col].split("; ") %}
                 <span class="cone-binding">{{ binding }}</span>
                 {% endfor %}
+                {% elif col in ("local_tags", "research_group_tags") and row[col] %}
+                <span class="tag-cell">
+                  {% for tag in row[col].split("; ") %}
+                  <span class="tag-chip">{{ tag }}</span>
+                  {% endfor %}
+                </span>
+                {% elif col in ("prime_tag", "research_data_flag") and row[col] %}
+                <span class="badge {% if row[col] == 'no' %}no{% endif %}" title="{{ row[col] }}">{{ row[col] }}</span>
+                {% elif col in ("research_data_links", "research_data_details") and row[col] %}
+                <span class="wrap-cell" title="{{ row[col] }}">{{ row[col] }}</span>
                 {% elif col in ("genre", "public_state", "language", "year") and row[col] %}
                 <span class="badge" title="{{ row[col] }}">{{ row[col] }}</span>
                 {% else %}
