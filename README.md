@@ -172,6 +172,35 @@ inspector = Inspector(client, dataset.get_items_released())
 inspector.clean_titles()
 ```
 
+## Research data discovery
+
+`pybman.discovery` answers the question *"do research data exist for this
+publication DOI (e.g. from MPG.PuRe) or for this researcher's ORCID?"* by
+querying several public scholarly APIs — DataCite, OpenAIRE Graph,
+ScholeXplorer (Scholix), B2FIND, Crossref and ORCID — and aggregating the
+results:
+
+```python
+from pybman.discovery import DataDiscovery
+
+discovery = DataDiscovery(crossref_mailto="you@example.org")  # polite pool
+
+report = discovery.for_doi("10.1038/s41586-020-2649-2")
+report.found            # True — at least one linked dataset exists
+report.summary()        # "datacite: 2; openaire: 0; scholexplorer: 5; ..."
+for hit in report.hits: # deduplicated across providers
+    print(hit.pid, hit.title, hit.publisher, hit.relation)
+
+report = discovery.for_orcid("0000-0003-1419-2405")   # datasets by author
+```
+
+A provider outage never breaks the lookup — failures are recorded per
+provider (`result.error`) and the remaining services still answer. Google
+Dataset Search has no API; `google_dataset_search_url("...")` builds a
+hand-off link instead. See
+[docs/RESEARCH_DATA_DISCOVERY.md](docs/RESEARCH_DATA_DISCOVERY.md) for the
+full capability matrix of the services and verified example requests.
+
 ## Sync + web service (Docker)
 
 `webapp/` is a small companion app built on top of the client: it fetches
