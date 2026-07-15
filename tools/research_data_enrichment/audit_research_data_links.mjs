@@ -210,6 +210,15 @@ function semanticCandidate(candidate) {
   if (candidate.provider === "publication-version") {
     return { accepted: true, reason: "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung" };
   }
+  if (candidate.provider === "cambridge-osf-data") {
+    return { accepted: true, reason: "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien" };
+  }
+  if (candidate.provider === "degruyter-browser-data-availability") {
+    return { accepted: true, reason: "De-Gruyter-Datenverfügbarkeitsaussage mit Autor:innenbezug und rekursiv geprüften OSF-Datendateien" };
+  }
+  if (candidate.provider === "huggingface-arxiv-dataset") {
+    return { accepted: true, reason: "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien" };
+  }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
     if (similarity >= 0.55 || /verified-title-author-match/i.test(candidate.relation)) {

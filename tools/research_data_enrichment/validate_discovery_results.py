@@ -32,6 +32,9 @@ TRUSTED_EVIDENCE_PROVIDERS = {
     "unpaywall-fulltext",
     "wiley-browser-data-availability",
     "publication-version",
+    "cambridge-osf-data",
+    "degruyter-browser-data-availability",
+    "huggingface-arxiv-dataset",
 }
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 
