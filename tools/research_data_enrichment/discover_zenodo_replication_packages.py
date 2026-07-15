@@ -59,6 +59,17 @@ def surnames(values: list[str]) -> set[str]:
     return result
 
 
+def record_title_core(value: str) -> str:
+    """Remove repository boilerplate before an exact short-title comparison."""
+    normalized = normalize_text(value)
+    return re.sub(
+        r"^(?:supplementary )?(?:replication (?:data|package|materials?)|data and code) "
+        r"(?:for )?",
+        "",
+        normalized,
+    ).strip()
+
+
 def strong_record_match(row: dict[str, Any], record: dict[str, Any]) -> bool:
     metadata = record.get("metadata") or {}
     publication_tokens = set(title_tokens(as_text(row.get("Titel"))))
@@ -72,8 +83,14 @@ def strong_record_match(row: dict[str, Any], record: dict[str, Any]) -> bool:
     record_authors = surnames(
         [as_text(creator.get("name")) for creator in metadata.get("creators") or []]
     )
-    return len(publication_tokens) >= 4 and coverage >= 0.75 and bool(
-        publication_authors & record_authors
+    author_overlap = publication_authors & record_authors
+    if len(publication_tokens) >= 4:
+        return coverage >= 0.75 and bool(author_overlap)
+    return (
+        len(publication_tokens) >= 2
+        and record_title_core(as_text(row.get("Titel")))
+        == record_title_core(as_text(metadata.get("title")))
+        and len(author_overlap) >= min(2, len(publication_authors))
     )
 
 
@@ -112,7 +129,7 @@ def process(row: dict[str, Any]) -> dict[str, Any]:
     title = as_text(row.get("Titel"))
     hits: list[dict[str, Any]] = []
     error = ""
-    if as_text(row.get("Genre")) in ELIGIBLE_GENRES and len(title_tokens(title)) >= 4:
+    if as_text(row.get("Genre")) in ELIGIBLE_GENRES and len(title_tokens(title)) >= 2:
         session = requests.Session()
         session.headers["User-Agent"] = "pybman-zenodo-replication-discovery/1.0"
         try:

@@ -23,6 +23,27 @@ def test_strong_record_match_requires_title_and_author():
     assert strong_record_match(row, {"metadata": {**record["metadata"], "creators": []}}) is False
 
 
+def test_strong_record_match_accepts_exact_short_title_with_two_authors():
+    row = {
+        "Titel": "Vote or Fight?",
+        "Autor:innen": "David K. Levine; Cesar Martinelli; Nicole Stoelinga",
+    }
+    record = {
+        "metadata": {
+            "title": 'Replication package for: "Vote or Fight?"',
+            "creators": [
+                {"name": "Levine, David K."},
+                {"name": "Martinelli, Cesar"},
+                {"name": "Stoelinga, Nicole"},
+            ],
+        }
+    }
+
+    assert strong_record_match(row, record) is True
+    record["metadata"]["creators"] = [{"name": "Levine, David K."}]
+    assert strong_record_match(row, record) is False
+
+
 def test_archive_data_members_rejects_code_only_zip():
     content = io.BytesIO()
     with zipfile.ZipFile(content, "w") as archive:
