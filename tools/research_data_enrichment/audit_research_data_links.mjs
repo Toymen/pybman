@@ -19,6 +19,8 @@ const ACCESS_RESTRICTED =
   /\b(restricted access|controlled access|request access|access request|files? (?:is|are) under embargo|access is restricted|zugriffsbeschr[aä]nkt)\b/i;
 const ACCESS_LOGIN =
   /\b(login required|sign in to access|log in to access|institutional access required|purchase access|subscribe to access|behind (?:a )?paywall)\b/i;
+const ACCESS_TERMS =
+  /\b(indicate your agreement|I agree|email address\*?|accept (?:the )?terms|terms of use must be accepted)\b/i;
 const FILE_DATA_EXTENSIONS =
   /\.(csv|tsv|sav|dta|rds|rdata|xlsx?|json|parquet|feather|zip|7z|tar|gz|txt|mat|h5|hdf5|sql|sqlite|por|sas7bdat)$/i;
 const FILE_CODE_EXTENSIONS = /\.(r|rmd|py|ipynb|do|m|jl|js|ts|html?|pdf|docx?)$/i;
@@ -186,6 +188,18 @@ function semanticCandidate(candidate) {
   }
   if (candidate.provider === "zenodo-replication") {
     return { accepted: true, reason: "Zenodo-Replikationspaket mit Titel-/Autor:innen-Match und geprüften Datendateien" };
+  }
+  if (candidate.provider === "informs-replication") {
+    return { accepted: true, reason: "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien" };
+  }
+  if (candidate.provider === "elife-data-availability") {
+    return { accepted: true, reason: "Strukturierte eLife-Data-Availability-Aussage mit öffentlichem Datensatzlink" };
+  }
+  if (candidate.provider === "pure-duplicate-file") {
+    return { accepted: true, reason: "Öffentliche Forschungsdatendatei einer DOI-identischen PuRe-Parallelfassung" };
+  }
+  if (candidate.provider === "pure-duplicate-fulltext") {
+    return { accepted: true, reason: "Datensatzlink aus öffentlichem Volltext einer DOI-identischen PuRe-Parallelfassung" };
   }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
@@ -355,6 +369,7 @@ async function inspectGithub(urlValue) {
 function classifyAccess(status, pageText) {
   if (ACCESS_RESTRICTED.test(pageText)) return "zugriffsbeschränkt/embargo";
   if (ACCESS_LOGIN.test(pageText) || status === 401 || status === 402) return "Paywall/Login";
+  if (ACCESS_TERMS.test(pageText)) return "Zustimmung/E-Mail erforderlich";
   if (status === 403) return "Paywall/Login oder Zugriffsschutz";
   return "offen";
 }

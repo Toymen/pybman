@@ -25,6 +25,10 @@ TRUSTED_EVIDENCE_PROVIDERS = {
     "harvard-dataverse",
     "github-doi-data",
     "zenodo-replication",
+    "informs-replication",
+    "elife-data-availability",
+    "pure-duplicate-file",
+    "pure-duplicate-fulltext",
 }
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 
