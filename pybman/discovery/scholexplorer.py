@@ -53,15 +53,28 @@ class ScholexplorerProvider(Provider):
         seen: set[str] = set()
         total = 0
         for direction, entity_key in (("sourcePid", "target"), ("targetPid", "source")):
-            payload = self._get_json(f"{self._base_url}/Links", params={direction: doi, "page": 0})
-            total += int(payload.get("totalLinks") or 0)
-            for link in payload.get("result", []):
-                hit = self._hit(link, entity_key)
-                if hit is not None and hit.pid.lower() not in seen:
-                    seen.add(hit.pid.lower())
-                    hits.append(hit)
+            page = 0
+            while True:
+                payload = self._get_json(
+                    f"{self._base_url}/Links", params={direction: doi, "page": page}
+                )
+                if page == 0:
+                    total += int(payload.get("totalLinks") or 0)
+                for link in payload.get("result", []):
+                    hit = self._hit(link, entity_key)
+                    if hit is not None and hit.pid.lower() not in seen:
+                        seen.add(hit.pid.lower())
+                        hits.append(hit)
+                    if len(hits) >= limit:
+                        break
                 if len(hits) >= limit:
                     break
+                page += 1
+                total_pages = int(payload.get("totalPages") or 1)
+                if page >= total_pages:
+                    break
+            if len(hits) >= limit:
+                break
         return ProviderResult(provider=self.name, hits=hits, total=total)
 
     def _hit(self, link: dict[str, Any], entity_key: str) -> DatasetHit | None:

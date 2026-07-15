@@ -72,5 +72,5 @@ class CrossrefProvider(Provider):
                     )
                 )
                 if len(hits) >= limit:
-                    break
+                    return ProviderResult(provider=self.name, hits=hits, total=len(hits))
         return ProviderResult(provider=self.name, hits=hits, total=len(hits))

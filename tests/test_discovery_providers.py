@@ -258,6 +258,29 @@ def test_orcid_works_without_doi_fall_back_to_put_code(responses):
     assert result.hits[0].url == f"https://orcid.org/{ORCID}/work/123"
 
 
+def test_orcid_checks_all_summaries_in_a_work_group(responses):
+    body = {
+        "group": [
+            {
+                "external-ids": {
+                    "external-id": [
+                        {"external-id-type": "doi", "external-id-value": "10.5281/zenodo.99"}
+                    ]
+                },
+                "work-summary": [
+                    {"title": {"title": {"value": "Article view"}}, "type": "journal-article"},
+                    {"title": {"title": {"value": "Dataset view"}}, "type": "data-set"},
+                ],
+            }
+        ]
+    }
+    responses.get(f"https://pub.orcid.org/v3.0/{ORCID}/works", json=body)
+    result = OrcidProvider().datasets_for_orcid(ORCID)
+    assert len(result.hits) == 1
+    assert result.hits[0].pid == "10.5281/zenodo.99"
+    assert result.hits[0].title == "Dataset view"
+
+
 def test_orcid_does_not_support_doi():
     assert OrcidProvider().supports_doi is False
 
@@ -348,6 +371,23 @@ def test_scholexplorer_deduplicates_both_directions(responses):
     responses.get("https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response(reverse))
     result = ScholexplorerProvider().datasets_for_doi(DOI)
     assert len(result.hits) == 1
+
+
+def test_scholexplorer_paginates_and_stops_at_limit(responses):
+    responses.get(
+        "https://api.scholexplorer.openaire.eu/v3/Links",
+        json=scholix_response(scholix_link("10.1594/pangaea.10"), total_pages=2),
+    )
+    responses.get(
+        "https://api.scholexplorer.openaire.eu/v3/Links",
+        json=scholix_response(scholix_link("10.1594/pangaea.11"), total_pages=2),
+    )
+    result = ScholexplorerProvider().datasets_for_doi(DOI, limit=2)
+    assert [hit.pid for hit in result.hits] == ["10.1594/pangaea.10", "10.1594/pangaea.11"]
+    assert _query(responses, 0)["page"] == ["0"]
+    assert _query(responses, 1)["page"] == ["1"]
+    # limit reached in source direction; reverse direction should not be fetched
+    assert len(responses.calls) == 2
 
 
 def test_scholexplorer_does_not_support_orcid():
@@ -464,6 +504,20 @@ def test_crossref_mailto_forwarded(responses):
     responses.get(f"https://api.crossref.org/works/{DOI}", json=crossref_response({}))
     CrossrefProvider(mailto="me@example.org").datasets_for_doi(DOI)
     assert _query(responses)["mailto"] == ["me@example.org"]
+
+
+def test_crossref_respects_limit_across_relation_types(responses):
+    responses.get(
+        f"https://api.crossref.org/works/{DOI}",
+        json=crossref_response(
+            {
+                "has-supplement": [{"id-type": "doi", "id": "10.5061/dryad.1"}],
+                "is-supplemented-by": [{"id-type": "doi", "id": "10.5061/dryad.2"}],
+            }
+        ),
+    )
+    result = CrossrefProvider().datasets_for_doi(DOI, limit=1)
+    assert len(result.hits) == 1
 
 
 # -- Google Dataset Search (no API) ----------------------------------------------

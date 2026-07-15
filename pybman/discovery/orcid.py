@@ -51,16 +51,18 @@ class OrcidProvider(Provider):
 
     def _hits(self, payload: dict[str, Any], orcid: str) -> list[DatasetHit]:
         hits: list[DatasetHit] = []
+        seen: set[tuple[str, str]] = set()
         for group in payload.get("group") or []:
             summaries = group.get("work-summary") or []
             if not summaries:
                 continue
-            summary = summaries[0]
-            if str(summary.get("type", "")).lower() not in DATASET_TYPES:
-                continue
-            hit = self._hit(group, summary, orcid)
-            if hit is not None:
-                hits.append(hit)
+            for summary in summaries:
+                if str(summary.get("type", "")).lower() not in DATASET_TYPES:
+                    continue
+                hit = self._hit(group, summary, orcid)
+                if hit is not None and (hit.pid_type, hit.pid.lower()) not in seen:
+                    seen.add((hit.pid_type, hit.pid.lower()))
+                    hits.append(hit)
         return hits
 
     def _hit(
