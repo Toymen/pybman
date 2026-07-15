@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T22:58:51.719Z",
+  "generated_at": "2026-07-15T23:27:00.963Z",
   "definition": {
     "included": "Vorhandene Roh-/Prozessdaten, Datensätze oder Replikationspakete mit Datendateien und eindeutigem Publikationsbezug.",
     "excluded": "Studienprotokolle, Präregistrierungen ohne Daten, Software/Code-only, Registrierungen, Such-/Bibliografieseiten, bloße Supplement-Seiten ohne Datennachweis und nur angekündigte Freigaben.",
@@ -7,12 +7,12 @@
   },
   "metrics": {
     "publications": 279,
-    "candidate_records": 251,
-    "audited_unique_urls": 82,
-    "publications_yes": 60,
-    "publications_no": 219,
-    "accepted_links": 85,
-    "rejected_candidates": 145
+    "candidate_records": 260,
+    "audited_unique_urls": 91,
+    "publications_yes": 64,
+    "publications_no": 215,
+    "accepted_links": 92,
+    "rejected_candidates": 146
   },
   "rows": [
     {
@@ -47,15 +47,176 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sdbgf",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 223,
+              "data_files": [
+                "sessionInfo_dual_uti_covariance.txt",
+                "sessionInfo_dual_uti.txt",
+                "BeneficiaryCoding.csv",
+                "PublicationBias_Eggers_Peters_PET_PEESE.csv",
+                "AdjEffectsOverview.csv",
+                "MA_dual_uti_dat_agg.csv",
+                "SampleSize.csv",
+                "MA_dual_uti_dat.csv",
+                "MA_dual_uti_dat_allv.csv",
+                "PF_IN_AdjEff_Posthoc.csv",
+                "RetractionCheck.csv",
+                "TableOfStudies.csv",
+                "exclusionreasons_overview.csv",
+                "ModTestOverview_MoodCorr.csv",
+                "AdjEffectsOverview_MoodCorr.csv",
+                "Level3_WithinDecisions_Check.csv",
+                "data_V_matrix.csv",
+                "studies_dependencies_data_availabity.csv",
+                "ModelDiagn_Overview.csv",
+                "Mood.csv",
+                "exclusionreasons_excludedpapers.csv",
+                "ModTestOverview_Variation_PFIN.csv",
+                "SelectionModelsOverview.csv",
+                "ModTestOverview_Variation_MoodCorr_Comp.csv",
+                "CorTable_ManipDilemmaQuestionType.csv",
+                "ModTestOverview_Variation_MoodCorr.csv",
+                "ModTestOverview_Variation.csv",
+                "ModTestOverview.csv",
+                "AdjEffectsOverview_PFIN.csv",
+                "Countries.csv",
+                "ModTestOverview_PFIN.csv",
+                "cor 87 - Study 1.csv",
+                "cor 126 - Study 2.csv",
+                "cor 51 - Study 2.csv",
+                "cor 38 - Study 1.csv",
+                "cor 47 - Study 2.csv",
+                "cor 100 - Study 1_low_veryhigh.csv",
+                "cor 47 - Study 4.csv",
+                "cor 37 - Study 2 full.csv",
+                "cor 93 - Study 1_ele_neu.csv",
+                "cor 37 - Study 3.csv",
+                "cor 159 - Study 1 msd.csv",
+                "cor 98 - Study 2.csv",
+                "cor 12 - Study 1.csv",
+                "cor 8 - Study 3.csv",
+                "cor 162 - Study 2 foreign3.csv",
+                "cor 51 - Study 3.csv",
+                "cor 136 - Study 2.csv",
+                "cor 159 - Study 1 2x2.csv",
+                "cor 133 - Study 3.csv",
+                "cor 37 - Study 3.csv",
+                "cor 142 - Study 1.csv",
+                "cor 186 - Study 2 Footbridge full.csv",
+                "cor 37 - Study 1.csv",
+                "cor 160 - Study 2 msd.csv",
+                "cor 94 - Study 1.csv",
+                "cor 182 - Study 1.csv",
+                "cor 35 - Study 3a.csv",
+                "cor 133 - Study 1.csv",
+                "cor 47 - Study 6.csv",
+                "cor 37 - Study 3.csv",
+                "cor 99 - Study 3.csv",
+                "cor 123 - Study 1.csv",
+                "cor 35 - Study 2a.csv",
+                "cor 157 - Study 17.csv",
+                "cor 34 - Study 2b.csv",
+                "cor 35 - Study 2b.csv",
+                "cor 37 - Study 2 2x2.csv",
+                "cor 182 - Study 2 native1.csv",
+                "cor 100 - Study 1_low_high.csv",
+                "cor 37 - Study 3.csv",
+                "cor 127 - Study 1.csv",
+                "cor 35 - Study 3b.csv",
+                "cor 186 - Study 2 Switch full.csv",
+                "cor 94 - Study 2.csv",
+                "cor 133 - Study 2.csv",
+                "cor 176 - Study 1 (chapter 2) full.csv",
+                "cor 3 - Study 3.csv",
+                "cor 126 - Study 1.csv",
+                "cor 120 - Study 1B.csv",
+                "cor 133 - Study 4.csv",
+                "cor 176 - Study 1 (chapter 2) 2x2.csv",
+                "cor 162 - Study 1 foreign2.csv",
+                "cor 173 - Study 1.csv",
+                "cor 8 - Study 2.csv",
+                "cor 35 - Study 1a.csv",
+                "cor 35 - Study 1b.csv",
+                "cor 93 - Study 1_hum_neu.csv",
+                "cor 34 - Study 2a.csv",
+                "cor 160 - Study 2 2x2.csv",
+                "cor 74 - Study 1.csv",
+                "cor 182 - Study 2 native2.csv",
+                "cor 90 - Study 1.csv",
+                "cor 162 - Study 2 foreign2.csv",
+                "cor 123 - Study 2.csv",
+                "cor 3 - Study 1.csv",
+                "cor 159 - Study 1 full.csv",
+                "cor 47 - Study 1.csv",
+                "cor 37 - Study 2 msd.csv",
+                "cor 98 - Study 1.csv",
+                "cor 160 - Study 2 full.csv",
+                "cor 133 - Study 5.csv",
+                "cor 3 - Study 4.csv",
+                "cor 99 - Study 2.csv",
+                "cor 47 - Study 5.csv",
+                "cor 51 - Study 1.csv",
+                "cor 3 - Study 2.csv",
+                "cor 8 - Study 1.csv",
+                "cor 99 - Study 1.csv",
+                "cor 189 - Study 1 lowSim.csv",
+                "cor 176 - Study 1 (chapter 2) msd.csv",
+                "cor 125 - Study 2.csv",
+                "cor 74 - Study 2.csv",
+                "cor 12 - Study 2.csv",
+                "cor 185 - Study 5.csv",
+                "cor 162 - Study 1 foreign1.csv",
+                "cor 47 - Study 3.csv",
+                "cor 83 - Study 1.csv",
+                "cor 162 - Study 2 foreign1.csv",
+                "cor 124 - Study 1.csv",
+                "cor 9 - Study 1.csv",
+                "cor 125 - Study 1.csv",
+                "cor 189 - Study 1 highSim.csv",
+                "BeneficiaryCats.csv",
+                "Mood_cats.csv",
+                "2023 Coding Deontological vs. Utilitarian Decision Making.xlsx",
+                "Coding Deontological vs. Utilitarian Decision Making.xlsx",
+                "SampleSize_total_calculated.csv",
+                "Countries.csv",
+                "newnames.csv",
+                "Level3_WithinDecisions_Check.xlsx",
+                "DFBETAS_cluster.RData",
+                "cooks_distance_cluster.RData",
+                "weights_cluster.RData",
+                "studentized_res_cluster.RData",
+                "studentized_res_no_cluster.RData",
+                "res.gosh_withoutInflOutl.RData",
+                "weights.RData",
+                "hatvalues_cluster.RData",
+                "hatvalues.RData",
+                "vifs_ma_3_mods.RData",
+                "vifs_ma_3_dilmods.RData",
+                "cooks_distance_no_cluster.RData",
+                "vifs_ma_3_mods_all.RData",
+                "DFBETAS.RData",
+                "vifs_ma_mods_interact2.RData",
+                "res.gosh.RData",
+                "RetractionCheck.xlsx"
+              ],
+              "code_files": [
+                "SearchStrategy.pdf",
+                "Preregistration.pdf",
+                "MA_dual_uti_covariance.R",
+                "MA_dual_uti.R",
+                "Explore_ESperstudy.pdf",
+                "Explore_IVtypes.pdf",
+                "Explore_IVtypes.pdf",
+                "Explore_ESperstudy.pdf",
+                "Distinction between WEIRD and non-WEIRD.pdf",
+                "IntuitiveDeontologyMeta-Analysis_AdditionalOnlineMaterial_Supplement.pdf",
+                "Intuitive Deontology Meta-Analysis_Table of Studies.pdf",
+                "Intuitive Deontology Meta-Analysis_Literature Search Process.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 148 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -263,15 +424,22 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sqcrm",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 6,
+              "data_files": [
+                "GM_R.zip"
+              ],
+              "code_files": [
+                "SUPPL3.docx",
+                "BrohmerHofer_Variables_2024.docx",
+                "RA3_GM_Exploratory_Analyses.html",
+                "RA1_DescRelAdd_Analyses.html",
+                "RA2_GM_Main_Analyses.html"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
         },
         {
           "pure_id": "item_3616126",
@@ -301,15 +469,41 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "fdrn6",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 30,
+              "data_files": [
+                "Code_R_22Sept21.zip",
+                "Code_R_25Aug21.zip",
+                "Code_R_20Sept21.zip",
+                "Code_R_01Oct21.zip",
+                "Code_R_17Sep21.zip",
+                "GM_R.zip"
+              ],
+              "code_files": [
+                "522-3517-3-ED.docx",
+                "Literature.docx",
+                "Theoretical_Rationale_Hypotheses.docx",
+                "SUPPL2_Pre_Study_1_2.docx",
+                "Methods_Procedures_Scales.docx",
+                "GenderStudy_Questionnaire_LimeSurvey.pdf",
+                "GenderStudy_Questionnaire_Word.docx",
+                "Planned_Analysis.docx",
+                "Brohmer_letter_to_reviewers.docx",
+                "exchange Brown, Brohmer, IJzerman v2.pdf",
+                "Confirmatory Report Review.pdf",
+                "Confirmatory Report Review Round 2.pdf",
+                "Review Round 1 Zickfeld.docx",
+                "Confirmatory Report Round 2 Zickfeld.docx",
+                "SUPPL3.docx",
+                "BrohmerHofer_Variables_2024.docx",
+                "RA3_GM_Exploratory_Analyses.html",
+                "RA1_DescRelAdd_Analyses.html",
+                "RA2_GM_Main_Analyses.html"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
         },
         {
           "pure_id": "item_3616126",
@@ -374,45 +568,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
-            },
-            "github": null
-          },
-          "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
-        },
-        {
-          "pure_id": "item_3616126",
-          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
-          "url": "https://osf.io/ngjb2/",
-          "source": "Provider",
-          "evidence": "trusted europepmc dataset evidence data-availability-statement",
-          "dataset_title": "Data availability link for 10.5334/irsp.522",
-          "provider": "europepmc",
-          "relation": "data-availability-statement",
-          "source_validation": "trusted europepmc dataset evidence",
-          "canonical_url": "https://osf.io/ngjb2",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Link aus expliziter Data-Availability-Statement"
-          },
-          "link_audit": {
-            "requested_url": "https://osf.io/ngjb2",
-            "final_url": "https://osf.io/ngjb2",
-            "available": true,
-            "http_status": 200,
-            "page_title": "OSF",
-            "access_status": "offen",
-            "verification_method": "HTTP",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": {
-              "node_id": "ngjb2",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -482,7 +638,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -520,7 +676,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -558,7 +714,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -598,7 +754,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -636,7 +792,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -750,7 +906,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -804,10 +960,17 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sqcrm",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 6,
+              "data_files": [
+                "GM_R.zip"
+              ],
+              "code_files": [
+                "SUPPL3.docx",
+                "BrohmerHofer_Variables_2024.docx",
+                "RA3_GM_Exploratory_Analyses.html",
+                "RA1_DescRelAdd_Analyses.html",
+                "RA2_GM_Main_Analyses.html"
+              ]
             },
             "github": null
           },
@@ -864,7 +1027,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -899,10 +1062,36 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "fdrn6",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 30,
+              "data_files": [
+                "Code_R_22Sept21.zip",
+                "Code_R_25Aug21.zip",
+                "Code_R_20Sept21.zip",
+                "Code_R_01Oct21.zip",
+                "Code_R_17Sep21.zip",
+                "GM_R.zip"
+              ],
+              "code_files": [
+                "522-3517-3-ED.docx",
+                "Literature.docx",
+                "Theoretical_Rationale_Hypotheses.docx",
+                "SUPPL2_Pre_Study_1_2.docx",
+                "Methods_Procedures_Scales.docx",
+                "GenderStudy_Questionnaire_LimeSurvey.pdf",
+                "GenderStudy_Questionnaire_Word.docx",
+                "Planned_Analysis.docx",
+                "Brohmer_letter_to_reviewers.docx",
+                "exchange Brown, Brohmer, IJzerman v2.pdf",
+                "Confirmatory Report Review.pdf",
+                "Confirmatory Report Review Round 2.pdf",
+                "Review Round 1 Zickfeld.docx",
+                "Confirmatory Report Round 2 Zickfeld.docx",
+                "SUPPL3.docx",
+                "BrohmerHofer_Variables_2024.docx",
+                "RA3_GM_Exploratory_Analyses.html",
+                "RA1_DescRelAdd_Analyses.html",
+                "RA2_GM_Main_Analyses.html"
+              ]
             },
             "github": null
           },
@@ -972,7 +1161,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -1007,10 +1196,13 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "ngjb2",
-              "file_count": null,
+              "file_count": 4,
               "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "code_files": [
+                "Methods_Procedures_Scales.docx",
+                "GenderStudy_Questionnaire_LimeSurvey.pdf",
+                "GenderStudy_Questionnaire_Word.docx"
+              ]
             },
             "github": null
           },
@@ -1080,7 +1272,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -1105,6 +1297,47 @@
           "link_audit": null,
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
+        },
+        {
+          "pure_id": "item_3616126",
+          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
+          "url": "https://osf.io/ngjb2/",
+          "source": "Provider",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.5334/irsp.522",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/ngjb2",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/ngjb2",
+            "final_url": "https://osf.io/ngjb2",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "ngjb2",
+              "file_count": 4,
+              "data_files": [],
+              "code_files": [
+                "Methods_Procedures_Scales.docx",
+                "GenderStudy_Questionnaire_LimeSurvey.pdf",
+                "GenderStudy_Questionnaire_Word.docx"
+              ]
+            },
+            "github": null
+          },
+          "accepted": false,
+          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
         }
       ],
       "research_data": "ja"
@@ -1141,15 +1374,19 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "2gf8k",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 3,
+              "data_files": [
+                "HLR_ElectoralReformTrilemma_Data.dta"
+              ],
+              "code_files": [
+                "HLR_ElectoralReformTrilemma_Code.do",
+                "2022-10-19_HLR_ElectoralReform_PAP.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -1176,38 +1413,6 @@
           },
           "link_audit": {
             "requested_url": "https://doi.org/10.7910/dvn/dcsr0n",
-            "final_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
-            "available": false,
-            "http_status": 403,
-            "page_title": "403 Forbidden",
-            "access_status": "Paywall/Login oder Zugriffsschutz",
-            "verification_method": "Playwright",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": null,
-            "github": null
-          },
-          "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
-        },
-        {
-          "pure_id": "item_3616090",
-          "publication_title": "Worker beliefs about outside options",
-          "url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
-          "source": "Provider",
-          "evidence": "trusted datacite dataset evidence IsSupplementTo",
-          "dataset_title": "Replication Data for: 'Worker Beliefs about Outside Options'",
-          "provider": "datacite",
-          "relation": "IsSupplementTo",
-          "source_validation": "trusted datacite dataset evidence",
-          "canonical_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Titel-/Autor:innen-Match (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
             "final_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DCSR0N",
             "available": true,
             "http_status": 202,
@@ -1221,7 +1426,7 @@
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
         }
       ],
       "rejected_candidates": [],
@@ -1262,7 +1467,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -1305,15 +1510,65 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "5bjqw",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 49,
+              "data_files": [
+                "readme.txt",
+                "session_1_all_apps.csv",
+                "session_4_per_app.csv",
+                "session_2_3_per_app.csv",
+                "session_2_3_all_apps.csv",
+                "session_7_times.csv",
+                "session_456_per_app.csv",
+                "session_7_all_apps.csv",
+                "session_456_times.csv",
+                "session_2_all_apps.csv",
+                "session_4_all_apps.csv",
+                "session_7_per_app.csv",
+                "session_2_per_app.csv",
+                "session_2_times.csv",
+                "session_45_all_apps.csv",
+                "session_456_all_apps.csv",
+                "session_1_per_app.csv",
+                "session_1_times.csv",
+                "session_2_3_times.csv",
+                "session_45_times.csv",
+                "session_45_per_app.csv",
+                "session_4_times.csv",
+                "lottery_chosen_by_drift_and_skewness.csv",
+                "session_1_stacked_round.csv",
+                "session_3_stacked_round.csv",
+                "session_3.csv",
+                "session_5.csv",
+                "session_2.csv",
+                "data_strategy_transitions.csv",
+                "session_1.csv",
+                "processed_data.csv",
+                "session_5_stacked_round.csv",
+                "session_4_stacked_round.csv",
+                "session_2_stacked_round.csv",
+                "static_dynamic_choices.csv",
+                "session_4.csv"
+              ],
+              "code_files": [
+                "table_1_descriptive_statistics.py",
+                "figure_3_distribution_loss_exit.R",
+                "figure_10_sell_immediately_never.R",
+                "figure_13_strategy_transitions_only_data.py",
+                "figure_18_decoy_effects_only_data.py",
+                "figure_5_static_dynamic.R",
+                "figure_14_static_choices_by_skewness.R",
+                "figure_4_stopping_CDF.R",
+                "figure_12_initial_strategies.R",
+                "figures_7_8_simulations_stopping_inbetween.py",
+                "figure_11_sell_immediately_never_by_cognitive_skill.R",
+                "figure_6_disposition.R",
+                "figure_15_CPT_Predictions.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 36 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -1631,15 +1886,25 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "k493y",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 9,
+              "data_files": [
+                "Robustness_check_age.zip",
+                "JS_Perpetrator.zip",
+                "Agreeableness.zip",
+                "study2_data_scripts.zip",
+                "study1_data_scripts.zip"
+              ],
+              "code_files": [
+                "logfile_JS_Study_daily.docx",
+                "logfile_JS_Study_weekly.docx",
+                "Post_hoc_power.pdf",
+                "Other publications making use of the described data sets.docx"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 5 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -1677,15 +1942,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "b8zp4",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 2,
+              "data_files": [
+                "figae_beliefs-contributions.dta"
+              ],
+              "code_files": [
+                "ERBelief240215.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -1756,15 +2024,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4n8hy",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 2,
+              "data_files": [
+                "data_aac_public.dta"
+              ],
+              "code_files": [
+                "analysis_public.do"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
         },
         {
           "pure_id": "item_3565226",
@@ -1863,15 +2134,21 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "j8mds",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 6,
+              "data_files": [
+                "dataOSF.csv"
+              ],
+              "code_files": [
+                "TableA3.R",
+                "TableA4.R",
+                "TableA5.R",
+                "Tables1_2.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -1909,15 +2186,39 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "6jp9q",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 23,
+              "data_files": [
+                "Appendix A_Raw Data.csv",
+                "Appendix B_Raw Data_Anonym.csv",
+                "Study 2_Raw Data_Anonym.csv",
+                "Study 3a_Raw Data_Anonym.csv",
+                "Study 1_Raw Data_Anonym.csv",
+                "Study 3b_Raw Data_Anonym.csv"
+              ],
+              "code_files": [
+                "Appendix A_Instructions.docx",
+                "Appendix A_Analysis.do",
+                "Appendix A_Codebook.docx",
+                "Appendix B_Instructions.docx",
+                "Appendix B_Analysis.do",
+                "Appendix B_Codebook.docx",
+                "Study 2_Instructions.docx",
+                "Study 2_Codebook.docx",
+                "Study 2_Analysis.do",
+                "Study 3a_Analysis.do",
+                "Study 3a_Instructions.docx",
+                "Study 1_Analysis.do",
+                "Study 1_Codebook.docx",
+                "Study 1_Instructions_Different Charities condition.docx",
+                "Study 1_Instructions_Same Charity condition.docx",
+                "Study 3b_Instructions.docx",
+                "Study 3b_Analysis.do"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 6 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -2911,15 +3212,36 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "gx4sh",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 20,
+              "data_files": [
+                "001_RawData.dta",
+                "003_Data.dta"
+              ],
+              "code_files": [
+                "Fig3g.pdf",
+                "Fig3.pdf",
+                "Fig9.pdf",
+                "Fig5g.pdf",
+                "Fig7.pdf",
+                "Fig8g.pdf",
+                "Fig6.pdf",
+                "FigA1g.pdf",
+                "Fig8.pdf",
+                "Fig6g.pdf",
+                "Fig5.pdf",
+                "Fig4.pdf",
+                "Fig4g.pdf",
+                "FigA1.pdf",
+                "Fig7g.pdf",
+                "004_AnalysisSkript.do",
+                "Fig9g.pdf",
+                "002_DataPreparationSkript.do"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite"
+          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite; 2 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -3213,50 +3535,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "s43na",
-              "file_count": 34,
-              "data_files": [
-                "data_study_1_long_OSF.csv",
-                "data_study_1_OSF.csv",
-                "data_study_2_long_OSF.csv",
-                "data_overweighing_min_max.csv",
-                "svo_mean_all_cross_heat.csv",
-                "data_study_2_OSF.csv"
-              ],
-              "code_files": [
-                "Determinants of cross-national social preferences (Study 1).pdf",
-                "1_Study_English.pdf",
-                "analysis_study_1_OSF.Rmd",
-                "Codebook_Study_1.pdf",
-                "Determinants of cross-national social preferences (Study 2).pdf",
-                "2_Study_Arabic.pdf",
-                "2_Study_Indonesian.pdf",
-                "2_Study_Japanese.pdf",
-                "2_Study_Swedish.pdf",
-                "2_Study_Hungarian.pdf",
-                "2_Study_English.pdf",
-                "2_Study_Spanish.pdf",
-                "2_Study_Portugese.pdf",
-                "2_Study_Thai.pdf",
-                "2_Study_Slovakia.pdf",
-                "2_Study_Turkish.pdf",
-                "2_Study_Hindi.pdf",
-                "2_Study_German.pdf",
-                "2_Study_Afrikaans.pdf",
-                "2_Study_French.pdf",
-                "2_Study_Norwegian.pdf",
-                "2_Study_Switzerland_German.pdf",
-                "2_Study_Romanian.pdf",
-                "2_Study_Chinese.pdf",
-                "Codebook_Study_2.pdf",
-                "analysis_study_2_OSF_revised.Rmd",
-                "analysis_study_2_OSF.Rmd",
-                "conflict_index_OSF_final.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
       "rejected_candidates": [
@@ -3373,32 +3660,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": 16,
-              "data_files": [
-                "cost_comp_by_stake.csv",
-                "survey2_fullprop.csv",
-                "survey1_exp_of_interest.csv",
-                "gender_data.csv",
-                "README.txt",
-                "survey3_reviewer.csv",
-                "cost_comp_by_acceptance.csv",
-                "hours_administration.xlsx",
-                "README.txt"
-              ],
-              "code_files": [
-                "freiraum_2025_1_survey_questions.pdf",
-                "freiraum_2025_2_survey_questions.pdf",
-                "freiraum_2025_reviewer_survey_questions.pdf",
-                "fig_3_and_preferences.R",
-                "fig_2_and_workhours_costs.R",
-                "fig_1_and_gender.R",
-                "cost_estimates_scenarios.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00); 9 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
         }
       ],
       "rejected_candidates": [
@@ -3449,27 +3719,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": 16,
-              "data_files": [
-                "cost_comp_by_stake.csv",
-                "survey2_fullprop.csv",
-                "survey1_exp_of_interest.csv",
-                "gender_data.csv",
-                "README.txt",
-                "survey3_reviewer.csv",
-                "cost_comp_by_acceptance.csv",
-                "hours_administration.xlsx",
-                "README.txt"
-              ],
-              "code_files": [
-                "freiraum_2025_1_survey_questions.pdf",
-                "freiraum_2025_2_survey_questions.pdf",
-                "freiraum_2025_reviewer_survey_questions.pdf",
-                "fig_3_and_preferences.R",
-                "fig_2_and_workhours_costs.R",
-                "fig_1_and_gender.R",
-                "cost_estimates_scenarios.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -3504,27 +3757,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": 16,
-              "data_files": [
-                "cost_comp_by_stake.csv",
-                "survey2_fullprop.csv",
-                "survey1_exp_of_interest.csv",
-                "gender_data.csv",
-                "README.txt",
-                "survey3_reviewer.csv",
-                "cost_comp_by_acceptance.csv",
-                "hours_administration.xlsx",
-                "README.txt"
-              ],
-              "code_files": [
-                "freiraum_2025_1_survey_questions.pdf",
-                "freiraum_2025_2_survey_questions.pdf",
-                "freiraum_2025_reviewer_survey_questions.pdf",
-                "fig_3_and_preferences.R",
-                "fig_2_and_workhours_costs.R",
-                "fig_1_and_gender.R",
-                "cost_estimates_scenarios.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -3613,9 +3849,48 @@
     {
       "pure_id": "item_3702891",
       "title": "When public information backfires: Heterogeneous groups (un)coordinate on a fairness norm",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3702891",
+          "publication_title": "When public information backfires: Heterogeneous groups (un)coordinate on a fairness norm",
+          "url": "https://doi.org/10.17605/OSF.IO/JZ6WP",
+          "source": "Provider",
+          "evidence": "trusted degruyter-browser-data-availability dataset evidence publisher-data-availability-with-author-overlap-and-data-files",
+          "dataset_title": "Supplementary materials for Public Signals as Coordination Devices: The Moderating Effect of Group Identity",
+          "provider": "degruyter-browser-data-availability",
+          "relation": "publisher-data-availability-with-author-overlap-and-data-files",
+          "source_validation": "trusted degruyter-browser-data-availability dataset evidence",
+          "canonical_url": "https://doi.org/10.17605/osf.io/jz6wp",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "De-Gruyter-Datenverfügbarkeitsaussage mit Autor:innenbezug und rekursiv geprüften OSF-Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.17605/osf.io/jz6wp",
+            "final_url": "https://osf.io/jz6wp/",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "jz6wp",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "De-Gruyter-Datenverfügbarkeitsaussage mit Autor:innenbezug und rekursiv geprüften OSF-Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3625804",
@@ -3780,15 +4055,32 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sh4rb",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 17,
+              "data_files": [
+                "imputed-ind-data-attention-check.csv",
+                "gsn-contexts-clean-long.csv",
+                "imputed-ind-data-full.csv",
+                "sfig4-data.csv",
+                "gsn_situations.sav",
+                "wvs-data.csv",
+                "2F Country Distance 1pml adj.xlsx",
+                "sfig3-data.csv",
+                "sfig6-data.csv",
+                "everyday-norms-2011-clean.csv",
+                "gsn-situations-clean-long.csv",
+                "sfig2b_data.csv",
+                "individual-data-prereg.csv"
+              ],
+              "code_files": [
+                "02_measurement-invariance.R",
+                "01_preprocess-data.R",
+                "03_manus-analysis.Rmd"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite"
+          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite; 13 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -3993,7 +4285,46 @@
     {
       "pure_id": "item_3628738",
       "title": "The effect of transparent unequal penalty rates on safety compliance for different-sized businesses",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3628738",
+          "publication_title": "The effect of transparent unequal penalty rates on safety compliance for different-sized businesses",
+          "url": "https://osf.io/aq7zd/",
+          "source": "Provider",
+          "evidence": "trusted cambridge-osf-data dataset evidence publisher-linked-osf-with-author-overlap-and-data-files",
+          "dataset_title": "The effect of transparent unequal penalty rates on safety compliance for different sized businesses",
+          "provider": "cambridge-osf-data",
+          "relation": "publisher-linked-osf-with-author-overlap-and-data-files",
+          "source_validation": "trusted cambridge-osf-data dataset evidence",
+          "canonical_url": "https://osf.io/aq7zd",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/aq7zd",
+            "final_url": "https://osf.io/aq7zd",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "aq7zd",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [
         {
           "pure_id": "item_3628738",
@@ -4029,7 +4360,26 @@
             "accepted": false,
             "reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
           },
-          "link_audit": null,
+          "link_audit": {
+            "requested_url": "https://osf.io/aq7zd",
+            "final_url": "https://osf.io/aq7zd",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "aq7zd",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         },
@@ -4053,7 +4403,7 @@
           "decision_reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3643488",
@@ -4408,29 +4758,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "8zqjf",
-              "file_count": 13,
-              "data_files": [
-                "raw_data.RData",
-                "all_data.RData",
-                "package_versions_behavioral.txt",
-                "package_versions_preprocessing.txt",
-                "package_versions_eyes.txt",
-                "package_versions_AOIs.txt"
-              ],
-              "code_files": [
-                "Visualization of Predictions.pdf",
-                "3_combine_figures.R",
-                "0_preprocessing.Rmd",
-                "1_analyses_behavioral.Rmd",
-                "1_analyses_eyes.Rmd",
-                "0_preprocessing AOIs.Rmd",
-                "3_worldmap.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
       "rejected_candidates": [
@@ -4717,7 +5053,84 @@
     {
       "pure_id": "item_3645323",
       "title": "Sabotaging competitors, both real and illusory",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3645323",
+          "publication_title": "Sabotaging competitors, both real and illusory",
+          "url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+          "source": "Provider",
+          "evidence": "trusted cambridge-osf-data dataset evidence publisher-linked-osf-with-author-overlap-and-data-files",
+          "dataset_title": "The Dark Side of Competition",
+          "provider": "cambridge-osf-data",
+          "relation": "publisher-linked-osf-with-author-overlap-and-data-files",
+          "source_validation": "trusted cambridge-osf-data dataset evidence",
+          "canonical_url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+            "final_url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "adeh5",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+        },
+        {
+          "pure_id": "item_3645323",
+          "publication_title": "Sabotaging competitors, both real and illusory",
+          "url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+          "source": "Provider",
+          "evidence": "trusted cambridge-osf-data dataset evidence publisher-linked-osf-with-author-overlap-and-data-files",
+          "dataset_title": "Sabotaging Competitors, Both Real and Illusory – Replication of “Context Destruction” Condition",
+          "provider": "cambridge-osf-data",
+          "relation": "publisher-linked-osf-with-author-overlap-and-data-files",
+          "source_validation": "trusted cambridge-osf-data dataset evidence",
+          "canonical_url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+            "final_url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "wrfn6",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Cambridge-verlinktes OSF-Projekt mit Autor:innenbezug und rekursiv geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [
         {
           "pure_id": "item_3645323",
@@ -4734,7 +5147,26 @@
             "accepted": false,
             "reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
           },
-          "link_audit": null,
+          "link_audit": {
+            "requested_url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+            "final_url": "https://osf.io/adeh5/?view_only=9d3c95593d2a4fe4a4a835f2ac572b09",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "adeh5",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         },
@@ -4753,7 +5185,26 @@
             "accepted": false,
             "reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
           },
-          "link_audit": null,
+          "link_audit": {
+            "requested_url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+            "final_url": "https://osf.io/wrfn6/?view_only=23f44ea20641426695b71f78b2985f8d",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "wrfn6",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            },
+            "github": null
+          },
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         },
@@ -4777,7 +5228,7 @@
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3653809",
@@ -4906,18 +5357,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "n8esu",
-              "file_count": 2,
-              "data_files": [
-                "Normalization Data.csv"
-              ],
-              "code_files": [
-                "Survey Measures.docx"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
         }
       ],
       "rejected_candidates": [],
@@ -5197,28 +5645,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "duvrc",
-              "file_count": 24,
-              "data_files": [
-                "Study 1_de-identified.sav",
-                "Study2b_punisher_de-identified.sav",
-                "Study2b_de-identified.sav",
-                "Study 3_de-identified.sav",
-                "Study 4_de-identified.sav",
-                "Study 2a_de-identified.sav"
-              ],
-              "code_files": [
-                "Materials.pdf",
-                "Study 1_Preregistration.pdf",
-                "Study 2b_Preregistration.pdf",
-                "Study 3_Preregistration.pdf",
-                "Study 4_Preregistration.pdf",
-                "Study 2a_Preregistration.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         },
         {
           "pure_id": "item_3657005",
@@ -5251,7 +5686,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -5289,7 +5724,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -5327,7 +5762,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -5365,7 +5800,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -5403,7 +5838,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -5431,9 +5866,106 @@
     {
       "pure_id": "item_3639931",
       "title": "SwiLTra-Bench: The swiss legal translation benchmark",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3639931",
+          "publication_title": "SwiLTra-Bench: The swiss legal translation benchmark",
+          "url": "https://huggingface.co/datasets/joelniklaus/SwissLawTranslations",
+          "source": "Provider",
+          "evidence": "trusted huggingface-arxiv-dataset dataset evidence exact-arxiv-tag-with-verified-data-files",
+          "dataset_title": "Swiss Law Translations",
+          "provider": "huggingface-arxiv-dataset",
+          "relation": "exact-arxiv-tag-with-verified-data-files",
+          "source_validation": "trusted huggingface-arxiv-dataset dataset evidence",
+          "canonical_url": "https://huggingface.co/datasets/joelniklaus/SwissLawTranslations",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://huggingface.co/datasets/joelniklaus/SwissLawTranslations",
+            "final_url": "https://huggingface.co/datasets/joelniklaus/SwissLawTranslations",
+            "available": true,
+            "http_status": 200,
+            "page_title": "joelniklaus/SwissLawTranslations · Datasets at Hugging Face",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+        },
+        {
+          "pure_id": "item_3639931",
+          "publication_title": "SwiLTra-Bench: The swiss legal translation benchmark",
+          "url": "https://huggingface.co/datasets/joelniklaus/SwissDecisionSummaryTranslations",
+          "source": "Provider",
+          "evidence": "trusted huggingface-arxiv-dataset dataset evidence exact-arxiv-tag-with-verified-data-files",
+          "dataset_title": "Swiss Decision Summary Translations",
+          "provider": "huggingface-arxiv-dataset",
+          "relation": "exact-arxiv-tag-with-verified-data-files",
+          "source_validation": "trusted huggingface-arxiv-dataset dataset evidence",
+          "canonical_url": "https://huggingface.co/datasets/joelniklaus/SwissDecisionSummaryTranslations",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://huggingface.co/datasets/joelniklaus/SwissDecisionSummaryTranslations",
+            "final_url": "https://huggingface.co/datasets/joelniklaus/SwissDecisionSummaryTranslations",
+            "available": true,
+            "http_status": 200,
+            "page_title": "joelniklaus/SwissDecisionSummaryTranslations · Datasets at Hugging Face",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+        },
+        {
+          "pure_id": "item_3639931",
+          "publication_title": "SwiLTra-Bench: The swiss legal translation benchmark",
+          "url": "https://huggingface.co/datasets/joelniklaus/SwissSupremeCourtPressReleaseTranslations",
+          "source": "Provider",
+          "evidence": "trusted huggingface-arxiv-dataset dataset evidence exact-arxiv-tag-with-verified-data-files",
+          "dataset_title": "Swiss Supreme Court Press Release Translations",
+          "provider": "huggingface-arxiv-dataset",
+          "relation": "exact-arxiv-tag-with-verified-data-files",
+          "source_validation": "trusted huggingface-arxiv-dataset dataset evidence",
+          "canonical_url": "https://huggingface.co/datasets/joelniklaus/SwissSupremeCourtPressReleaseTranslations",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://huggingface.co/datasets/joelniklaus/SwissSupremeCourtPressReleaseTranslations",
+            "final_url": "https://huggingface.co/datasets/joelniklaus/SwissSupremeCourtPressReleaseTranslations",
+            "available": true,
+            "http_status": 200,
+            "page_title": "joelniklaus/SwissSupremeCourtPressReleaseTranslations · Datasets at Hugging Face",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": true,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3657010",
@@ -13435,6 +13967,70 @@
           },
           "accepted": true,
           "decision_reason": "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien; 7424 Datendatei(en) über GitHub-API bestätigt"
+        },
+        {
+          "pure_id": "item_3632293",
+          "publication_title": "Lawma: The power of specialization for legal tasks",
+          "url": "https://huggingface.co/datasets/ricdomolm/lawma-tasks",
+          "source": "Provider",
+          "evidence": "trusted huggingface-arxiv-dataset dataset evidence exact-arxiv-tag-with-verified-data-files",
+          "dataset_title": "Lawma legal classification tasks",
+          "provider": "huggingface-arxiv-dataset",
+          "relation": "exact-arxiv-tag-with-verified-data-files",
+          "source_validation": "trusted huggingface-arxiv-dataset dataset evidence",
+          "canonical_url": "https://huggingface.co/datasets/ricdomolm/lawma-tasks",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://huggingface.co/datasets/ricdomolm/lawma-tasks",
+            "final_url": "https://huggingface.co/datasets/ricdomolm/lawma-tasks",
+            "available": true,
+            "http_status": 200,
+            "page_title": "ricdomolm/lawma-tasks · Datasets at Hugging Face",
+            "access_status": "offen",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+        },
+        {
+          "pure_id": "item_3632293",
+          "publication_title": "Lawma: The power of specialization for legal tasks",
+          "url": "https://huggingface.co/datasets/ricdomolm/lawma-all-tasks",
+          "source": "Provider",
+          "evidence": "trusted huggingface-arxiv-dataset dataset evidence exact-arxiv-tag-with-verified-data-files",
+          "dataset_title": "lawma-all-tasks",
+          "provider": "huggingface-arxiv-dataset",
+          "relation": "exact-arxiv-tag-with-verified-data-files",
+          "source_validation": "trusted huggingface-arxiv-dataset dataset evidence",
+          "canonical_url": "https://huggingface.co/datasets/ricdomolm/lawma-all-tasks",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://huggingface.co/datasets/ricdomolm/lawma-all-tasks",
+            "final_url": "https://huggingface.co/datasets/ricdomolm/lawma-all-tasks",
+            "available": true,
+            "http_status": 200,
+            "page_title": "ricdomolm/lawma-all-tasks · Datasets at Hugging Face",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien"
         }
       ],
       "rejected_candidates": [
@@ -14602,16 +15198,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "98tfa",
-              "file_count": 1,
-              "data_files": [
-                "main_analyses_04.09.24.zip"
-              ],
-              "code_files": []
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
       "rejected_candidates": [],
@@ -14680,7 +15275,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 503"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15125,28 +15720,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "duvrc",
-              "file_count": 24,
-              "data_files": [
-                "Study 1_de-identified.sav",
-                "Study2b_punisher_de-identified.sav",
-                "Study2b_de-identified.sav",
-                "Study 3_de-identified.sav",
-                "Study 4_de-identified.sav",
-                "Study 2a_de-identified.sav"
-              ],
-              "code_files": [
-                "Materials.pdf",
-                "Study 1_Preregistration.pdf",
-                "Study 2b_Preregistration.pdf",
-                "Study 3_Preregistration.pdf",
-                "Study 4_Preregistration.pdf",
-                "Study 2a_Preregistration.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
         },
         {
           "pure_id": "item_3657006",
@@ -15179,7 +15761,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15217,7 +15799,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15255,7 +15837,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15293,7 +15875,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15331,7 +15913,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             },
             "github": null
           },
@@ -15527,20 +16109,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "z34es",
-              "file_count": 6,
-              "data_files": [
-                "Raw data Study 2_Chile.xlsx",
-                "Raw data Study 1_HK.xlsx"
-              ],
-              "code_files": [
-                "Chile survey Spanish.pdf",
-                "HK survey Cantonese.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien; 2 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien"
         }
       ],
       "rejected_candidates": [
@@ -15665,28 +16242,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": 20,
-              "data_files": [
-                "avoid_punishment_data_main.csv",
-                "avoid_punishment_data_pilot_2.csv",
-                "avoid_punishment_data_pilot_1.csv"
-              ],
-              "code_files": [
-                "power_analyses_main_study.R",
-                "analysis_pipeline_main_study.R",
-                "avoid-punishment-instructions-main-study.pdf",
-                "analysis_pipeline_pilot_2.R",
-                "avoid_punishment_instructions_pilot_2.pdf",
-                "analysis_pipeline_pilot_1.R",
-                "power_analysis_pilot_1.R",
-                "avoid_punishment_instructions_pilot_1.pdf",
-                "Deliberately Ignoring Unfairness – Preprint.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 3 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
       "rejected_candidates": [],
@@ -15813,28 +16377,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": 20,
-              "data_files": [
-                "avoid_punishment_data_main.csv",
-                "avoid_punishment_data_pilot_2.csv",
-                "avoid_punishment_data_pilot_1.csv"
-              ],
-              "code_files": [
-                "power_analyses_main_study.R",
-                "analysis_pipeline_main_study.R",
-                "avoid-punishment-instructions-main-study.pdf",
-                "analysis_pipeline_pilot_2.R",
-                "avoid_punishment_instructions_pilot_2.pdf",
-                "analysis_pipeline_pilot_1.R",
-                "power_analysis_pilot_1.R",
-                "avoid_punishment_instructions_pilot_1.pdf",
-                "Deliberately Ignoring Unfairness – Preprint.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung; 3 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung"
         }
       ],
       "rejected_candidates": [],
@@ -16162,28 +16713,15 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": 20,
-              "data_files": [
-                "avoid_punishment_data_main.csv",
-                "avoid_punishment_data_pilot_2.csv",
-                "avoid_punishment_data_pilot_1.csv"
-              ],
-              "code_files": [
-                "power_analyses_main_study.R",
-                "analysis_pipeline_main_study.R",
-                "avoid-punishment-instructions-main-study.pdf",
-                "analysis_pipeline_pilot_2.R",
-                "avoid_punishment_instructions_pilot_2.pdf",
-                "analysis_pipeline_pilot_1.R",
-                "power_analysis_pilot_1.R",
-                "avoid_punishment_instructions_pilot_1.pdf",
-                "Deliberately Ignoring Unfairness – Preprint.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts; 3 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
         }
       ],
       "rejected_candidates": [],
