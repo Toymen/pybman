@@ -105,6 +105,50 @@ def test_datacite_page_size_and_base_url(responses):
     assert _query(responses)["page[size]"] == ["7"]
 
 
+def test_datacite_datasets_for_title_requires_title_and_author_match(responses):
+    body = datacite_response("10.5281/zenodo.44", "10.5281/zenodo.45")
+    body["data"][0]["attributes"].update(
+        {
+            "titles": [{"title": "Replication data for Conflict and Democratic Preferences"}],
+            "creators": [{"familyName": "Tähtinen", "name": "Tähtinen, Tuuli"}],
+        }
+    )
+    body["data"][1]["attributes"].update(
+        {
+            "titles": [{"title": "Conflict and democratic preferences in classrooms"}],
+            "creators": [{"familyName": "Someone", "name": "Someone, Else"}],
+        }
+    )
+    responses.get("https://api.datacite.org/dois", json=body)
+
+    result = DataCiteProvider().datasets_for_title(
+        "Conflict and democratic preferences",
+        authors=("Nicole Stoelinga", "Tuuli Tähtinen"),
+        year=2026,
+    )
+
+    query = _query(responses)
+    assert query["query"] == ['titles.title:"Conflict and democratic preferences"']
+    assert query["sort"] == ["relevance"]
+    assert [hit.pid for hit in result.hits] == ["10.5281/zenodo.44"]
+    assert result.hits[0].relation == "verified-title-author-match"
+
+
+def test_datacite_datasets_for_title_rejects_weak_title_match(responses):
+    body = datacite_response("10.5281/zenodo.46")
+    body["data"][0]["attributes"].update(
+        {
+            "titles": [{"title": "Preferences in democratic systems"}],
+            "creators": [{"familyName": "Tähtinen"}],
+        }
+    )
+    responses.get("https://api.datacite.org/dois", json=body)
+    result = DataCiteProvider().datasets_for_title(
+        "Conflict and democratic preferences", authors=("Tuuli Tähtinen",)
+    )
+    assert result.hits == []
+
+
 def test_datacite_http_error_raises_discovery_error(responses):
     responses.get("https://api.datacite.org/dois", json={"errors": []}, status=500)
     with pytest.raises(DiscoveryError):

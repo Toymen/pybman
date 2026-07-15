@@ -192,6 +192,13 @@ for hit in report.hits: # deduplicated across providers
     print(hit.pid, hit.title, hit.publisher, hit.relation)
 
 report = discovery.for_orcid("0000-0003-1419-2405")   # datasets by author
+
+# DOI-less publication, or a repository record without a formal DOI relation
+report = discovery.for_title(
+    "Conflict and democratic preferences",
+    authors=["Nicole Stoelinga", "Tuuli Tähtinen"],
+    year=2026,
+)
 ```
 
 A provider outage never breaks the lookup — failures are recorded per

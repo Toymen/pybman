@@ -4,6 +4,7 @@ This note tracks the services used by `pybman.discovery` to answer:
 
 - Given a PuRe publication DOI, are there linked research datasets?
 - Given an ORCID iD, are there public datasets by that researcher?
+- Given a publication title and authors, is there a verifiable replication dataset?
 
 The implementation is intentionally provider-based. Every provider returns a
 `ProviderResult`; `DataDiscovery` merges and deduplicates `DatasetHit` objects
@@ -48,6 +49,12 @@ flowchart TD
 | Crossref REST API | Public JSON API at `https://api.crossref.org` | `GET /works/<doi>` and inspect dataset-like supplement relations. | Not supported for datasets. | Good high-precision publisher-asserted supplement links. | Crossref mostly registers publications; DataCite DOIs often return 404 here. |
 | ORCID Public API | Public JSON API at `https://pub.orcid.org/v3.0` | Not supported for publication-to-dataset discovery. | `GET /<orcid>/works` and filter public works with type `data-set`. | Direct view of public datasets claimed on the ORCID record. | Needs public ORCID works; record completeness is researcher/source dependent. |
 | Google Dataset Search | No public search API. | Manual hand-off URL generated from the DOI. | Manual hand-off URL generated from the ORCID iD or researcher name. | Helpful final human check over schema.org/Dataset-indexed pages. | Cannot be integrated as a reliable automated provider. |
+
+DataCite also supports a high-precision title fallback. `DataDiscovery.for_title(...)`
+queries dataset titles and only retains records with a strong normalized title
+match and at least one matching author surname. This finds replication packages
+whose repository metadata names the publication but omits its DOI, and it also
+works for DOI-less PuRe records.
 
 ## Similar Services Considered
 

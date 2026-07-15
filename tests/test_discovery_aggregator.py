@@ -24,11 +24,13 @@ class FakeProvider:
         *,
         supports_doi: bool = True,
         supports_orcid: bool = True,
+        supports_title: bool = False,
         error: Exception | None = None,
     ) -> None:
         self.name = name
         self.supports_doi = supports_doi
         self.supports_orcid = supports_orcid
+        self.supports_title = supports_title
         self._hits = hits or []
         self._error = error
         self.calls: list[tuple[str, str]] = []
@@ -44,6 +46,11 @@ class FakeProvider:
 
     def datasets_for_orcid(self, orcid: str, *, limit: int = 100) -> ProviderResult:
         self.calls.append(("orcid", orcid))
+        return self._result()
+
+    def datasets_for_title(self, title, *, authors=(), year=None, limit=100):
+        self.calls.append(("title", title))
+        self.title_context = (authors, year, limit)
         return self._result()
 
 
@@ -85,6 +92,21 @@ def test_provider_failure_is_captured_not_raised():
     assert not by_name["boom"].ok
     assert "service down" in by_name["boom"].error
     assert report.found  # the ok provider still counts
+
+
+def test_for_title_queries_capable_providers_with_context():
+    title_provider = FakeProvider("titles", [hit("titles", "10.1/data")], supports_title=True)
+    doi_only = FakeProvider("doi-only")
+    report = DataDiscovery(providers=[title_provider, doi_only]).for_title(
+        "  A   publication title ", authors=["Ada Lovelace"], year=2025, limit=7
+    )
+
+    assert report.query == "A publication title"
+    assert report.query_type == "title"
+    assert report.found is True
+    assert title_provider.calls == [("title", "A publication title")]
+    assert title_provider.title_context == (("Ada Lovelace",), 2025, 7)
+    assert doi_only.calls == []
 
 
 def test_report_hits_deduplicate_across_providers():

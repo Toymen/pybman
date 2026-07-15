@@ -52,6 +52,7 @@ class Provider:
     name: str = "provider"
     supports_doi: bool = False
     supports_orcid: bool = False
+    supports_title: bool = False
 
     def __init__(
         self,
@@ -70,6 +71,17 @@ class Provider:
     def datasets_for_orcid(self, orcid: str, *, limit: int = 100) -> ProviderResult:
         """Datasets created by the researcher identified by ``orcid``."""
         raise NotImplementedError(f"{self.name} does not support ORCID lookups")
+
+    def datasets_for_title(
+        self,
+        title: str,
+        *,
+        authors: tuple[str, ...] = (),
+        year: int | None = None,
+        limit: int = 100,
+    ) -> ProviderResult:
+        """Datasets whose metadata can be verified against a publication title."""
+        raise NotImplementedError(f"{self.name} does not support title lookups")
 
     # -- shared plumbing ---------------------------------------------------
 

@@ -25,10 +25,20 @@ class SupportsDiscovery(Protocol):
     name: str
     supports_doi: bool
     supports_orcid: bool
+    supports_title: bool
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult: ...
 
     def datasets_for_orcid(self, orcid: str, *, limit: int = 100) -> ProviderResult: ...
+
+    def datasets_for_title(
+        self,
+        title: str,
+        *,
+        authors: tuple[str, ...] = (),
+        year: int | None = None,
+        limit: int = 100,
+    ) -> ProviderResult: ...
 
 
 class DataDiscovery:
@@ -88,14 +98,47 @@ class DataDiscovery:
         ]
         return DiscoveryReport(query=query, query_type="orcid", results=results)
 
+    def for_title(
+        self,
+        title: str,
+        *,
+        authors: Sequence[str] = (),
+        year: int | None = None,
+        limit: int = 100,
+    ) -> DiscoveryReport:
+        """Find datasets by publication title with provider-side evidence checks.
+
+        This fallback is useful for publications without a DOI and for dataset
+        records that name the publication but omit a formal DOI relation.
+        Providers must validate candidates before returning them.
+        """
+        query = " ".join(title.split())
+        if not query:
+            raise ValueError("publication title must not be empty")
+        author_tuple = tuple(author.strip() for author in authors if author.strip())
+        results = [
+            self._run(
+                provider,
+                provider.datasets_for_title,
+                query,
+                limit,
+                authors=author_tuple,
+                year=year,
+            )
+            for provider in self.providers
+            if getattr(provider, "supports_title", False)
+        ]
+        return DiscoveryReport(query=query, query_type="title", results=results)
+
     @staticmethod
     def _run(
         provider: SupportsDiscovery,
         lookup: Callable[..., ProviderResult],
         query: str,
         limit: int,
+        **kwargs: Any,
     ) -> ProviderResult:
         try:
-            return lookup(query, limit=limit)
+            return lookup(query, limit=limit, **kwargs)
         except Exception as exc:  # one provider must not sink the rest
             return ProviderResult(provider=provider.name, hits=[], error=str(exc))

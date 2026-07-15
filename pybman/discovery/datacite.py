@@ -14,6 +14,9 @@ https://support.datacite.org/docs/api-queries for the query syntax.
 
 from __future__ import annotations
 
+import re
+import unicodedata
+from difflib import SequenceMatcher
 from typing import Any
 
 import requests
@@ -29,6 +32,7 @@ class DataCiteProvider(Provider):
     name = "datacite"
     supports_doi = True
     supports_orcid = True
+    supports_title = True
 
     def __init__(
         self,
@@ -52,6 +56,51 @@ class DataCiteProvider(Provider):
         query = f"creators.nameIdentifiers.nameIdentifier:*{orcid}*"
         return self._search(query, limit=limit)
 
+    def datasets_for_title(
+        self,
+        title: str,
+        *,
+        authors: tuple[str, ...] = (),
+        year: int | None = None,
+        limit: int = 100,
+    ) -> ProviderResult:
+        """Search dataset titles and retain only strongly verified matches.
+
+        Data repositories commonly use titles such as ``Replication data for
+        <publication title>`` without depositing the publication DOI.  The API
+        query supplies recall; local title and creator checks supply precision.
+        ``year`` is kept in the public signature for future ranking but is not a
+        hard filter because replication packages can precede or follow papers.
+        """
+        del year
+        title = " ".join(title.split())
+        if not title:
+            raise ValueError("publication title must not be empty")
+        escaped_title = title.replace('"', '\\"')
+        payload = self._get_json(
+            f"{self._base_url}/dois",
+            params={
+                "query": f'titles.title:"{escaped_title}"',
+                "resource-type-id": "dataset",
+                "page[size]": limit,
+                "sort": "relevance",
+            },
+        )
+        hits: list[DatasetHit] = []
+        for record in payload.get("data", []):
+            attributes = record.get("attributes", {})
+            titles = attributes.get("titles") or []
+            candidate = str(titles[0].get("title") or "") if titles else ""
+            score = _title_match_score(title, candidate)
+            author_match = _has_author_overlap(authors, attributes.get("creators") or [])
+            enough_title_evidence = score >= 0.9 and len(_tokens(title)) >= 4
+            if not enough_title_evidence or (authors and not author_match):
+                continue
+            raw = dict(record)
+            raw["_match"] = {"title_score": score, "author_overlap": author_match}
+            hits.append(self._hit(raw, related_to=None, relation="verified-title-author-match"))
+        return ProviderResult(provider=self.name, hits=hits, total=len(hits))
+
     def _search(self, query: str, *, limit: int, related_to: str | None = None) -> ProviderResult:
         payload = self._get_json(
             f"{self._base_url}/dois",
@@ -61,13 +110,17 @@ class DataCiteProvider(Provider):
         total = payload.get("meta", {}).get("total")
         return ProviderResult(provider=self.name, hits=hits, total=total)
 
-    def _hit(self, record: dict[str, Any], related_to: str | None) -> DatasetHit:
+    def _hit(
+        self,
+        record: dict[str, Any],
+        related_to: str | None,
+        relation: str | None = None,
+    ) -> DatasetHit:
         attributes = record.get("attributes", {})
         titles = attributes.get("titles") or []
         publisher = attributes.get("publisher")
         if isinstance(publisher, dict):
             publisher = publisher.get("name")
-        relation = None
         if related_to is not None:
             for related in attributes.get("relatedIdentifiers") or []:
                 identifier = str(related.get("relatedIdentifier", ""))
@@ -85,3 +138,41 @@ class DataCiteProvider(Provider):
             url=attributes.get("url"),
             raw=record,
         )
+
+
+def _normalize(value: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", value.casefold())
+    ascii_text = "".join(char for char in decomposed if not unicodedata.combining(char))
+    return " ".join(re.findall(r"[a-z0-9]+", ascii_text))
+
+
+def _tokens(value: str) -> set[str]:
+    return set(_normalize(value).split())
+
+
+def _title_match_score(publication_title: str, dataset_title: str) -> float:
+    publication = _normalize(publication_title)
+    dataset = _normalize(dataset_title)
+    if not publication or not dataset:
+        return 0.0
+    if publication in dataset:
+        return 1.0
+    publication_tokens = set(publication.split())
+    coverage = len(publication_tokens & set(dataset.split())) / len(publication_tokens)
+    return max(coverage, SequenceMatcher(None, publication, dataset).ratio())
+
+
+def _surname(value: str) -> str:
+    parts = _normalize(value).split()
+    return parts[-1] if parts else ""
+
+
+def _has_author_overlap(authors: tuple[str, ...], creators: list[dict[str, Any]]) -> bool:
+    if not authors:
+        return False
+    publication_surnames = {_surname(author) for author in authors} - {""}
+    dataset_surnames = {
+        _surname(str(creator.get("familyName") or creator.get("name") or ""))
+        for creator in creators
+    } - {""}
+    return bool(publication_surnames & dataset_surnames)
