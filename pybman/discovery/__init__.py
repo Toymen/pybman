@@ -12,6 +12,7 @@ Quick start:
 """
 
 from ._client import DiscoveryError, Provider, make_session
+from .aea import AeaDataProvider
 from .aggregator import DataDiscovery, SupportsDiscovery
 from .b2find import B2FindProvider
 from .crossref import CrossrefProvider
@@ -26,6 +27,7 @@ from .osf import OsfProvider
 from .scholexplorer import ScholexplorerProvider
 
 __all__ = [
+    "AeaDataProvider",
     "B2FindProvider",
     "CrossrefProvider",
     "DataCiteProvider",

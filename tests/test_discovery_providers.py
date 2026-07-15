@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 
 from pybman.discovery import (
+    AeaDataProvider,
     B2FindProvider,
     CrossrefProvider,
     DataCiteProvider,
@@ -25,6 +26,26 @@ from pybman.discovery import (
 
 DOI = "10.1038/s41586-020-2649-2"
 ORCID = "0000-0003-1419-2405"
+
+
+def test_aea_provider_extracts_publisher_data_and_code_doi(responses):
+    responses.get(
+        "https://www.aeaweb.org/articles",
+        match=[responses.matchers.query_param_matcher({"id": "10.1257/aer.20240022"})],
+        body='<a href="https://doi.org/10.3886/E217262V1">Data and Code</a>',
+    )
+
+    result = AeaDataProvider().datasets_for_doi("10.1257/aer.20240022")
+
+    assert [hit.pid for hit in result.hits] == ["10.3886/e217262v1"]
+    assert result.hits[0].relation == "publisher-data-and-code-link"
+
+
+def test_aea_provider_skips_non_aea_doi_without_request(responses):
+    result = AeaDataProvider().datasets_for_doi("10.1016/example")
+
+    assert result.hits == []
+    assert len(responses.calls) == 0
 
 
 def _query(responses, call=0) -> dict[str, list[str]]:

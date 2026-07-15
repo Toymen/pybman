@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T19:57:39.470Z",
+  "generated_at": "2026-07-15T21:16:06.258Z",
   "definition": {
     "included": "Vorhandene Roh-/Prozessdaten, Datensätze oder Replikationspakete mit Datendateien und eindeutigem Publikationsbezug.",
     "excluded": "Studienprotokolle, Präregistrierungen ohne Daten, Software/Code-only, Registrierungen, Such-/Bibliografieseiten, bloße Supplement-Seiten ohne Datennachweis und nur angekündigte Freigaben.",
@@ -7,19 +7,18 @@
   },
   "metrics": {
     "publications": 279,
-    "candidate_records": 210,
-    "audited_unique_urls": 64,
-    "publications_yes": 31,
-    "publications_no": 248,
-    "accepted_links": 43,
-    "rejected_candidates": 157
+    "candidate_records": 240,
+    "audited_unique_urls": 73,
+    "publications_yes": 49,
+    "publications_no": 230,
+    "accepted_links": 74,
+    "rejected_candidates": 144
   },
   "rows": [
     {
       "pure_id": "item_3651909",
       "title": "Intuitive deontology? A systematic review and multivariate, multilevel meta-analysis of experimental studies on the psychological drivers of moral judgments",
-      "accepted_links": [],
-      "rejected_candidates": [
+      "accepted_links": [
         {
           "pure_id": "item_3651909",
           "publication_title": "Intuitive deontology? A systematic review and multivariate, multilevel meta-analysis of experimental studies on the psychological drivers of moral judgments",
@@ -48,58 +47,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sdbgf",
-              "file_count": 2,
+              "file_count": null,
               "data_files": [],
-              "code_files": [
-                "SearchStrategy.pdf",
-                "Preregistration.pdf"
-              ]
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
-        },
-        {
-          "pure_id": "item_3651909",
-          "publication_title": "Intuitive deontology? A systematic review and multivariate, multilevel meta-analysis of experimental studies on the psychological drivers of moral judgments",
-          "url": "https://osf.io/sdbgf/",
-          "source": "Provider",
-          "evidence": "trusted osf dataset evidence verified-title-author-match",
-          "dataset_title": "Intuitive Deontology? A Systematic Review and Multivariate, Multilevel Meta-Analysis of Experimental Studies on the Psychological Drivers of Moral Judgments",
-          "provider": "osf",
-          "relation": "verified-title-author-match",
-          "source_validation": "trusted osf dataset evidence",
-          "canonical_url": "https://osf.io/sdbgf",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Titel-/Autor:innen-Match (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "https://osf.io/sdbgf",
-            "final_url": "https://osf.io/sdbgf",
-            "available": true,
-            "http_status": 200,
-            "page_title": "OSF",
-            "access_status": "offen",
-            "verification_method": "HTTP",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": {
-              "node_id": "sdbgf",
-              "file_count": 2,
-              "data_files": [],
-              "code_files": [
-                "SearchStrategy.pdf",
-                "Preregistration.pdf"
-              ]
-            }
-          },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
+          "accepted": true,
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3612851",
@@ -245,6 +204,25 @@
           "link_audit": null,
           "accepted": false,
           "decision_reason": "Interaktive Publikationsseite, kein Datensatznachweis"
+        },
+        {
+          "pure_id": "item_3617210",
+          "publication_title": "Professor GPT: Having a large language model write a commentary on freedom of assembly",
+          "url": "https://professor-gpt.coll.mpg.de/html/overview.html",
+          "source": "Provider",
+          "evidence": "trusted pure-file dataset evidence curated-research-data-file",
+          "dataset_title": "https://professor-gpt.coll.mpg.de/html/overview.html",
+          "provider": "pure-file",
+          "relation": "curated-research-data-file",
+          "source_validation": "trusted pure-file dataset evidence",
+          "canonical_url": "https://professor-gpt.coll.mpg.de/html/overview.html",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Interaktive Publikationsseite, kein Datensatznachweis"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Interaktive Publikationsseite, kein Datensatznachweis"
         }
       ],
       "research_data": "nein"
@@ -281,21 +259,51 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sqcrm",
-              "file_count": 6,
-              "data_files": [
-                "GM_R.zip"
-              ],
-              "code_files": [
-                "SUPPL3.docx",
-                "BrohmerHofer_Variables_2024.docx",
-                "RA3_GM_Exploratory_Analyses.html",
-                "RA1_DescRelAdd_Analyses.html",
-                "RA2_GM_Main_Analyses.html"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+        },
+        {
+          "pure_id": "item_3616126",
+          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
+          "url": "https://osf.io/fdrn6/",
+          "source": "Provider",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.5334/irsp.522",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/fdrn6",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/fdrn6",
+            "final_url": "https://osf.io/fdrn6",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "fdrn6",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         },
         {
           "pure_id": "item_3616126",
@@ -359,7 +367,44 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3616126",
+          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
+          "url": "https://osf.io/ngjb2/",
+          "source": "Provider",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.5334/irsp.522",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/ngjb2",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/ngjb2",
+            "final_url": "https://osf.io/ngjb2",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "ngjb2",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -427,7 +472,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -464,7 +509,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -501,7 +546,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -540,7 +585,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -577,7 +622,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -690,7 +735,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -743,17 +788,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sqcrm",
-              "file_count": 6,
-              "data_files": [
-                "GM_R.zip"
-              ],
-              "code_files": [
-                "SUPPL3.docx",
-                "BrohmerHofer_Variables_2024.docx",
-                "RA3_GM_Exploratory_Analyses.html",
-                "RA1_DescRelAdd_Analyses.html",
-                "RA2_GM_Main_Analyses.html"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -809,7 +847,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -843,11 +881,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "fdrn6",
-              "file_count": 1,
+              "file_count": null,
               "data_files": [],
-              "code_files": [
-                "522-3517-3-ED.docx"
-              ]
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -915,7 +952,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -949,13 +986,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "ngjb2",
-              "file_count": 4,
+              "file_count": null,
               "data_files": [],
-              "code_files": [
-                "Methods_Procedures_Scales.docx",
-                "GenderStudy_Questionnaire_LimeSurvey.pdf",
-                "GenderStudy_Questionnaire_Word.docx"
-              ]
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -1023,7 +1057,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -1047,84 +1081,6 @@
           "link_audit": null,
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
-        },
-        {
-          "pure_id": "item_3616126",
-          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
-          "url": "https://osf.io/fdrn6/",
-          "source": "Provider",
-          "evidence": "trusted europepmc dataset evidence data-availability-statement",
-          "dataset_title": "Data availability link for 10.5334/irsp.522",
-          "provider": "europepmc",
-          "relation": "data-availability-statement",
-          "source_validation": "trusted europepmc dataset evidence",
-          "canonical_url": "https://osf.io/fdrn6",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Link aus expliziter Data-Availability-Statement"
-          },
-          "link_audit": {
-            "requested_url": "https://osf.io/fdrn6",
-            "final_url": "https://osf.io/fdrn6",
-            "available": true,
-            "http_status": 200,
-            "page_title": "OSF",
-            "access_status": "offen",
-            "verification_method": "HTTP",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": {
-              "node_id": "fdrn6",
-              "file_count": 1,
-              "data_files": [],
-              "code_files": [
-                "522-3517-3-ED.docx"
-              ]
-            }
-          },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
-        },
-        {
-          "pure_id": "item_3616126",
-          "publication_title": "Effects of the generic masculine and its alternatives in germanophone countries: A multi-lab replication and extension of Stahlberg, Sczesny, and Braun (2001)",
-          "url": "https://osf.io/ngjb2/",
-          "source": "Provider",
-          "evidence": "trusted europepmc dataset evidence data-availability-statement",
-          "dataset_title": "Data availability link for 10.5334/irsp.522",
-          "provider": "europepmc",
-          "relation": "data-availability-statement",
-          "source_validation": "trusted europepmc dataset evidence",
-          "canonical_url": "https://osf.io/ngjb2",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Link aus expliziter Data-Availability-Statement"
-          },
-          "link_audit": {
-            "requested_url": "https://osf.io/ngjb2",
-            "final_url": "https://osf.io/ngjb2",
-            "available": true,
-            "http_status": 200,
-            "page_title": "OSF",
-            "access_status": "offen",
-            "verification_method": "HTTP",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": {
-              "node_id": "ngjb2",
-              "file_count": 4,
-              "data_files": [],
-              "code_files": [
-                "Methods_Procedures_Scales.docx",
-                "GenderStudy_Questionnaire_LimeSurvey.pdf",
-                "GenderStudy_Questionnaire_Word.docx"
-              ]
-            }
-          },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
         }
       ],
       "research_data": "ja"
@@ -1161,18 +1117,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "2gf8k",
-              "file_count": 3,
-              "data_files": [
-                "HLR_ElectoralReformTrilemma_Data.dta"
-              ],
-              "code_files": [
-                "HLR_ElectoralReformTrilemma_Code.do",
-                "2022-10-19_HLR_ElectoralReform_PAP.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
         }
       ],
       "rejected_candidates": [],
@@ -1252,7 +1204,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -1297,7 +1249,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -1349,8 +1301,7 @@
     {
       "pure_id": "item_3532287",
       "title": "Outcomes or participation? Experimentally testing competing sources of legitimacy for taxation",
-      "accepted_links": [],
-      "rejected_candidates": [
+      "accepted_links": [
         {
           "pure_id": "item_3532287",
           "publication_title": "Outcomes or participation? Experimentally testing competing sources of legitimacy for taxation",
@@ -1372,77 +1323,15 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
-        },
-        {
-          "pure_id": "item_3532287",
-          "publication_title": "Outcomes or participation? Experimentally testing competing sources of legitimacy for taxation",
-          "url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V4.2",
-          "source": "Provider",
-          "evidence": "trusted datacite dataset evidence IsDocumentedBy",
-          "dataset_title": "ECIN Replication Package for \"Outcomes or Participation? Experimentally Testing Competing Sources of Legitimacy for Taxation\"",
-          "provider": "datacite",
-          "relation": "IsDocumentedBy",
-          "source_validation": "trusted datacite dataset evidence",
-          "canonical_url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V4.2",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Titel-/Autor:innen-Match (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V4.2",
-            "final_url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V4.2",
-            "available": false,
-            "http_status": 403,
-            "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
-            "verification_method": "Playwright",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": null
-          },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
-        },
-        {
-          "pure_id": "item_3532287",
-          "publication_title": "Outcomes or participation? Experimentally testing competing sources of legitimacy for taxation",
-          "url": "https://doi.org/10.3886/e193522v2",
-          "source": "Provider",
-          "evidence": "DataCite resourceTypeGeneral=Dataset IsRelatedTo",
-          "dataset_title": "ECIN Replication Package for \"Outcomes or Participation? Experimentally Testing Competing Sources of Legitimacy for Taxation\"",
-          "provider": "scholexplorer",
-          "relation": "IsRelatedTo",
-          "source_validation": "DataCite resourceTypeGeneral=Dataset",
-          "canonical_url": "https://doi.org/10.3886/e193522v2",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "DataCite-Dataset mit engem Titelbezug (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "https://doi.org/10.3886/e193522v2",
-            "final_url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V2.0",
-            "available": false,
-            "http_status": 403,
-            "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
-            "verification_method": "Playwright",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": null
-          },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         },
         {
           "pure_id": "item_3532287",
@@ -1465,15 +1354,15 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         },
         {
           "pure_id": "item_3532287",
@@ -1496,15 +1385,15 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         },
         {
           "pure_id": "item_3532287",
@@ -1527,7 +1416,40 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
+        }
+      ],
+      "rejected_candidates": [
+        {
+          "pure_id": "item_3532287",
+          "publication_title": "Outcomes or participation? Experimentally testing competing sources of legitimacy for taxation",
+          "url": "https://doi.org/10.3886/e193522v2",
+          "source": "Provider",
+          "evidence": "DataCite resourceTypeGeneral=Dataset IsRelatedTo",
+          "dataset_title": "ECIN Replication Package for \"Outcomes or Participation? Experimentally Testing Competing Sources of Legitimacy for Taxation\"",
+          "provider": "scholexplorer",
+          "relation": "IsRelatedTo",
+          "source_validation": "DataCite resourceTypeGeneral=Dataset",
+          "canonical_url": "https://doi.org/10.3886/e193522v2",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "DataCite-Dataset mit engem Titelbezug (1.00)"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.3886/e193522v2",
+            "final_url": "https://www.icpsr.umich.edu/sites/weai/view/studies/193522/versions/V2.0",
+            "available": false,
+            "http_status": 403,
+            "page_title": "Just a moment...",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
@@ -1538,13 +1460,12 @@
           "decision_reason": "Zielseite nicht erreichbar"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3587790",
       "title": "Uncertainty and information acquisition: Evidence from firms and households",
-      "accepted_links": [],
-      "rejected_candidates": [
+      "accepted_links": [
         {
           "pure_id": "item_3587790",
           "publication_title": "Uncertainty and information acquisition: Evidence from firms and households",
@@ -1566,46 +1487,15 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
-        },
-        {
-          "pure_id": "item_3587790",
-          "publication_title": "Uncertainty and information acquisition: Evidence from firms and households",
-          "url": "https://www.openicpsr.org/openicpsr/project/184701/version/V1/view",
-          "source": "Provider",
-          "evidence": "trusted datacite dataset evidence verified-title-author-match",
-          "dataset_title": "Data and Code for: Uncertainty and Information Acquisition: Evidence From Firms and Households",
-          "provider": "datacite",
-          "relation": "verified-title-author-match",
-          "source_validation": "trusted datacite dataset evidence",
-          "canonical_url": "https://www.openicpsr.org/openicpsr/project/184701/version/V1/view",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Titel-/Autor:innen-Match (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "https://www.openicpsr.org/openicpsr/project/184701/version/V1/view",
-            "final_url": "https://www.openicpsr.org/openicpsr/project/184701/version/V1/view",
-            "available": false,
-            "http_status": 403,
-            "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
-            "verification_method": "Playwright",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": null
-          },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         },
         {
           "pure_id": "item_3587790",
@@ -1628,18 +1518,19 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3497021",
@@ -1676,7 +1567,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -1721,7 +1612,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 401"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -1795,17 +1686,51 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4n8hy",
-              "file_count": 2,
-              "data_files": [
-                "data_aac_public.dta"
-              ],
-              "code_files": [
-                "analysis_public.do"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+        },
+        {
+          "pure_id": "item_3565226",
+          "publication_title": "Who cares when Value (mis)reporting may be found out? An Acquiring-a-Company experiment with value messages and information leaks",
+          "url": "https://osf.io/4n8hy/",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Who cares when Value (mis)reporting may be found out? An Acquiring-a-Company experiment with value messages and information leaks",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/4n8hy",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/4n8hy",
+            "final_url": "https://osf.io/4n8hy",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "4n8hy",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
         }
       ],
       "rejected_candidates": [
@@ -1866,7 +1791,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -1908,38 +1833,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "6jp9q",
-              "file_count": 23,
-              "data_files": [
-                "Appendix A_Raw Data.csv",
-                "Appendix B_Raw Data_Anonym.csv",
-                "Study 2_Raw Data_Anonym.csv",
-                "Study 3a_Raw Data_Anonym.csv",
-                "Study 1_Raw Data_Anonym.csv",
-                "Study 3b_Raw Data_Anonym.csv"
-              ],
-              "code_files": [
-                "Appendix A_Instructions.docx",
-                "Appendix A_Analysis.do",
-                "Appendix A_Codebook.docx",
-                "Appendix B_Instructions.docx",
-                "Appendix B_Analysis.do",
-                "Appendix B_Codebook.docx",
-                "Study 2_Instructions.docx",
-                "Study 2_Codebook.docx",
-                "Study 2_Analysis.do",
-                "Study 3a_Analysis.do",
-                "Study 3a_Instructions.docx",
-                "Study 1_Analysis.do",
-                "Study 1_Codebook.docx",
-                "Study 1_Instructions_Different Charities condition.docx",
-                "Study 1_Instructions_Same Charity condition.docx",
-                "Study 3b_Instructions.docx",
-                "Study 3b_Analysis.do"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
         }
       ],
       "rejected_candidates": [
@@ -2053,7 +1954,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -2172,7 +2073,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -2217,7 +2118,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "The operation was aborted due to timeout"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -2355,9 +2256,41 @@
     {
       "pure_id": "item_3690817",
       "title": "LEXam: Benchmarking legal reasoning on 340 law exams",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3690817",
+          "publication_title": "LEXam: Benchmarking legal reasoning on 340 law exams",
+          "url": "https://github.com/LEXam-Benchmark/LEXam",
+          "source": "Provider",
+          "evidence": "trusted github-data dataset evidence verified-readme-title-and-data-files",
+          "dataset_title": "Data repository for LEXam: Benchmarking legal reasoning on 340 law exams",
+          "provider": "github-data",
+          "relation": "verified-readme-title-and-data-files",
+          "source_validation": "trusted github-data dataset evidence",
+          "canonical_url": "https://github.com/LEXam-Benchmark/LEXam",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://github.com/LEXam-Benchmark/LEXam",
+            "final_url": "https://github.com/LEXam-Benchmark/LEXam",
+            "available": true,
+            "http_status": 200,
+            "page_title": "GitHub - LEXam-Benchmark/LEXam: [ICLR] This Repo provides code for evaluating LLMs on LEXam - a comprehensive benchmark evaluating AI system&#39;s legal reasoning ability with law exam questions, using both open and multiple-choice questions. · GitHub",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": true,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3686547",
@@ -2369,8 +2302,7 @@
     {
       "pure_id": "item_3674646",
       "title": "Risk preferences and field behavior: The relevance of higher-order risk preferences",
-      "accepted_links": [],
-      "rejected_candidates": [
+      "accepted_links": [
         {
           "pure_id": "item_3674646",
           "publication_title": "Risk preferences and field behavior: The relevance of higher-order risk preferences",
@@ -2392,15 +2324,15 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         },
         {
           "pure_id": "item_3674646",
@@ -2423,18 +2355,19 @@
             "available": false,
             "http_status": 403,
             "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3702660",
@@ -2475,35 +2408,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "gx4sh",
-              "file_count": 20,
-              "data_files": [
-                "001_RawData.dta",
-                "003_Data.dta"
-              ],
-              "code_files": [
-                "Fig3g.pdf",
-                "Fig3.pdf",
-                "Fig9.pdf",
-                "Fig5g.pdf",
-                "Fig7.pdf",
-                "Fig8g.pdf",
-                "Fig6.pdf",
-                "FigA1g.pdf",
-                "Fig8.pdf",
-                "Fig6g.pdf",
-                "Fig5.pdf",
-                "Fig4.pdf",
-                "Fig4g.pdf",
-                "FigA1.pdf",
-                "Fig7g.pdf",
-                "004_AnalysisSkript.do",
-                "Fig9g.pdf",
-                "002_DataPreparationSkript.do"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite; 2 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite"
         }
       ],
       "rejected_candidates": [
@@ -2800,7 +2712,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 401"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -2837,14 +2749,53 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 401"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
           "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
-      "rejected_candidates": [],
+      "rejected_candidates": [
+        {
+          "pure_id": "item_3703133",
+          "publication_title": "Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
+          "url": "https://osf.io/s43na/?view_only=ecc07a520bf64",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/s43na/?view_only=ecc07a520bf64",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Unvollständiger OSF-View-only-Schlüssel"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Unvollständiger OSF-View-only-Schlüssel"
+        },
+        {
+          "pure_id": "item_3703133",
+          "publication_title": "Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
+          "url": "https://osf.io/d2fex/?view_only=daca4",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/d2fex/?view_only=daca4",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Unvollständiger OSF-View-only-Schlüssel"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Unvollständiger OSF-View-only-Schlüssel"
+        }
+      ],
       "research_data": "ja"
     },
     {
@@ -2879,31 +2830,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": 16,
-              "data_files": [
-                "cost_comp_by_stake.csv",
-                "survey2_fullprop.csv",
-                "survey1_exp_of_interest.csv",
-                "gender_data.csv",
-                "README.txt",
-                "survey3_reviewer.csv",
-                "cost_comp_by_acceptance.csv",
-                "hours_administration.xlsx",
-                "README.txt"
-              ],
-              "code_files": [
-                "freiraum_2025_1_survey_questions.pdf",
-                "freiraum_2025_2_survey_questions.pdf",
-                "freiraum_2025_reviewer_survey_questions.pdf",
-                "fig_3_and_preferences.R",
-                "fig_2_and_workhours_costs.R",
-                "fig_1_and_gender.R",
-                "cost_estimates_scenarios.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00); 9 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
         }
       ],
       "rejected_candidates": [
@@ -2954,27 +2888,10 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": 16,
-              "data_files": [
-                "cost_comp_by_stake.csv",
-                "survey2_fullprop.csv",
-                "survey1_exp_of_interest.csv",
-                "gender_data.csv",
-                "README.txt",
-                "survey3_reviewer.csv",
-                "cost_comp_by_acceptance.csv",
-                "hours_administration.xlsx",
-                "README.txt"
-              ],
-              "code_files": [
-                "freiraum_2025_1_survey_questions.pdf",
-                "freiraum_2025_2_survey_questions.pdf",
-                "freiraum_2025_reviewer_survey_questions.pdf",
-                "fig_3_and_preferences.R",
-                "fig_2_and_workhours_costs.R",
-                "fig_1_and_gender.R",
-                "cost_estimates_scenarios.R"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": false,
@@ -2995,7 +2912,25 @@
             "accepted": false,
             "reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
           },
-          "link_audit": null,
+          "link_audit": {
+            "requested_url": "https://doi.org/10.17605/osf.io/4ufrb",
+            "final_url": "https://osf.io/4ufrb/",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "4ufrb",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         },
@@ -3055,6 +2990,25 @@
           "link_audit": null,
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
+        },
+        {
+          "pure_id": "item_3702850",
+          "publication_title": "Lottery before peer review is associated with increased female representation and reduced estimated economic cost in a German funding line",
+          "url": "https://osf.io/4ufrb/(https://doi.org/10.17605/OSF.IO/4UFRB",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Lottery before peer review is associated with increased female representation and reduced estimated economic cost in a German funding line",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/4ufrb/(https://doi.org/10.17605/OSF.IO/4UFRB",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Fehlerhaft verkettete URL aus PDF-Textextraktion"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Fehlerhaft verkettete URL aus PDF-Textextraktion"
         }
       ],
       "research_data": "ja"
@@ -3228,31 +3182,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "sh4rb",
-              "file_count": 17,
-              "data_files": [
-                "imputed-ind-data-attention-check.csv",
-                "gsn-contexts-clean-long.csv",
-                "imputed-ind-data-full.csv",
-                "sfig4-data.csv",
-                "gsn_situations.sav",
-                "wvs-data.csv",
-                "2F Country Distance 1pml adj.xlsx",
-                "sfig3-data.csv",
-                "sfig6-data.csv",
-                "everyday-norms-2011-clean.csv",
-                "gsn-situations-clean-long.csv",
-                "sfig2b_data.csv",
-                "individual-data-prereg.csv"
-              ],
-              "code_files": [
-                "02_measurement-invariance.R",
-                "01_preprocess-data.R",
-                "03_manus-analysis.Rmd"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite; 13 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Explizite Data-Availability-Aussage der Verlagsseite"
         }
       ],
       "rejected_candidates": [
@@ -3795,9 +3732,41 @@
     {
       "pure_id": "item_3664430",
       "title": "Cursed sequential equilibrium",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3664430",
+          "publication_title": "Cursed sequential equilibrium",
+          "url": "https://doi.org/10.3886/e216501v1",
+          "source": "Provider",
+          "evidence": "trusted aea dataset evidence publisher-data-and-code-link",
+          "dataset_title": "",
+          "provider": "aea",
+          "relation": "publisher-data-and-code-link",
+          "source_validation": "trusted aea dataset evidence",
+          "canonical_url": "https://doi.org/10.3886/e216501v1",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Direkter Data-and-Code-Link auf der AEA-Artikelseite"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.3886/e216501v1",
+            "final_url": "https://www.openicpsr.org/openicpsr/project/216501/version/V1/view",
+            "available": false,
+            "http_status": 403,
+            "page_title": "Just a moment...",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "Direkter Data-and-Code-Link auf der AEA-Artikelseite; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3652419",
@@ -3809,27 +3778,7 @@
     {
       "pure_id": "item_3663972",
       "title": "Cognitive processes of ingroup favoritism across 20 countries: An eye-tracking investigation of culture, behavior, and cognition",
-      "accepted_links": [],
-      "rejected_candidates": [
-        {
-          "pure_id": "item_3663972",
-          "publication_title": "Cognitive processes of ingroup favoritism across 20 countries: An eye-tracking investigation of culture, behavior, and cognition",
-          "url": "https://doi.org/10.14281/18241.13",
-          "source": "Provider",
-          "evidence": "DataCite resourceTypeGeneral=Dataset IsRelatedTo",
-          "dataset_title": "World Values Survey Wave 7 (2017-2020) Cross-National Data-Set",
-          "provider": "scholexplorer",
-          "relation": "IsRelatedTo",
-          "source_validation": "DataCite resourceTypeGeneral=Dataset",
-          "canonical_url": "https://doi.org/10.14281/18241.13",
-          "semantic_precheck": {
-            "accepted": false,
-            "reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
-          },
-          "link_audit": null,
-          "accepted": false,
-          "decision_reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
-        },
+      "accepted_links": [
         {
           "pure_id": "item_3663972",
           "publication_title": "Cognitive processes of ingroup favoritism across 20 countries: An eye-tracking investigation of culture, behavior, and cognition",
@@ -3858,18 +3807,38 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "8zqjf",
-              "file_count": 1,
+              "file_count": null,
               "data_files": [],
-              "code_files": [
-                "Visualization of Predictions.pdf"
-              ]
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
+          "accepted": true,
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [
+        {
+          "pure_id": "item_3663972",
+          "publication_title": "Cognitive processes of ingroup favoritism across 20 countries: An eye-tracking investigation of culture, behavior, and cognition",
+          "url": "https://doi.org/10.14281/18241.13",
+          "source": "Provider",
+          "evidence": "DataCite resourceTypeGeneral=Dataset IsRelatedTo",
+          "dataset_title": "World Values Survey Wave 7 (2017-2020) Cross-National Data-Set",
+          "provider": "scholexplorer",
+          "relation": "IsRelatedTo",
+          "source_validation": "DataCite resourceTypeGeneral=Dataset",
+          "canonical_url": "https://doi.org/10.14281/18241.13",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
+        }
+      ],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3661775",
@@ -4003,9 +3972,41 @@
     {
       "pure_id": "item_3664432",
       "title": "Home price expectations and spending: Evidence from a field experiment",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3664432",
+          "publication_title": "Home price expectations and spending: Evidence from a field experiment",
+          "url": "https://doi.org/10.3886/e217262v1",
+          "source": "Provider",
+          "evidence": "trusted aea dataset evidence publisher-data-and-code-link",
+          "dataset_title": "",
+          "provider": "aea",
+          "relation": "publisher-data-and-code-link",
+          "source_validation": "trusted aea dataset evidence",
+          "canonical_url": "https://doi.org/10.3886/e217262v1",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Direkter Data-and-Code-Link auf der AEA-Artikelseite"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.3886/e217262v1",
+            "final_url": "https://www.openicpsr.org/openicpsr/project/217262/version/V1/view",
+            "available": false,
+            "http_status": 403,
+            "page_title": "Just a moment...",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "Direkter Data-and-Code-Link auf der AEA-Artikelseite; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3670247",
@@ -4256,9 +4257,47 @@
     {
       "pure_id": "item_3639937",
       "title": "Far-right movements in the Western world: How media exposure relates to normative beliefs and attitudes toward the far-right",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3639937",
+          "publication_title": "Far-right movements in the Western world: How media exposure relates to normative beliefs and attitudes toward the far-right",
+          "url": "https://osf.io/n8esu/",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Far-right movements in the Western world: How media exposure relates to normative beliefs and attitudes toward the far-right",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/n8esu",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/n8esu",
+            "final_url": "https://osf.io/n8esu",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "n8esu",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3632409",
@@ -4534,27 +4573,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "duvrc",
-              "file_count": 24,
-              "data_files": [
-                "Study 1_de-identified.sav",
-                "Study2b_punisher_de-identified.sav",
-                "Study2b_de-identified.sav",
-                "Study 3_de-identified.sav",
-                "Study 4_de-identified.sav",
-                "Study 2a_de-identified.sav"
-              ],
-              "code_files": [
-                "Materials.pdf",
-                "Study 1_Preregistration.pdf",
-                "Study 2b_Preregistration.pdf",
-                "Study 3_Preregistration.pdf",
-                "Study 4_Preregistration.pdf",
-                "Study 2a_Preregistration.pdf"
-              ]
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         },
         {
           "pure_id": "item_3657005",
@@ -4587,7 +4613,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -4624,7 +4650,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -4661,7 +4687,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -4698,7 +4724,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -4735,7 +4761,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 404"
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
@@ -5152,7 +5178,39 @@
     {
       "pure_id": "item_3632293",
       "title": "Lawma: The power of specialization for legal tasks",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3632293",
+          "publication_title": "Lawma: The power of specialization for legal tasks",
+          "url": "https://github.com/socialfoundations/lawma",
+          "source": "Provider",
+          "evidence": "trusted github-data dataset evidence verified-readme-title-and-data-files",
+          "dataset_title": "Data repository for Lawma: The power of specialization for legal tasks",
+          "provider": "github-data",
+          "relation": "verified-readme-title-and-data-files",
+          "source_validation": "trusted github-data dataset evidence",
+          "canonical_url": "https://github.com/socialfoundations/lawma",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://github.com/socialfoundations/lawma",
+            "final_url": "https://github.com/socialfoundations/lawma",
+            "available": true,
+            "http_status": 200,
+            "page_title": "GitHub - socialfoundations/lawma: Lawma: A lightly fine-tuned Llama model for legal classification tasks. · GitHub",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": true,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [
         {
           "pure_id": "item_3632293",
@@ -5174,7 +5232,7 @@
           "decision_reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.00)"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3631458",
@@ -5744,9 +5802,48 @@
     {
       "pure_id": "item_3623842",
       "title": "Out of sight is out of mind? Experimentally testing a gradually materializing public bad",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3623842",
+          "publication_title": "Out of sight is out of mind? Experimentally testing a gradually materializing public bad",
+          "url": "https://osf.io/hqawx/",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted osf dataset evidence verified-title-author-match",
+          "dataset_title": "Out of Sight is Out of Mind? Experimentally Testing a Gradually Materializing Public Bad",
+          "provider": "osf",
+          "relation": "verified-title-author-match",
+          "source_validation": "trusted osf dataset evidence",
+          "canonical_url": "https://osf.io/hqawx",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Titel-/Autor:innen-Match (1.00)"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/hqawx",
+            "final_url": "https://osf.io/hqawx",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "hqawx",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3686548; Titel-/Autor:innen-Match (1.00)"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja",
+      "propagated_from": "item_3686548"
     },
     {
       "pure_id": "item_3616658",
@@ -5780,15 +5877,14 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "98tfa",
-              "file_count": 1,
-              "data_files": [
-                "main_analyses_04.09.24.zip"
-              ],
-              "code_files": []
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement; 1 Datendatei(en) über OSF-API bestätigt"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
       "rejected_candidates": [],
@@ -5825,9 +5921,47 @@
     {
       "pure_id": "item_3637996",
       "title": "Your lies don't leave me cold: Assessing direct, indirect and physiological measures of lie detection",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3637996",
+          "publication_title": "Your lies don't leave me cold: Assessing direct, indirect and physiological measures of lie detection",
+          "url": "https://doi.org/10.17605/OSF.IO/RGAWF",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Your lies don't leave me cold: Assessing direct, indirect and physiological measures of lie detection",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://doi.org/10.17605/osf.io/rgawf",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.17605/osf.io/rgawf",
+            "final_url": "https://osf.io/rgawf/",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "rgawf",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3628723",
@@ -6116,9 +6250,42 @@
     {
       "pure_id": "item_3606520",
       "title": "Designing a kidney exchange program in Germany: Simulations and recommendations",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3606520",
+          "publication_title": "Designing a kidney exchange program in Germany: Simulations and recommendations",
+          "url": "https://doi.org/10.5525/gla.researchdata.1661",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "category=research-data; title=https://doi.org/10.5525/gla.researchdata.1661; links=https://doi.org/10.5525/gla.researchdata.1661",
+          "dataset_title": "",
+          "provider": "",
+          "relation": "curated-research-data-field",
+          "source_validation": "PuRe",
+          "canonical_url": "https://doi.org/10.5525/gla.researchdata.1661",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.5525/gla.researchdata.1661",
+            "final_url": "https://researchdata.gla.ac.uk/1661/",
+            "available": true,
+            "http_status": 200,
+            "page_title": "Designing a Kidney Exchange Program in Germany: Simulations and Recommendations - Enlighten Research Data",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": true,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3612851; Kuratiertes PuRe-Forschungsdatenfeld"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja",
+      "propagated_from": "item_3612851"
     },
     {
       "pure_id": "item_3616083",
@@ -6200,9 +6367,233 @@
     {
       "pure_id": "item_3657006",
       "title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://doi.org/10.17605/osf.io/duvrc",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://doi.org/10.17605/osf.io/duvrc",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://doi.org/10.17605/osf.io/duvrc",
+            "final_url": "https://osf.io/duvrc/",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "duvrc",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://osf.io/798vd",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/798vd",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/798vd",
+            "final_url": "https://osf.io/798vd",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "798vd",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://osf.io/u7zsa",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/u7zsa",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/u7zsa",
+            "final_url": "https://osf.io/u7zsa",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "u7zsa",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://osf.io/xzhpw",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/xzhpw",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/xzhpw",
+            "final_url": "https://osf.io/xzhpw",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "xzhpw",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://osf.io/8n9k7",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/8n9k7",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/8n9k7",
+            "final_url": "https://osf.io/8n9k7",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "8n9k7",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        },
+        {
+          "pure_id": "item_3657006",
+          "publication_title": "Maintaining cooperation through vertical communication of trust when removing sanctions",
+          "url": "https://osf.io/a8x3u",
+          "source": "PuRe-Parallelfassung",
+          "evidence": "trusted europepmc dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for 10.1073/pnas.2415010122",
+          "provider": "europepmc",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted europepmc dataset evidence",
+          "canonical_url": "https://osf.io/a8x3u",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus expliziter Data-Availability-Statement"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/a8x3u",
+            "final_url": "https://osf.io/a8x3u",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "a8x3u",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja",
+      "propagated_from": "item_3657005"
     },
     {
       "pure_id": "item_3590430",
@@ -6453,8 +6844,7 @@
     {
       "pure_id": "item_3590613",
       "title": "Deliberately ignoring unfairness: Responses to uncertain inequality in the ultimatum game",
-      "accepted_links": [],
-      "rejected_candidates": [
+      "accepted_links": [
         {
           "pure_id": "item_3590613",
           "publication_title": "Deliberately ignoring unfairness: Responses to uncertain inequality in the ultimatum game",
@@ -6483,16 +6873,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": 0,
+              "file_count": null,
               "data_files": [],
-              "code_files": []
+              "code_files": [],
+              "error": "HTTP 429"
             }
           },
-          "accepted": false,
-          "decision_reason": "OSF-Projekt ist erreichbar, enthält aber keine Dateien"
+          "accepted": true,
+          "decision_reason": "Link aus expliziter Data-Availability-Statement"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3522331",
@@ -6850,9 +7242,47 @@
     {
       "pure_id": "item_3566493",
       "title": "Deliberately ignoring unfairness: Responses to uncertain inequality in the ultimatum game",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3566493",
+          "publication_title": "Deliberately ignoring unfairness: Responses to uncertain inequality in the ultimatum game",
+          "url": "https://osf.io/rgeq8",
+          "source": "Provider",
+          "evidence": "trusted pure-fulltext dataset evidence data-availability-statement",
+          "dataset_title": "Data availability link for Deliberately ignoring unfairness: Responses to uncertain inequality in the ultimatum game",
+          "provider": "pure-fulltext",
+          "relation": "data-availability-statement",
+          "source_validation": "trusted pure-fulltext dataset evidence",
+          "canonical_url": "https://osf.io/rgeq8",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/rgeq8",
+            "final_url": "https://osf.io/rgeq8",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "rgeq8",
+              "file_count": null,
+              "data_files": [],
+              "code_files": [],
+              "error": "HTTP 429"
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3566108",
@@ -6864,39 +7294,7 @@
     {
       "pure_id": "item_3521102",
       "title": "Exploiting ultimatum power when responders are better informed: Theoretical and experimental analysis of conflict resolution",
-      "accepted_links": [],
-      "rejected_candidates": [
-        {
-          "pure_id": "item_3521102",
-          "publication_title": "Exploiting ultimatum power when responders are better informed: Theoretical and experimental analysis of conflict resolution",
-          "url": "http://journals.sagepub.com/doi/full/10.1177/00220027231167846#supplementary-materials",
-          "source": "Provider",
-          "evidence": "trusted datacite dataset evidence verified-title-author-match",
-          "dataset_title": "Supplemental Material - Exploiting Ultimatum Power When Responders Are Better Informed − Theoretical and Experimental Analysis of Conflict Resolution",
-          "provider": "datacite",
-          "relation": "verified-title-author-match",
-          "source_validation": "trusted datacite dataset evidence",
-          "canonical_url": "http://journals.sagepub.com/doi/full/10.1177/00220027231167846",
-          "semantic_precheck": {
-            "accepted": true,
-            "reason": "Titel-/Autor:innen-Match (1.00)"
-          },
-          "link_audit": {
-            "requested_url": "http://journals.sagepub.com/doi/full/10.1177/00220027231167846",
-            "final_url": "https://journals.sagepub.com/doi/full/10.1177/00220027231167846",
-            "available": false,
-            "http_status": 403,
-            "page_title": "Just a moment...",
-            "access_status": "nicht erreichbar",
-            "verification_method": "Playwright",
-            "error": "",
-            "page_has_data_terms": false,
-            "page_has_exclusion_terms": false,
-            "osf": null
-          },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
-        },
+      "accepted_links": [
         {
           "pure_id": "item_3521102",
           "publication_title": "Exploiting ultimatum power when responders are better informed: Theoretical and experimental analysis of conflict resolution",
@@ -6918,18 +7316,39 @@
             "available": false,
             "http_status": 403,
             "page_title": "403 Forbidden",
-            "access_status": "nicht erreichbar",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
             "verification_method": "Playwright",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": null
           },
-          "accepted": false,
-          "decision_reason": "Zielseite nicht erreichbar"
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
         }
       ],
-      "research_data": "nein"
+      "rejected_candidates": [
+        {
+          "pure_id": "item_3521102",
+          "publication_title": "Exploiting ultimatum power when responders are better informed: Theoretical and experimental analysis of conflict resolution",
+          "url": "http://journals.sagepub.com/doi/full/10.1177/00220027231167846#supplementary-materials",
+          "source": "Provider",
+          "evidence": "trusted datacite dataset evidence verified-title-author-match",
+          "dataset_title": "Supplemental Material - Exploiting Ultimatum Power When Responders Are Better Informed − Theoretical and Experimental Analysis of Conflict Resolution",
+          "provider": "datacite",
+          "relation": "verified-title-author-match",
+          "source_validation": "trusted datacite dataset evidence",
+          "canonical_url": "http://journals.sagepub.com/doi/full/10.1177/00220027231167846",
+          "semantic_precheck": {
+            "accepted": false,
+            "reason": "Verlagsartikel statt eigenständiger Datensatz-Landingpage"
+          },
+          "link_audit": null,
+          "accepted": false,
+          "decision_reason": "Verlagsartikel statt eigenständiger Datensatz-Landingpage"
+        }
+      ],
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3569815",
@@ -7132,9 +7551,41 @@
     {
       "pure_id": "item_3559765",
       "title": "Disentangling reputation from selection effects in markets with informational asymmetries – a field experiment",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3559765",
+          "publication_title": "Disentangling reputation from selection effects in markets with informational asymmetries – a field experiment",
+          "url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/R0WN9H",
+          "source": "Provider",
+          "evidence": "trusted datacite dataset evidence verified-orcid-title-match",
+          "dataset_title": "Replication Data for: Disentangling Reputation from Selection Effects in Markets with Informational Asymmetries - A Field Experimentation",
+          "provider": "datacite",
+          "relation": "verified-orcid-title-match",
+          "source_validation": "trusted datacite dataset evidence",
+          "canonical_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/R0WN9H",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Titel-/Autor:innen-Match (0.89)"
+          },
+          "link_audit": {
+            "requested_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/R0WN9H",
+            "final_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/R0WN9H",
+            "available": true,
+            "http_status": 202,
+            "page_title": "Replication Data for: Disentangling Reputation from Selection Effects in Markets with Informational Asymmetries - A Field Experimentation - Review of Economics and Statistics Dataverse",
+            "access_status": "offen",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": false,
+            "osf": null
+          },
+          "accepted": true,
+          "decision_reason": "Titel-/Autor:innen-Match (0.89)"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3674682",

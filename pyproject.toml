@@ -52,6 +52,9 @@ dev = [
     "mypy>=1.11",
     "types-requests",
 ]
+research = [
+    "pypdf>=5",
+]
 # webapp/: sync-to-SQLite + Flask table/Excel UI (see webapp/README or the
 # top-level README's Docker section). Not part of the published pybman wheel.
 web = [

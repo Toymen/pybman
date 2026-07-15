@@ -11,7 +11,18 @@ from urllib.parse import quote
 
 import requests
 
-TRUSTED_EVIDENCE_PROVIDERS = {"datacite", "b2find", "osf", "europepmc"}
+TRUSTED_EVIDENCE_PROVIDERS = {
+    "datacite",
+    "b2find",
+    "osf",
+    "europepmc",
+    "pure-file",
+    "pure-fulltext",
+    "publisher-supplement",
+    "aea",
+    "github-data",
+    "openalex-fulltext",
+}
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 
 

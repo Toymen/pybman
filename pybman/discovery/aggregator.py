@@ -8,6 +8,7 @@ from typing import Any, Protocol, runtime_checkable
 import requests
 
 from ._client import make_session
+from .aea import AeaDataProvider
 from .b2find import B2FindProvider
 from .crossref import CrossrefProvider
 from .datacite import DataCiteProvider
@@ -71,6 +72,7 @@ class DataDiscovery:
             shared = session if session is not None else make_session(retries)
             common: dict[str, Any] = {"session": shared, "timeout": timeout}
             providers = [
+                AeaDataProvider(**common),
                 DataCiteProvider(**common),
                 EuropePmcProvider(**common),
                 OpenAIREProvider(access_token=openaire_token, **common),

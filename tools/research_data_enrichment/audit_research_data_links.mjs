@@ -85,6 +85,27 @@ function titleSimilarity(left, right) {
   return overlap / Math.min(a.size, b.size);
 }
 
+function authorSurnames(value) {
+  return new Set(
+    text(value)
+      .split(";")
+      .map((name) => normalizedTokens(name).at(-1))
+      .filter(Boolean),
+  );
+}
+
+function samePublicationIdentity(left, right) {
+  const leftTitle = normalizedTokens(left.Titel).join(" ");
+  const rightTitle = normalizedTokens(right.Titel).join(" ");
+  if (!leftTitle || leftTitle !== rightTitle) return false;
+  const leftAuthors = authorSurnames(left["Autor:innen"]);
+  const rightAuthors = authorSurnames(right["Autor:innen"]);
+  const denominator = Math.min(leftAuthors.size, rightAuthors.size);
+  if (!denominator) return false;
+  const overlap = [...leftAuthors].filter((surname) => rightAuthors.has(surname)).length;
+  return overlap >= 2 && overlap / denominator >= 0.5;
+}
+
 function isProtocol(title) {
   return /\b(study protocol|protocol for|trial protocol|registered report)\b/i.test(text(title));
 }
@@ -92,6 +113,24 @@ function isProtocol(title) {
 function semanticCandidate(candidate) {
   if (isProtocol(candidate.publication_title)) {
     return { accepted: false, reason: "Studienprotokoll/Registered Report ohne bereits belegte Datenausgabe" };
+  }
+  if (/professor-gpt\.coll\.mpg\.de/i.test(candidate.url)) {
+    return { accepted: false, reason: "Interaktive Publikationsseite, kein Datensatznachweis" };
+  }
+  if (/journals?\.sagepub\.com\/doi\/full/i.test(candidate.url)) {
+    return { accepted: false, reason: "Verlagsartikel statt eigenständiger Datensatz-Landingpage" };
+  }
+  if (/\(https?:\/\//i.test(candidate.url)) {
+    return { accepted: false, reason: "Fehlerhaft verkettete URL aus PDF-Textextraktion" };
+  }
+  try {
+    const parsed = new URL(candidate.url);
+    const viewToken = parsed.searchParams.get("view_only");
+    if (viewToken && !/^[a-f0-9]{32}$/i.test(viewToken)) {
+      return { accepted: false, reason: "Unvollständiger OSF-View-only-Schlüssel" };
+    }
+  } catch {
+    return { accepted: false, reason: "Ungültige URL" };
   }
   if (candidate.source === "PuRe") {
     if (/professor-gpt\.coll\.mpg\.de/i.test(candidate.url)) {
@@ -120,6 +159,24 @@ function semanticCandidate(candidate) {
   }
   if (candidate.provider === "europepmc") {
     return { accepted: true, reason: "Link aus expliziter Data-Availability-Statement" };
+  }
+  if (candidate.provider === "pure-fulltext") {
+    return { accepted: true, reason: "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts" };
+  }
+  if (candidate.provider === "pure-file") {
+    return { accepted: true, reason: "Öffentliche PuRe-Datei mit Forschungsdaten-Metadaten" };
+  }
+  if (candidate.provider === "publisher-supplement") {
+    return { accepted: true, reason: "Direkt abrufbare strukturierte Supplementdatei des Verlags" };
+  }
+  if (candidate.provider === "aea") {
+    return { accepted: true, reason: "Direkter Data-and-Code-Link auf der AEA-Artikelseite" };
+  }
+  if (candidate.provider === "github-data") {
+    return { accepted: true, reason: "GitHub-README mit exaktem Publikationstitel und geprüften Datendateien" };
+  }
+  if (candidate.provider === "openalex-fulltext") {
+    return { accepted: true, reason: "Link aus Data-Availability-Abschnitt eines offenen Volltexts" };
   }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
@@ -239,10 +296,21 @@ async function inspectOsf(url) {
         nextUrl = listing.links?.next ?? null;
       }
     };
-    for (const provider of providers.data ?? []) {
-      const rootUrl = provider.relationships?.files?.links?.related?.href;
-      await visit(rootUrl);
-    }
+    const seenNodes = new Set();
+    const visitNode = async (id, depth = 0) => {
+      if (!id || depth > 5 || seenNodes.has(id)) return;
+      seenNodes.add(id);
+      const nodeProviders =
+        id === nodeId ? providers : await fetchJson(`https://api.osf.io/v2/nodes/${id}/files/`);
+      for (const provider of nodeProviders.data ?? []) {
+        await visit(provider.relationships?.files?.links?.related?.href);
+      }
+      const children = await fetchJson(
+        `https://api.osf.io/v2/nodes/${id}/children/?page%5Bsize%5D=100`,
+      ).catch(() => ({ data: [] }));
+      for (const child of children.data ?? []) await visitNode(text(child.id), depth + 1);
+    };
+    await visitNode(nodeId);
     const dataFiles = names.filter((name) => FILE_DATA_EXTENSIONS.test(name));
     const codeFiles = names.filter((name) => FILE_CODE_EXTENSIONS.test(name));
     return { node_id: nodeId, file_count: names.length, data_files: dataFiles, code_files: codeFiles };
@@ -317,7 +385,10 @@ async function auditUrl(browser, url) {
     available: page.ok,
     http_status: page.status,
     page_title: text(page.title).replace(/\s+/g, " ").slice(0, 500),
-    access_status: page.ok ? classifyAccess(page.status, pageText) : "nicht erreichbar",
+    access_status:
+      page.ok || [401, 402, 403].includes(page.status)
+        ? classifyAccess(page.status, pageText)
+        : "nicht erreichbar",
     verification_method: page.method,
     error: page.error ?? "",
     page_has_data_terms: DATA_WORDS.test(pageText),
@@ -353,9 +424,21 @@ await browser.close();
 
 const auditedCandidates = candidates.map((candidate) => {
   const linkAudit = audits.get(candidate.canonical_url) ?? null;
-  let accepted = candidate.semantic_precheck.accepted && Boolean(linkAudit?.available);
+  const authoritativeRestricted =
+    [401, 402, 403].includes(linkAudit?.http_status) &&
+    (candidate.source === "PuRe" ||
+      candidate.provider === "pure-file" ||
+      candidate.provider === "datacite" ||
+      candidate.provider === "aea");
+  let accepted =
+    candidate.semantic_precheck.accepted &&
+    (Boolean(linkAudit?.available) || authoritativeRestricted);
   let reason = candidate.semantic_precheck.reason;
-  if (candidate.semantic_precheck.accepted && !linkAudit?.available) reason = "Zielseite nicht erreichbar";
+  if (accepted && authoritativeRestricted) {
+    reason = `${reason}; Landingpage antwortet mit HTTP ${linkAudit.http_status} und ist zugriffsgeschützt`;
+  } else if (candidate.semantic_precheck.accepted && !linkAudit?.available) {
+    reason = "Zielseite nicht erreichbar";
+  }
   if (accepted && linkAudit?.osf) {
     const osf = linkAudit.osf;
     if (osf.file_count === 0) {
@@ -398,6 +481,28 @@ for (const entry of byPublication.values()) {
     return true;
   });
   entry.research_data = entry.accepted_links.length ? "ja" : "nein";
+}
+
+const publicationRows = publications.publications.rows;
+const rowById = new Map(publicationRows.map((row) => [text(row["PuRe-ID"]), row]));
+const verifiedEntries = [...byPublication.values()].filter((entry) => entry.research_data === "ja");
+for (const entry of byPublication.values()) {
+  if (entry.research_data === "ja") continue;
+  const targetRow = rowById.get(entry.pure_id);
+  const source = verifiedEntries.find((candidate) =>
+    samePublicationIdentity(targetRow, rowById.get(candidate.pure_id)),
+  );
+  if (!source) continue;
+  entry.accepted_links = source.accepted_links.map((candidate) => ({
+    ...candidate,
+    pure_id: entry.pure_id,
+    source: "PuRe-Parallelfassung",
+    decision_reason:
+      `Identischer normalisierter Titel und starke Autor:innenüberschneidung mit ${source.pure_id}; ` +
+      candidate.decision_reason,
+  }));
+  entry.research_data = "ja";
+  entry.propagated_from = source.pure_id;
 }
 
 const rows = [...byPublication.values()];

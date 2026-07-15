@@ -137,6 +137,7 @@ def test_report_summary_lists_providers():
 def test_default_providers_cover_expected_services():
     names = {p.name for p in DataDiscovery().providers}
     assert names == {
+        "aea",
         "datacite",
         "europepmc",
         "openaire",

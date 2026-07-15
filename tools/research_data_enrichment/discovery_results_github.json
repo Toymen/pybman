@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-07-15T21:13:50Z",
+  "input_rows": 3,
+  "provider_found_rows": 2,
+  "results": [
+    {
+      "PuRe-ID": "item_3690817",
+      "DOI": "",
+      "status": "checked_github",
+      "found": true,
+      "doi_found": false,
+      "title_found": true,
+      "hits": [
+        {
+          "provider": "github-data",
+          "pid": "LEXam-Benchmark/LEXam",
+          "pid_type": "github-repository",
+          "title": "Data repository for LEXam: Benchmarking legal reasoning on 340 law exams",
+          "publisher": "GitHub",
+          "relation": "verified-readme-title-and-data-files",
+          "url": "https://github.com/LEXam-Benchmark/LEXam",
+          "discovery_method": "github-exact-title-and-tree-audit",
+          "evidence": "README contains exact normalized publication title; repository tree contains 7 structured data file(s): data/MCQs_test_16.xlsx, data/MCQs_test_32.xlsx, data/MCQs_test_4.xlsx, data/MCQs_test_8.xlsx, data/open_questions_dev.xlsx, data/open_questions_test.xlsx, outputs/results/openai/gpt-4o-mini-2024-07-18/results_2025-05-07T14-37-47.926978.json"
+        }
+      ],
+      "provider_summary": "github-data: 1",
+      "provider_errors": "",
+      "elapsed_s": 3.88
+    },
+    {
+      "PuRe-ID": "item_3632293",
+      "DOI": "10.48550/arXiv.2407.16615",
+      "status": "checked_github",
+      "found": true,
+      "doi_found": false,
+      "title_found": true,
+      "hits": [
+        {
+          "provider": "github-data",
+          "pid": "socialfoundations/lawma",
+          "pid_type": "github-repository",
+          "title": "Data repository for Lawma: The power of specialization for legal tasks",
+          "publisher": "GitHub",
+          "relation": "verified-readme-title-and-data-files",
+          "url": "https://github.com/socialfoundations/lawma",
+          "discovery_method": "github-exact-title-and-tree-audit",
+          "evidence": "README contains exact normalized publication title; repository tree contains 7403 structured data file(s): data_generation/splits/splits_scdb.json, data_generation/splits/splits_songer.json, notebooks/results/generalization-experiment/progress-10/sc_adminaction.json, notebooks/results/generalization-experiment/progress-10/sc_adminaction_is.json, notebooks/results/generalization-experiment/progress-10/sc_adminactionstate.json, notebooks/results/generalization-experiment/progress-10/sc_authoritydecision.json, notebooks/results/generalization-experiment/progress-10/sc_casedisposition.json, notebooks/results/generalization-experiment/progress-10/sc_caseorigin.json"
+        }
+      ],
+      "provider_summary": "github-data: 1",
+      "provider_errors": "",
+      "elapsed_s": 2.12
+    },
+    {
+      "PuRe-ID": "item_3558922",
+      "DOI": "",
+      "status": "checked_github",
+      "found": false,
+      "doi_found": false,
+      "title_found": false,
+      "hits": [],
+      "provider_summary": "github-data: 0",
+      "provider_errors": "",
+      "elapsed_s": 1.46
+    }
+  ]
+}

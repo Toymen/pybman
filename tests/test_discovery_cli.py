@@ -83,6 +83,7 @@ def test_cli_json_output(one_dataset, capsys):
     assert payload["found"] is True
     assert payload["hits"][0]["pid"] == "10.5281/zenodo.1"
     assert {r["provider"] for r in payload["results"]} == {
+        "aea",
         "datacite",
         "europepmc",
         "openaire",
