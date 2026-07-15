@@ -176,9 +176,9 @@ overview.getRange("A16").values = [["Qualitätssicherung"]];
 headerStyle(overview.getRange("A16:F16"), "#245B45");
 overview.getRange("A16:F16").format.font = { color: "#245B45", bold: true };
 overview.getRange("A17:F21").values = [
-  ["Quellenpriorität", "1. PuRe; 2. explizite Data-Availability-Aussagen; 3. DataCite/OSF/B2FIND mit engem Titel- oder Autor:innenbezug", "", "", "", ""],
+  ["Quellenpriorität", "1. gepflegte PuRe-Links; 2. explizite Data-Availability-Aussagen; 3. Repositorien mit engem Titel-/Autor:innenbezug und geprüften Datendateien", "", "", "", ""],
   ["Linkprüfung", "HTTP-Status und Weiterleitungsziel; Playwright als Fallback bei JavaScript oder Zugriffsschutz", "", "", "", ""],
-  ["OSF-Prüfung", "Dateistruktur rekursiv über OSF-API; mindestens eine erkennbare Datendatei oder ein expliziter Data-Availability-Nachweis", "", "", "", ""],
+  ["Dateiprüfung", "OSF- und GitHub-Dateibäume rekursiv über die jeweilige API; Zenodo-Archive werden bis auf Dateiebene geprüft", "", "", "", ""],
   ["Konservative Regel", "Nicht erreichbare, mehrdeutige oder nur indirekt referenzierte Treffer werden als nein geführt", "", "", "", ""],
   ["Zugang", "Paywall, Login, Embargo und Zugriffsbeschränkung erscheinen je Link in einer eigenen Spalte", "", "", "", ""],
 ];

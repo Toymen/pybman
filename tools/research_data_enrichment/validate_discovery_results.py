@@ -22,6 +22,9 @@ TRUSTED_EVIDENCE_PROVIDERS = {
     "aea",
     "github-data",
     "openalex-fulltext",
+    "harvard-dataverse",
+    "github-doi-data",
+    "zenodo-replication",
 }
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 

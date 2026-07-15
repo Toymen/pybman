@@ -178,6 +178,15 @@ function semanticCandidate(candidate) {
   if (candidate.provider === "openalex-fulltext") {
     return { accepted: true, reason: "Link aus Data-Availability-Abschnitt eines offenen Volltexts" };
   }
+  if (candidate.provider === "harvard-dataverse") {
+    return { accepted: true, reason: "Publizierter Harvard-Dataverse-Datensatz mit Dateien, Titel- und Autor:innen-Match" };
+  }
+  if (candidate.provider === "github-doi-data") {
+    return { accepted: true, reason: "GitHub-README mit Publikations-DOI, Datenkontext, Autor:innenbezug und geprüften Datendateien" };
+  }
+  if (candidate.provider === "zenodo-replication") {
+    return { accepted: true, reason: "Zenodo-Replikationspaket mit Titel-/Autor:innen-Match und geprüften Datendateien" };
+  }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
     if (similarity >= 0.55 || /verified-title-author-match/i.test(candidate.relation)) {
@@ -319,6 +328,30 @@ async function inspectOsf(url) {
   }
 }
 
+async function inspectGithub(urlValue) {
+  try {
+    const url = new URL(urlValue);
+    if (!/(^|\.)github\.com$/i.test(url.hostname)) return null;
+    const [owner, repository] = url.pathname.split("/").filter(Boolean);
+    if (!owner || !repository) return null;
+    const headers = { "User-Agent": "ResearchDataAudit/1.0 (+link-verification)" };
+    if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repository.replace(/\.git$/i, "")}/git/trees/HEAD?recursive=1`,
+      { headers, signal: AbortSignal.timeout(30000) },
+    );
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const payload = await response.json();
+    const names = (payload.tree ?? [])
+      .filter((entry) => entry.type === "blob")
+      .map((entry) => text(entry.path));
+    const dataFiles = names.filter((name) => FILE_DATA_EXTENSIONS.test(name));
+    return { repository: `${owner}/${repository}`, file_count: names.length, data_files: dataFiles };
+  } catch (error) {
+    return { file_count: null, data_files: [], error: text(error.message) };
+  }
+}
+
 function classifyAccess(status, pageText) {
   if (ACCESS_RESTRICTED.test(pageText)) return "zugriffsbeschränkt/embargo";
   if (ACCESS_LOGIN.test(pageText) || status === 401 || status === 402) return "Paywall/Login";
@@ -415,7 +448,8 @@ const workers = Array.from({ length: 5 }, async () => {
     const url = urls[index];
     const audit = await auditUrl(browser, url);
     const osf = await inspectOsf(audit.final_url || url);
-    audits.set(url, { ...audit, osf });
+    const github = await inspectGithub(audit.final_url || url);
+    audits.set(url, { ...audit, osf, github });
     console.log(`[${index + 1}/${urls.length}] ${audit.available ? "OK" : "FAIL"} ${url} -> ${audit.http_status ?? "-"}`);
   }
 });
@@ -451,7 +485,27 @@ const auditedCandidates = candidates.map((candidate) => {
       reason = `${reason}; ${osf.data_files.length} Datendatei(en) über OSF-API bestätigt`;
     }
   }
-  if (accepted && linkAudit?.page_has_exclusion_terms && !linkAudit?.page_has_data_terms) {
+  if (accepted && linkAudit?.github) {
+    const github = linkAudit.github;
+    if (github.file_count !== null && github.data_files.length === 0) {
+      accepted = false;
+      reason = "GitHub-Repository enthält keine eindeutig als Daten erkennbare Datei";
+    } else if (github.data_files.length > 0) {
+      reason = `${reason}; ${github.data_files.length} Datendatei(en) über GitHub-API bestätigt`;
+    } else {
+      accepted = false;
+      reason = `GitHub-Dateibaum konnte nicht bestätigt werden: ${github.error || "unbekannter Fehler"}`;
+    }
+  }
+  const repositoryDataConfirmed =
+    (linkAudit?.osf?.data_files?.length ?? 0) > 0 ||
+    (linkAudit?.github?.data_files?.length ?? 0) > 0;
+  if (
+    accepted &&
+    !repositoryDataConfirmed &&
+    linkAudit?.page_has_exclusion_terms &&
+    !linkAudit?.page_has_data_terms
+  ) {
     accepted = false;
     reason = "Zielseite weist nur Protokoll/Präregistrierung/Software, aber keine Daten aus";
   }

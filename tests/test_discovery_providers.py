@@ -277,6 +277,47 @@ def test_europe_pmc_does_not_count_future_release_promise(responses):
     assert EuropePmcProvider().datasets_for_doi(DOI).hits == []
 
 
+def test_europe_pmc_extracts_github_from_explicit_all_data_statement(responses):
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        json={"resultList": {"result": [{"pmcid": "PMC44"}]}},
+    )
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC44/fullTextXML",
+        body="""<article><body><sec sec-type="data-availability-statement">
+        <title>Data availability</title><p>We provide all data and workflow on
+        <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
+        xlink:href="https://github.com/example/replication">GitHub</ext-link>.</p>
+        </sec></body></article>""",
+        content_type="application/xml",
+    )
+
+    result = EuropePmcProvider().datasets_for_doi(DOI)
+
+    assert [hit.url for hit in result.hits] == ["https://github.com/example/replication"]
+
+
+def test_europe_pmc_resolves_repository_link_from_cited_reference(responses):
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        json={"resultList": {"result": [{"pmcid": "PMC45"}]}},
+    )
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC45/fullTextXML",
+        body="""<article><body><sec sec-type="data-availability">
+        <title>Data accessibility</title><p>We provide all data and workflow on GitHub
+        <xref rid="B53" ref-type="bibr">53</xref>.</p></sec></body><back><ref-list>
+        <ref id="B53"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
+        xlink:href="https://github.com/example/replication">repository</ext-link></ref>
+        </ref-list></back></article>""",
+        content_type="application/xml",
+    )
+
+    result = EuropePmcProvider().datasets_for_doi(DOI)
+
+    assert [hit.url for hit in result.hits] == ["https://github.com/example/replication"]
+
+
 # -- OpenAIRE Graph API ---------------------------------------------------------
 
 

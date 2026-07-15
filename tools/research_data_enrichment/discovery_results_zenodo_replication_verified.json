@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-07-15T21:35:46Z",
+  "input_rows": 1,
+  "provider_found_rows": 1,
+  "results": [
+    {
+      "PuRe-ID": "item_3548152",
+      "DOI": "10.1093/ej/uead120",
+      "status": "checked_zenodo_replication",
+      "found": true,
+      "doi_found": false,
+      "title_found": true,
+      "hits": [
+        {
+          "provider": "zenodo-replication",
+          "pid": "10.5281/zenodo.10438859",
+          "pid_type": "doi",
+          "title": "Replication package for: \"School Choice with Consent: An Experiment\"",
+          "publisher": "Zenodo",
+          "relation": "verified-title-author-and-data-files",
+          "url": "https://doi.org/10.5281/zenodo.10438859",
+          "discovery_method": "zenodo-title-author-archive-audit",
+          "evidence": "Strong publication-title and author match; Zenodo files contain 3 structured data file(s): 3-replication-package.zip:3-replication-package/allsessions_clean.dta, 3-replication-package.zip:3-replication-package/allsessions2_clean.dta, 3-replication-package.zip:3-replication-package/allsessions2_clean_python.dta"
+        }
+      ],
+      "provider_summary": "zenodo-replication: 1",
+      "provider_errors": "",
+      "elapsed_s": 8.74
+    }
+  ]
+}

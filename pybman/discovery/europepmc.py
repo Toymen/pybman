@@ -25,6 +25,7 @@ DATA_HOSTS = (
     "openicpsr.org",
     "data.mendeley.com",
     "psycharchives.org",
+    "github.com",
 )
 
 
@@ -80,6 +81,11 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
     except ET.ParseError:
         return []
     links: list[str] = []
+    elements_by_id = {
+        element_id: element
+        for element in root.iter()
+        if (element_id := str(element.attrib.get("id") or ""))
+    }
     for section in root.iter("sec"):
         if not _is_data_availability_section(section):
             continue
@@ -96,6 +102,8 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
                 "is publicly available",
                 "have been deposited",
                 "can be accessed",
+                "provide all data",
+                "all data and workflow",
             )
         )
         future_release = re.search(
@@ -103,9 +111,16 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
         )
         if future_release and not current_availability:
             continue
+        referenced_elements = [
+            elements_by_id[reference_id]
+            for element in section.iter()
+            for reference_id in str(element.attrib.get("rid") or "").split()
+            if reference_id in elements_by_id
+        ]
         candidates = [
             str(value)
-            for element in section.iter()
+            for container in (section, *referenced_elements)
+            for element in container.iter()
             for key, value in element.attrib.items()
             if key.endswith("href")
         ]
