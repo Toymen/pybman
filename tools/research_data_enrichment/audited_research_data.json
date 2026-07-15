@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-15T21:41:03.648Z",
+  "generated_at": "2026-07-15T22:58:51.719Z",
   "definition": {
     "included": "Vorhandene Roh-/Prozessdaten, Datensätze oder Replikationspakete mit Datendateien und eindeutigem Publikationsbezug.",
     "excluded": "Studienprotokolle, Präregistrierungen ohne Daten, Software/Code-only, Registrierungen, Such-/Bibliografieseiten, bloße Supplement-Seiten ohne Datennachweis und nur angekündigte Freigaben.",
@@ -7,12 +7,12 @@
   },
   "metrics": {
     "publications": 279,
-    "candidate_records": 242,
-    "audited_unique_urls": 75,
-    "publications_yes": 51,
-    "publications_no": 228,
-    "accepted_links": 76,
-    "rejected_candidates": 144
+    "candidate_records": 251,
+    "audited_unique_urls": 82,
+    "publications_yes": 60,
+    "publications_no": 219,
+    "accepted_links": 85,
+    "rejected_candidates": 145
   },
   "rows": [
     {
@@ -1176,6 +1176,38 @@
           },
           "link_audit": {
             "requested_url": "https://doi.org/10.7910/dvn/dcsr0n",
+            "final_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
+            "available": false,
+            "http_status": 403,
+            "page_title": "403 Forbidden",
+            "access_status": "Paywall/Login oder Zugriffsschutz",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld; Landingpage antwortet mit HTTP 403 und ist zugriffsgeschützt"
+        },
+        {
+          "pure_id": "item_3616090",
+          "publication_title": "Worker beliefs about outside options",
+          "url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
+          "source": "Provider",
+          "evidence": "trusted datacite dataset evidence IsSupplementTo",
+          "dataset_title": "Replication Data for: 'Worker Beliefs about Outside Options'",
+          "provider": "datacite",
+          "relation": "IsSupplementTo",
+          "source_validation": "trusted datacite dataset evidence",
+          "canonical_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Titel-/Autor:innen-Match (1.00)"
+          },
+          "link_audit": {
+            "requested_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/DCSR0N",
             "final_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DCSR0N",
             "available": true,
             "http_status": 202,
@@ -1189,7 +1221,7 @@
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Kuratiertes PuRe-Forschungsdatenfeld"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
         }
       ],
       "rejected_candidates": [],
@@ -1638,7 +1670,7 @@
             "available": true,
             "http_status": 200,
             "page_title": "OSF",
-            "access_status": "offen",
+            "access_status": "offen über View-only-Link",
             "verification_method": "HTTP",
             "error": "",
             "page_has_data_terms": false,
@@ -1717,7 +1749,7 @@
             "available": true,
             "http_status": 200,
             "page_title": "OSF",
-            "access_status": "offen",
+            "access_status": "offen über View-only-Link",
             "verification_method": "HTTP",
             "error": "",
             "page_has_data_terms": false,
@@ -1762,15 +1794,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4n8hy",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 2,
+              "data_files": [
+                "data_aac_public.dta"
+              ],
+              "code_files": [
+                "analysis_public.do"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -1994,15 +2029,20 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "97fyt",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 4,
+              "data_files": [
+                "code_and_data.zip"
+              ],
+              "code_files": [
+                "Pre-registration_anony.pdf",
+                "Wave 1 - Instructions Final US Trustlab 2.0 Platform June 2.pdf",
+                "Wave 2 - US Trustlab 2.10 Platform_From online survey.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -2115,15 +2155,237 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "hqawx",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 221,
+              "data_files": [
+                "EEF_cleaned_data.rds",
+                "EEF_cleaned_data.csv",
+                "DefPBG_codeBook.txt",
+                "240625_1048_4_session.xls",
+                "240625_1048_1_session.xls",
+                "240625_1048_4_globals.xls",
+                "240625_1048_3_session.xls",
+                "240625_1048_2_subjects.xls",
+                "240625_1048_3_summary.xls",
+                "240625_1048_2_summary.xls",
+                "240625_1048_3_subjects.xls",
+                "240625_1048_1_summary.xls",
+                "240625_1048_1_globals.xls",
+                "240625_1048_1_subjects.xls",
+                "240625_1048_3_globals.xls",
+                "240625_1048_4_subjects_sbj.xls",
+                "240625_1048_4_subjects.xls",
+                "240625_1048_4_summary.xls",
+                "240625_1048_2_globals.xls",
+                "240625_1048_2_session.xls",
+                "240625_0842_3_globals.xls",
+                "240625_0842_1_subjects.xls",
+                "240625_0842_2_globals.xls",
+                "240625_0842_4_summary.xls",
+                "240625_0842_1_summary.xls",
+                "240625_0842_1_globals.xls",
+                "240625_0842_2_session.xls",
+                "240625_0842_2_summary.xls",
+                "240625_0842_1_session.xls",
+                "240625_0842_4_session.xls",
+                "240625_0842_4_globals.xls",
+                "240625_0842_3_session.xls",
+                "240625_0842_4_subjects.xls",
+                "240625_0842_3_subjects.xls",
+                "240625_0842_3_summary.xls",
+                "240625_0842_2_subjects.xls",
+                "240625_0842_4_subjects_sbj.xls",
+                "240626_1039_2_globals.xls",
+                "240626_1039_4_globals.xls",
+                "240626_1039_4_subjects.xls",
+                "240626_1039_3_globals.xls",
+                "240626_1039_2_summary.xls",
+                "240626_1039_4_subjects_sbj.xls",
+                "240626_1039_1_session.xls",
+                "240626_1039_4_session.xls",
+                "240626_1039_4_summary.xls",
+                "240626_1039_3_subjects.xls",
+                "240626_1039_2_subjects.xls",
+                "240626_1039_1_globals.xls",
+                "240626_1039_2_session.xls",
+                "240626_1039_3_session.xls",
+                "240626_1039_1_summary.xls",
+                "240626_1039_1_subjects.xls",
+                "240626_1039_3_summary.xls",
+                "240626_0835_2_session.xls",
+                "240626_0835_3_summary.xls",
+                "240626_0835_4_session.xls",
+                "240626_0835_1_subjects.xls",
+                "240626_0835_2_globals.xls",
+                "240626_0835_3_subjects.xls",
+                "240626_0835_4_summary.xls",
+                "240626_0835_4_subjects_sbj.xls",
+                "240626_0835_4_subjects.xls",
+                "240626_0835_1_globals.xls",
+                "240626_0835_1_session.xls",
+                "240626_0835_1_summary.xls",
+                "240626_0835_2_summary.xls",
+                "240626_0835_2_subjects.xls",
+                "240626_0835_4_globals.xls",
+                "240626_0835_3_session.xls",
+                "240626_0835_3_globals.xls",
+                "240704_1023_4_summary.xls",
+                "240704_1023_2_globals.xls",
+                "240704_1023_2_subjects.xls",
+                "240704_1023_3_summary.xls",
+                "240704_1023_3_globals.xls",
+                "240704_1023_4_subjects_sbj.xls",
+                "240704_1023_2_summary.xls",
+                "240704_1023_3_session.xls",
+                "240704_1023_1_session.xls",
+                "240704_1023_1_globals.xls",
+                "240704_1023_2_session.xls",
+                "240704_1023_1_subjects.xls",
+                "240704_1023_4_session.xls",
+                "240704_1023_1_summary.xls",
+                "240704_1023_4_globals.xls",
+                "240704_1023_4_subjects.xls",
+                "240704_1023_3_subjects.xls",
+                "240626_1517_1_session.xls",
+                "240626_1517_4_globals.xls",
+                "240626_1517_2_subjects.xls",
+                "240626_1517_1_subjects.xls",
+                "240626_1517_4_summary.xls",
+                "240626_1517_1_summary.xls",
+                "240626_1517_3_summary.xls",
+                "240626_1517_4_session.xls",
+                "240626_1517_1_globals.xls",
+                "240626_1517_3_globals.xls",
+                "240626_1517_3_subjects.xls",
+                "240626_1517_2_session.xls",
+                "240626_1517_4_subjects.xls",
+                "240626_1517_2_globals.xls",
+                "240626_1517_4_subjects_sbj.xls",
+                "240626_1517_2_summary.xls",
+                "240626_1517_3_session.xls",
+                "240626_1315_1_session.xls",
+                "240626_1315_3_globals.xls",
+                "240626_1315_1_subjects.xls",
+                "240626_1315_3_session.xls",
+                "240626_1315_1_summary.xls",
+                "240626_1315_2_summary.xls",
+                "240626_1315_2_globals.xls",
+                "240626_1315_4_subjects_sbj.xls",
+                "240626_1315_1_globals.xls",
+                "240626_1315_2_session.xls",
+                "240626_1315_4_globals.xls",
+                "240626_1315_4_subjects.xls",
+                "240626_1315_3_summary.xls",
+                "240626_1315_4_session.xls",
+                "240626_1315_4_summary.xls",
+                "240626_1315_2_subjects.xls",
+                "240626_1315_3_subjects.xls",
+                "240702_1507_4_session.xls",
+                "240702_1507_1_summary.xls",
+                "240702_1507_3_session.xls",
+                "240702_1507_1_session.xls",
+                "240702_1507_4_subjects.xls",
+                "240702_1507_2_subjects.xls",
+                "240702_1507_4_subjects_sbj.xls",
+                "240702_1507_3_globals.xls",
+                "240702_1507_3_summary.xls",
+                "240702_1507_2_summary.xls",
+                "240702_1507_2_session.xls",
+                "240702_1507_1_subjects.xls",
+                "240702_1507_4_globals.xls",
+                "240702_1507_4_summary.xls",
+                "240702_1507_3_subjects.xls",
+                "240702_1507_1_globals.xls",
+                "240702_1507_2_globals.xls",
+                "240625_1324_1_globals.xls",
+                "240625_1324_3_globals.xls",
+                "240625_1324_4_session.xls",
+                "240625_1324_4_globals.xls",
+                "240625_1324_2_subjects.xls",
+                "240625_1324_3_subjects.xls",
+                "240625_1324_1_summary.xls",
+                "240625_1324_3_session.xls",
+                "240625_1324_2_summary.xls",
+                "240625_1324_4_summary.xls",
+                "240625_1324_4_subjects_sbj.xls",
+                "240625_1324_2_globals.xls",
+                "240625_1324_4_subjects.xls",
+                "240625_1324_1_session.xls",
+                "240625_1324_3_summary.xls",
+                "240625_1324_1_subjects.xls",
+                "240625_1324_2_session.xls",
+                "240704_0829_1_subjects.xls",
+                "240704_0829_4_session.xls",
+                "240704_0829_4_globals.xls",
+                "240704_0829_4_subjects_sbj.xls",
+                "240704_0829_2_summary.xls",
+                "240704_0829_3_subjects.xls",
+                "240704_0829_4_summary.xls",
+                "240704_0829_2_subjects.xls",
+                "240704_0829_4_subjects.xls",
+                "240704_0829_1_session.xls",
+                "240704_0829_3_summary.xls",
+                "240704_0829_2_globals.xls",
+                "240704_0829_1_summary.xls",
+                "240704_0829_3_globals.xls",
+                "240704_0829_1_globals.xls",
+                "240704_0829_3_session.xls",
+                "240704_0829_2_session.xls",
+                "240702_0841_4_globals.xls",
+                "240702_0841_3_subjects.xls",
+                "240702_0841_3_globals.xls",
+                "240702_0841_1_summary.xls",
+                "240702_0841_4_summary.xls",
+                "240702_0841_2_globals.xls",
+                "240702_0841_1_globals.xls",
+                "240702_0841_2_session.xls",
+                "240702_0841_1_session.xls",
+                "240702_0841_2_summary.xls",
+                "240702_0841_4_subjects_sbj.xls",
+                "240702_0841_1_subjects.xls",
+                "240702_0841_2_subjects.xls",
+                "240702_0841_4_session.xls",
+                "240702_0841_3_session.xls",
+                "240702_0841_4_subjects.xls",
+                "240702_0841_3_summary.xls",
+                "240625_1510_1_subjects.xls",
+                "240625_1510_2_session.xls",
+                "240625_1510_3_summary.xls",
+                "240625_1510_2_summary.xls",
+                "240625_1510_4_subjects_sbj.xls",
+                "240625_1510_4_session.xls",
+                "240625_1510_3_globals.xls",
+                "240625_1510_4_summary.xls",
+                "240625_1510_4_subjects.xls",
+                "240625_1510_4_globals.xls",
+                "240625_1510_3_subjects.xls",
+                "240625_1510_1_globals.xls",
+                "240625_1510_1_summary.xls",
+                "240625_1510_2_subjects.xls",
+                "240625_1510_3_session.xls",
+                "240625_1510_1_session.xls",
+                "240625_1510_2_globals.xls",
+                "EEF_ReadMe.txt"
+              ],
+              "code_files": [
+                "Part0_ControllQuestions_Group09-with-example-hints.pdf",
+                "Part1_Experiment_Single.pdf",
+                "Part2_KrupkaWeber.pdf",
+                "Part1_Experiment_Group.pdf",
+                "Part3_SVO.pdf",
+                "Part4_Questionnaire.pdf",
+                "English Experimental Instructions.docx",
+                "English Control Questions.docx",
+                "240624 Instructions 0.1 Treat German.docx",
+                "240624 Instructions 0.9 Treat German.docx",
+                "EEF_Join_and_Clean_Data.R",
+                "EEF_Data_Analysis.R",
+                "EEF_Power_for_PreReg.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); 208 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -2161,15 +2423,32 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "7q8mb",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 26,
+              "data_files": [
+                "tasks.txt",
+                "predictions.txt",
+                "ExperimentalSoftware_Code_labjs.json",
+                "Readme.txt",
+                "data_preprocessed.csv",
+                "data_raw_anonymous.csv",
+                "data_preprocessed_withoutExclusions.csv"
+              ],
+              "code_files": [
+                "stimuliGeneration_code.R",
+                "ExperimentalSoftware_Screenshots.pdf",
+                "fun_PCS.R",
+                "fun_PCSFitting_parallel.R",
+                "fun_MMML_diffIC.R",
+                "analysis.html",
+                "preprocessing_fitting_MMML.R",
+                "analysis.Rmd",
+                "data_codebook.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); 7 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -2289,16 +2568,130 @@
     {
       "pure_id": "item_3657013",
       "title": "How the design of ranking systems and ability affect physician effort",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3657013",
+          "publication_title": "How the design of ranking systems and ability affect physician effort",
+          "url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00990",
+          "source": "Provider",
+          "evidence": "trusted informs-replication dataset evidence publisher-doi-replication-package-with-data-files",
+          "dataset_title": "Management Science replication files for 10.1287/mnsc.2022.00990",
+          "provider": "informs-replication",
+          "relation": "publisher-doi-replication-package-with-data-files",
+          "source_validation": "trusted informs-replication dataset evidence",
+          "canonical_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00990",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00990",
+            "final_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00990",
+            "available": true,
+            "http_status": 200,
+            "page_title": "",
+            "access_status": "Zustimmung/E-Mail erforderlich",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3686121",
       "title": "Who is afraid of the pink elephant? Evidence on (not) ignoring inadmissible evidence and debiasing interventions",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3686121",
+          "publication_title": "Who is afraid of the pink elephant? Evidence on (not) ignoring inadmissible evidence and debiasing interventions",
+          "url": "https://osf.io/yef3k/?view_only=6d8e23c8ced94e3680c5f459a471fd1f",
+          "source": "Provider",
+          "evidence": "trusted wiley-browser-data-availability dataset evidence publisher-data-availability-statement-with-verified-data-files",
+          "dataset_title": "Wiley-linked OSF research data (yef3k)",
+          "provider": "wiley-browser-data-availability",
+          "relation": "publisher-data-availability-statement-with-verified-data-files",
+          "source_validation": "trusted wiley-browser-data-availability dataset evidence",
+          "canonical_url": "https://osf.io/yef3k/?view_only=6d8e23c8ced94e3680c5f459a471fd1f",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/yef3k/?view_only=6d8e23c8ced94e3680c5f459a471fd1f",
+            "final_url": "https://osf.io/yef3k/?view_only=6d8e23c8ced94e3680c5f459a471fd1f",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "yef3k",
+              "file_count": 63,
+              "data_files": [
+                "Processed Data.csv",
+                "Raw Data Containing IE Wiretap.xlsx",
+                "Raw Data Containing IE Wiretap + Ignore and IE Wiretap + Normative.csv",
+                "Raw Data Containing the Baseline.xlsx",
+                "raw.csv",
+                "raw_add3treat.csv",
+                "raw_addtreat.csv",
+                "fulldata.dta",
+                "pilot4.csv",
+                "results-survey515485.csv",
+                "printable_survey_Welcome_515485.zip",
+                "results-survey515485.csv",
+                "results-survey173637.csv",
+                "Inadmissible+Evidence_December+13%2C+2022_05.16.csv",
+                "raw_add3treat.csv",
+                "Inadmissible+Evidence+-+add+condition_January+23%2C+2023_08.18.csv",
+                "Inadmissible+Evidence_December+7%2C+2022_11.19.csv"
+              ],
+              "code_files": [
+                "Survey.pdf",
+                "Survey_Logic_File.pdf",
+                "Audiotranscription_Case_Scenarios.pdf",
+                "Prereg 4 (embargoed).pdf",
+                "Prereg 1 (embargoed).pdf",
+                "Prereg 5 (embargoed).pdf",
+                "Prereg 2 (embargoed).pdf",
+                "Prereg 3 (embargoed).pdf",
+                "Online Appendix.pdf",
+                "Preregistration (embargoed).pdf",
+                "R Script.R",
+                "Survey Containing the Baseline.pdf",
+                "Survey Containing IE Wiretap.pdf",
+                "Survey Containing IE Wiretap + Ignore and IE Wiretap + Normative.pdf",
+                "Audio Transcript of the Case.pdf",
+                "Inadmissible_Evidence_-_add_3_conditions.docx",
+                "Inadmissible_Evidence_-_add_3_conditions.pdf",
+                "Inadmissible_Evidence.pdf",
+                "Inadmissible_Evidence.docx",
+                "LimeSurvey Academiccloud - Welcome!.pdf",
+                "R_Code_OnlineSurvey4.R",
+                "Inadmissible Evidence additional condition.pdf",
+                "Inadmissible_Evidence_-_add_condition.docx",
+                "analyses.do"
+              ]
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien; 17 Datendatei(en) über OSF-API bestätigt"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3690817",
@@ -2813,23 +3206,60 @@
             "available": true,
             "http_status": 200,
             "page_title": "OSF",
-            "access_status": "offen",
+            "access_status": "offen über View-only-Link",
             "verification_method": "HTTP",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "s43na",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 34,
+              "data_files": [
+                "data_study_1_long_OSF.csv",
+                "data_study_1_OSF.csv",
+                "data_study_2_long_OSF.csv",
+                "data_overweighing_min_max.csv",
+                "svo_mean_all_cross_heat.csv",
+                "data_study_2_OSF.csv"
+              ],
+              "code_files": [
+                "Determinants of cross-national social preferences (Study 1).pdf",
+                "1_Study_English.pdf",
+                "analysis_study_1_OSF.Rmd",
+                "Codebook_Study_1.pdf",
+                "Determinants of cross-national social preferences (Study 2).pdf",
+                "2_Study_Arabic.pdf",
+                "2_Study_Indonesian.pdf",
+                "2_Study_Japanese.pdf",
+                "2_Study_Swedish.pdf",
+                "2_Study_Hungarian.pdf",
+                "2_Study_English.pdf",
+                "2_Study_Spanish.pdf",
+                "2_Study_Portugese.pdf",
+                "2_Study_Thai.pdf",
+                "2_Study_Slovakia.pdf",
+                "2_Study_Turkish.pdf",
+                "2_Study_Hindi.pdf",
+                "2_Study_German.pdf",
+                "2_Study_Afrikaans.pdf",
+                "2_Study_French.pdf",
+                "2_Study_Norwegian.pdf",
+                "2_Study_Switzerland_German.pdf",
+                "2_Study_Romanian.pdf",
+                "2_Study_Chinese.pdf",
+                "Codebook_Study_2.pdf",
+                "analysis_study_2_OSF_revised.Rmd",
+                "analysis_study_2_OSF.Rmd",
+                "conflict_index_OSF_final.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
-        },
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
+        }
+      ],
+      "rejected_candidates": [
         {
           "pure_id": "item_3703133",
           "publication_title": "Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
@@ -2851,25 +3281,25 @@
             "available": true,
             "http_status": 200,
             "page_title": "OSF",
-            "access_status": "offen",
+            "access_status": "offen über View-only-Link",
             "verification_method": "HTTP",
             "error": "",
             "page_has_data_terms": false,
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "d2fex",
-              "file_count": null,
+              "file_count": 2,
               "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "code_files": [
+                "Cross-national social preferences and real-world cross-national cooperation (Study 1) .pdf",
+                "Cross-national social preferences and real-world cross-national cooperation (Study 2) .pdf"
+              ]
             },
             "github": null
           },
-          "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
-        }
-      ],
-      "rejected_candidates": [
+          "accepted": false,
+          "decision_reason": "OSF-Projekt enthält keine eindeutig als Daten erkennbare Datei"
+        },
         {
           "pure_id": "item_3703133",
           "publication_title": "Beyond ingroup favoritism: Investigating cross-national social preferences across 25 nations",
@@ -2943,15 +3373,32 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 16,
+              "data_files": [
+                "cost_comp_by_stake.csv",
+                "survey2_fullprop.csv",
+                "survey1_exp_of_interest.csv",
+                "gender_data.csv",
+                "README.txt",
+                "survey3_reviewer.csv",
+                "cost_comp_by_acceptance.csv",
+                "hours_administration.xlsx",
+                "README.txt"
+              ],
+              "code_files": [
+                "freiraum_2025_1_survey_questions.pdf",
+                "freiraum_2025_2_survey_questions.pdf",
+                "freiraum_2025_reviewer_survey_questions.pdf",
+                "fig_3_and_preferences.R",
+                "fig_2_and_workhours_costs.R",
+                "fig_1_and_gender.R",
+                "cost_estimates_scenarios.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Titel-/Autor:innen-Match (1.00); 9 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -3002,10 +3449,27 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 16,
+              "data_files": [
+                "cost_comp_by_stake.csv",
+                "survey2_fullprop.csv",
+                "survey1_exp_of_interest.csv",
+                "gender_data.csv",
+                "README.txt",
+                "survey3_reviewer.csv",
+                "cost_comp_by_acceptance.csv",
+                "hours_administration.xlsx",
+                "README.txt"
+              ],
+              "code_files": [
+                "freiraum_2025_1_survey_questions.pdf",
+                "freiraum_2025_2_survey_questions.pdf",
+                "freiraum_2025_reviewer_survey_questions.pdf",
+                "fig_3_and_preferences.R",
+                "fig_2_and_workhours_costs.R",
+                "fig_1_and_gender.R",
+                "cost_estimates_scenarios.R"
+              ]
             },
             "github": null
           },
@@ -3040,10 +3504,27 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "4ufrb",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 16,
+              "data_files": [
+                "cost_comp_by_stake.csv",
+                "survey2_fullprop.csv",
+                "survey1_exp_of_interest.csv",
+                "gender_data.csv",
+                "README.txt",
+                "survey3_reviewer.csv",
+                "cost_comp_by_acceptance.csv",
+                "hours_administration.xlsx",
+                "README.txt"
+              ],
+              "code_files": [
+                "freiraum_2025_1_survey_questions.pdf",
+                "freiraum_2025_2_survey_questions.pdf",
+                "freiraum_2025_reviewer_survey_questions.pdf",
+                "fig_3_and_preferences.R",
+                "fig_2_and_workhours_costs.R",
+                "fig_1_and_gender.R",
+                "cost_estimates_scenarios.R"
+              ]
             },
             "github": null
           },
@@ -3927,15 +4408,29 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "8zqjf",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 13,
+              "data_files": [
+                "raw_data.RData",
+                "all_data.RData",
+                "package_versions_behavioral.txt",
+                "package_versions_preprocessing.txt",
+                "package_versions_eyes.txt",
+                "package_versions_AOIs.txt"
+              ],
+              "code_files": [
+                "Visualization of Predictions.pdf",
+                "3_combine_figures.R",
+                "0_preprocessing.Rmd",
+                "1_analyses_behavioral.Rmd",
+                "1_analyses_eyes.Rmd",
+                "0_preprocessing AOIs.Rmd",
+                "3_worldmap.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [
@@ -4411,15 +4906,18 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "n8esu",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 2,
+              "data_files": [
+                "Normalization Data.csv"
+              ],
+              "code_files": [
+                "Survey Measures.docx"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -4699,15 +5197,28 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "duvrc",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 24,
+              "data_files": [
+                "Study 1_de-identified.sav",
+                "Study2b_punisher_de-identified.sav",
+                "Study2b_de-identified.sav",
+                "Study 3_de-identified.sav",
+                "Study 4_de-identified.sav",
+                "Study 2a_de-identified.sav"
+              ],
+              "code_files": [
+                "Materials.pdf",
+                "Study 1_Preregistration.pdf",
+                "Study 2b_Preregistration.pdf",
+                "Study 3_Preregistration.pdf",
+                "Study 4_Preregistration.pdf",
+                "Study 2a_Preregistration.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
         },
         {
           "pure_id": "item_3657005",
@@ -4740,7 +5251,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -4778,7 +5289,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -4816,7 +5327,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -4854,7 +5365,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -4892,7 +5403,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -4934,7 +5445,77 @@
     {
       "pure_id": "item_3640960",
       "title": "Using normative models pre-trained on cross-sectional data to evaluate intra-individual longitudinal changes in neuroimaging data",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3640960",
+          "publication_title": "Using normative models pre-trained on cross-sectional data to evaluate intra-individual longitudinal changes in neuroimaging data",
+          "url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+          "source": "Provider",
+          "evidence": "trusted elife-data-availability dataset evidence structured-publisher-data-availability",
+          "dataset_title": "eLife data availability for Using normative models pre-trained on cross-sectional data to evaluate intra-individual longitudinal changes in neuroimaging data",
+          "provider": "elife-data-availability",
+          "relation": "structured-publisher-data-availability",
+          "source_validation": "trusted elife-data-availability dataset evidence",
+          "canonical_url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Strukturierte eLife-Data-Availability-Aussage mit öffentlichem Datensatzlink"
+          },
+          "link_audit": {
+            "requested_url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+            "final_url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+            "available": true,
+            "http_status": 200,
+            "page_title": "PCNtoolkit-demo/tutorials/Long_NM at main · predictive-clinical-neuroscience/PCNtoolkit-demo · GitHub",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": true,
+            "osf": null,
+            "github": {
+              "repository": "predictive-clinical-neuroscience/PCNtoolkit-demo",
+              "file_count": 70,
+              "data_files": [
+                "data/HCP1200_age_gender.csv",
+                "data/HCP1200_aparc_thickness.csv",
+                "data/IXI_age_gender.csv",
+                "data/IXI_aparc_thickness.csv",
+                "data/OpenNeuroTransfer_ct_te.csv",
+                "data/OpenNeuroTransfer_ct_tr.csv",
+                "data/OpenNeuroTransfer_yeo17_te.csv",
+                "data/OpenNeuroTransfer_yeo17_tr.csv",
+                "data/Z_long_format.csv",
+                "data/fcon1000.csv",
+                "data/fcon1000_icbm_te.csv",
+                "data/fcon1000_icbm_tr.csv",
+                "data/fcon1000_noicbm_te.csv",
+                "data/fcon1000_noicbm_tr.csv",
+                "data/fcon1000_te.csv",
+                "data/fcon1000_te_Z.csv",
+                "data/fcon1000_tr.csv",
+                "data/hcp-ya_euler.csv",
+                "data/ixi_euler.csv",
+                "data/nilearn_order.csv",
+                "tutorials/BLR_protocol/requirements.txt",
+                "tutorials/CPC_2020/data/camcan_demographics.csv",
+                "tutorials/CPC_2020/data/camcan_demographics_nordan.csv",
+                "tutorials/CPC_2020/data/camcan_features.csv",
+                "tutorials/CPC_2020/data/camcan_features_nordan.csv",
+                "tutorials/HBR_SHASH/df_te.csv",
+                "tutorials/HBR_SHASH/df_tr.csv",
+                "tutorials/Long_NM/data/NIMH_controls_v1.csv",
+                "tutorials/Long_NM/data/NIMH_controls_v2.csv",
+                "tutorials/Long_NM/data/NIMH_patients_v1.csv",
+                "tutorials/Long_NM/data/NIMH_patients_v2.csv",
+                "tutorials/Long_NM/requirements.txt"
+              ]
+            }
+          },
+          "accepted": true,
+          "decision_reason": "Strukturierte eLife-Data-Availability-Aussage mit öffentlichem Datensatzlink; 32 Datendatei(en) über GitHub-API bestätigt"
+        }
+      ],
       "rejected_candidates": [
         {
           "pure_id": "item_3640960",
@@ -4989,7 +5570,57 @@
             "accepted": false,
             "reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
           },
-          "link_audit": null,
+          "link_audit": {
+            "requested_url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+            "final_url": "https://github.com/predictive-clinical-neuroscience/PCNtoolkit-demo/tree/main/tutorials/Long_NM",
+            "available": true,
+            "http_status": 200,
+            "page_title": "PCNtoolkit-demo/tutorials/Long_NM at main · predictive-clinical-neuroscience/PCNtoolkit-demo · GitHub",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": true,
+            "osf": null,
+            "github": {
+              "repository": "predictive-clinical-neuroscience/PCNtoolkit-demo",
+              "file_count": 70,
+              "data_files": [
+                "data/HCP1200_age_gender.csv",
+                "data/HCP1200_aparc_thickness.csv",
+                "data/IXI_age_gender.csv",
+                "data/IXI_aparc_thickness.csv",
+                "data/OpenNeuroTransfer_ct_te.csv",
+                "data/OpenNeuroTransfer_ct_tr.csv",
+                "data/OpenNeuroTransfer_yeo17_te.csv",
+                "data/OpenNeuroTransfer_yeo17_tr.csv",
+                "data/Z_long_format.csv",
+                "data/fcon1000.csv",
+                "data/fcon1000_icbm_te.csv",
+                "data/fcon1000_icbm_tr.csv",
+                "data/fcon1000_noicbm_te.csv",
+                "data/fcon1000_noicbm_tr.csv",
+                "data/fcon1000_te.csv",
+                "data/fcon1000_te_Z.csv",
+                "data/fcon1000_tr.csv",
+                "data/hcp-ya_euler.csv",
+                "data/ixi_euler.csv",
+                "data/nilearn_order.csv",
+                "tutorials/BLR_protocol/requirements.txt",
+                "tutorials/CPC_2020/data/camcan_demographics.csv",
+                "tutorials/CPC_2020/data/camcan_demographics_nordan.csv",
+                "tutorials/CPC_2020/data/camcan_features.csv",
+                "tutorials/CPC_2020/data/camcan_features_nordan.csv",
+                "tutorials/HBR_SHASH/df_te.csv",
+                "tutorials/HBR_SHASH/df_tr.csv",
+                "tutorials/Long_NM/data/NIMH_controls_v1.csv",
+                "tutorials/Long_NM/data/NIMH_controls_v2.csv",
+                "tutorials/Long_NM/data/NIMH_patients_v1.csv",
+                "tutorials/Long_NM/data/NIMH_patients_v2.csv",
+                "tutorials/Long_NM/requirements.txt"
+              ]
+            }
+          },
           "accepted": false,
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         },
@@ -5070,7 +5701,7 @@
           "decision_reason": "Verlagsseite nennt keine eindeutige vorhandene Datenausgabe"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3659120",
@@ -5228,9 +5859,42 @@
     {
       "pure_id": "item_3565149",
       "title": "The algorithmic assignment of incentive schemes",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3565149",
+          "publication_title": "The algorithmic assignment of incentive schemes",
+          "url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.03362",
+          "source": "Provider",
+          "evidence": "trusted informs-replication dataset evidence publisher-doi-replication-package-with-data-files",
+          "dataset_title": "Management Science replication files for 10.1287/mnsc.2022.03362",
+          "provider": "informs-replication",
+          "relation": "publisher-doi-replication-package-with-data-files",
+          "source_validation": "trusted informs-replication dataset evidence",
+          "canonical_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.03362",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.03362",
+            "final_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.03362",
+            "available": true,
+            "http_status": 200,
+            "page_title": "",
+            "access_status": "Zustimmung/E-Mail erforderlich",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3631456",
@@ -12841,9 +13505,42 @@
     {
       "pure_id": "item_3549272",
       "title": "Salient cues and complexity",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3549272",
+          "publication_title": "Salient cues and complexity",
+          "url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00652",
+          "source": "Provider",
+          "evidence": "trusted informs-replication dataset evidence publisher-doi-replication-package-with-data-files",
+          "dataset_title": "Management Science replication files for 10.1287/mnsc.2022.00652",
+          "provider": "informs-replication",
+          "relation": "publisher-doi-replication-package-with-data-files",
+          "source_validation": "trusted informs-replication dataset evidence",
+          "canonical_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00652",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00652",
+            "final_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2022.00652",
+            "available": true,
+            "http_status": 200,
+            "page_title": "",
+            "access_status": "Zustimmung/E-Mail erforderlich",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3522335",
@@ -13636,15 +14333,237 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "hqawx",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 221,
+              "data_files": [
+                "EEF_cleaned_data.rds",
+                "EEF_cleaned_data.csv",
+                "DefPBG_codeBook.txt",
+                "240625_1048_4_session.xls",
+                "240625_1048_1_session.xls",
+                "240625_1048_4_globals.xls",
+                "240625_1048_3_session.xls",
+                "240625_1048_2_subjects.xls",
+                "240625_1048_3_summary.xls",
+                "240625_1048_2_summary.xls",
+                "240625_1048_3_subjects.xls",
+                "240625_1048_1_summary.xls",
+                "240625_1048_1_globals.xls",
+                "240625_1048_1_subjects.xls",
+                "240625_1048_3_globals.xls",
+                "240625_1048_4_subjects_sbj.xls",
+                "240625_1048_4_subjects.xls",
+                "240625_1048_4_summary.xls",
+                "240625_1048_2_globals.xls",
+                "240625_1048_2_session.xls",
+                "240625_0842_3_globals.xls",
+                "240625_0842_1_subjects.xls",
+                "240625_0842_2_globals.xls",
+                "240625_0842_4_summary.xls",
+                "240625_0842_1_summary.xls",
+                "240625_0842_1_globals.xls",
+                "240625_0842_2_session.xls",
+                "240625_0842_2_summary.xls",
+                "240625_0842_1_session.xls",
+                "240625_0842_4_session.xls",
+                "240625_0842_4_globals.xls",
+                "240625_0842_3_session.xls",
+                "240625_0842_4_subjects.xls",
+                "240625_0842_3_subjects.xls",
+                "240625_0842_3_summary.xls",
+                "240625_0842_2_subjects.xls",
+                "240625_0842_4_subjects_sbj.xls",
+                "240626_1039_2_globals.xls",
+                "240626_1039_4_globals.xls",
+                "240626_1039_4_subjects.xls",
+                "240626_1039_3_globals.xls",
+                "240626_1039_2_summary.xls",
+                "240626_1039_4_subjects_sbj.xls",
+                "240626_1039_1_session.xls",
+                "240626_1039_4_session.xls",
+                "240626_1039_4_summary.xls",
+                "240626_1039_3_subjects.xls",
+                "240626_1039_2_subjects.xls",
+                "240626_1039_1_globals.xls",
+                "240626_1039_2_session.xls",
+                "240626_1039_3_session.xls",
+                "240626_1039_1_summary.xls",
+                "240626_1039_1_subjects.xls",
+                "240626_1039_3_summary.xls",
+                "240626_0835_2_session.xls",
+                "240626_0835_3_summary.xls",
+                "240626_0835_4_session.xls",
+                "240626_0835_1_subjects.xls",
+                "240626_0835_2_globals.xls",
+                "240626_0835_3_subjects.xls",
+                "240626_0835_4_summary.xls",
+                "240626_0835_4_subjects_sbj.xls",
+                "240626_0835_4_subjects.xls",
+                "240626_0835_1_globals.xls",
+                "240626_0835_1_session.xls",
+                "240626_0835_1_summary.xls",
+                "240626_0835_2_summary.xls",
+                "240626_0835_2_subjects.xls",
+                "240626_0835_4_globals.xls",
+                "240626_0835_3_session.xls",
+                "240626_0835_3_globals.xls",
+                "240704_1023_4_summary.xls",
+                "240704_1023_2_globals.xls",
+                "240704_1023_2_subjects.xls",
+                "240704_1023_3_summary.xls",
+                "240704_1023_3_globals.xls",
+                "240704_1023_4_subjects_sbj.xls",
+                "240704_1023_2_summary.xls",
+                "240704_1023_3_session.xls",
+                "240704_1023_1_session.xls",
+                "240704_1023_1_globals.xls",
+                "240704_1023_2_session.xls",
+                "240704_1023_1_subjects.xls",
+                "240704_1023_4_session.xls",
+                "240704_1023_1_summary.xls",
+                "240704_1023_4_globals.xls",
+                "240704_1023_4_subjects.xls",
+                "240704_1023_3_subjects.xls",
+                "240626_1517_1_session.xls",
+                "240626_1517_4_globals.xls",
+                "240626_1517_2_subjects.xls",
+                "240626_1517_1_subjects.xls",
+                "240626_1517_4_summary.xls",
+                "240626_1517_1_summary.xls",
+                "240626_1517_3_summary.xls",
+                "240626_1517_4_session.xls",
+                "240626_1517_1_globals.xls",
+                "240626_1517_3_globals.xls",
+                "240626_1517_3_subjects.xls",
+                "240626_1517_2_session.xls",
+                "240626_1517_4_subjects.xls",
+                "240626_1517_2_globals.xls",
+                "240626_1517_4_subjects_sbj.xls",
+                "240626_1517_2_summary.xls",
+                "240626_1517_3_session.xls",
+                "240626_1315_1_session.xls",
+                "240626_1315_3_globals.xls",
+                "240626_1315_1_subjects.xls",
+                "240626_1315_3_session.xls",
+                "240626_1315_1_summary.xls",
+                "240626_1315_2_summary.xls",
+                "240626_1315_2_globals.xls",
+                "240626_1315_4_subjects_sbj.xls",
+                "240626_1315_1_globals.xls",
+                "240626_1315_2_session.xls",
+                "240626_1315_4_globals.xls",
+                "240626_1315_4_subjects.xls",
+                "240626_1315_3_summary.xls",
+                "240626_1315_4_session.xls",
+                "240626_1315_4_summary.xls",
+                "240626_1315_2_subjects.xls",
+                "240626_1315_3_subjects.xls",
+                "240702_1507_4_session.xls",
+                "240702_1507_1_summary.xls",
+                "240702_1507_3_session.xls",
+                "240702_1507_1_session.xls",
+                "240702_1507_4_subjects.xls",
+                "240702_1507_2_subjects.xls",
+                "240702_1507_4_subjects_sbj.xls",
+                "240702_1507_3_globals.xls",
+                "240702_1507_3_summary.xls",
+                "240702_1507_2_summary.xls",
+                "240702_1507_2_session.xls",
+                "240702_1507_1_subjects.xls",
+                "240702_1507_4_globals.xls",
+                "240702_1507_4_summary.xls",
+                "240702_1507_3_subjects.xls",
+                "240702_1507_1_globals.xls",
+                "240702_1507_2_globals.xls",
+                "240625_1324_1_globals.xls",
+                "240625_1324_3_globals.xls",
+                "240625_1324_4_session.xls",
+                "240625_1324_4_globals.xls",
+                "240625_1324_2_subjects.xls",
+                "240625_1324_3_subjects.xls",
+                "240625_1324_1_summary.xls",
+                "240625_1324_3_session.xls",
+                "240625_1324_2_summary.xls",
+                "240625_1324_4_summary.xls",
+                "240625_1324_4_subjects_sbj.xls",
+                "240625_1324_2_globals.xls",
+                "240625_1324_4_subjects.xls",
+                "240625_1324_1_session.xls",
+                "240625_1324_3_summary.xls",
+                "240625_1324_1_subjects.xls",
+                "240625_1324_2_session.xls",
+                "240704_0829_1_subjects.xls",
+                "240704_0829_4_session.xls",
+                "240704_0829_4_globals.xls",
+                "240704_0829_4_subjects_sbj.xls",
+                "240704_0829_2_summary.xls",
+                "240704_0829_3_subjects.xls",
+                "240704_0829_4_summary.xls",
+                "240704_0829_2_subjects.xls",
+                "240704_0829_4_subjects.xls",
+                "240704_0829_1_session.xls",
+                "240704_0829_3_summary.xls",
+                "240704_0829_2_globals.xls",
+                "240704_0829_1_summary.xls",
+                "240704_0829_3_globals.xls",
+                "240704_0829_1_globals.xls",
+                "240704_0829_3_session.xls",
+                "240704_0829_2_session.xls",
+                "240702_0841_4_globals.xls",
+                "240702_0841_3_subjects.xls",
+                "240702_0841_3_globals.xls",
+                "240702_0841_1_summary.xls",
+                "240702_0841_4_summary.xls",
+                "240702_0841_2_globals.xls",
+                "240702_0841_1_globals.xls",
+                "240702_0841_2_session.xls",
+                "240702_0841_1_session.xls",
+                "240702_0841_2_summary.xls",
+                "240702_0841_4_subjects_sbj.xls",
+                "240702_0841_1_subjects.xls",
+                "240702_0841_2_subjects.xls",
+                "240702_0841_4_session.xls",
+                "240702_0841_3_session.xls",
+                "240702_0841_4_subjects.xls",
+                "240702_0841_3_summary.xls",
+                "240625_1510_1_subjects.xls",
+                "240625_1510_2_session.xls",
+                "240625_1510_3_summary.xls",
+                "240625_1510_2_summary.xls",
+                "240625_1510_4_subjects_sbj.xls",
+                "240625_1510_4_session.xls",
+                "240625_1510_3_globals.xls",
+                "240625_1510_4_summary.xls",
+                "240625_1510_4_subjects.xls",
+                "240625_1510_4_globals.xls",
+                "240625_1510_3_subjects.xls",
+                "240625_1510_1_globals.xls",
+                "240625_1510_1_summary.xls",
+                "240625_1510_2_subjects.xls",
+                "240625_1510_3_session.xls",
+                "240625_1510_1_session.xls",
+                "240625_1510_2_globals.xls",
+                "EEF_ReadMe.txt"
+              ],
+              "code_files": [
+                "Part0_ControllQuestions_Group09-with-example-hints.pdf",
+                "Part1_Experiment_Single.pdf",
+                "Part2_KrupkaWeber.pdf",
+                "Part1_Experiment_Group.pdf",
+                "Part3_SVO.pdf",
+                "Part4_Questionnaire.pdf",
+                "English Experimental Instructions.docx",
+                "English Control Questions.docx",
+                "240624 Instructions 0.1 Treat German.docx",
+                "240624 Instructions 0.9 Treat German.docx",
+                "EEF_Join_and_Clean_Data.R",
+                "EEF_Data_Analysis.R",
+                "EEF_Power_for_PreReg.R"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3686548; Titel-/Autor:innen-Match (1.00)"
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3686548; Titel-/Autor:innen-Match (1.00); 208 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -13683,15 +14602,16 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "98tfa",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 1,
+              "data_files": [
+                "main_analyses_04.09.24.zip"
+              ],
+              "code_files": []
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 1 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -13760,7 +14680,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 503"
             },
             "github": null
           },
@@ -14205,15 +15125,28 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "duvrc",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 24,
+              "data_files": [
+                "Study 1_de-identified.sav",
+                "Study2b_punisher_de-identified.sav",
+                "Study2b_de-identified.sav",
+                "Study 3_de-identified.sav",
+                "Study 4_de-identified.sav",
+                "Study 2a_de-identified.sav"
+              ],
+              "code_files": [
+                "Materials.pdf",
+                "Study 1_Preregistration.pdf",
+                "Study 2b_Preregistration.pdf",
+                "Study 3_Preregistration.pdf",
+                "Study 4_Preregistration.pdf",
+                "Study 2a_Preregistration.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Identischer normalisierter Titel und starke Autor:innenüberschneidung mit item_3657005; Link aus expliziter Data-Availability-Statement; 6 Datendatei(en) über OSF-API bestätigt"
         },
         {
           "pure_id": "item_3657006",
@@ -14246,7 +15179,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -14284,7 +15217,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -14322,7 +15255,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -14360,7 +15293,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -14398,7 +15331,7 @@
               "file_count": null,
               "data_files": [],
               "code_files": [],
-              "error": "HTTP 429"
+              "error": "HTTP 404"
             },
             "github": null
           },
@@ -14565,7 +15498,51 @@
     {
       "pure_id": "item_3553928",
       "title": "Understanding non-normative civil resistance under repression: Evidence from Hong Kong and Chile",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3553928",
+          "publication_title": "Understanding non-normative civil resistance under repression: Evidence from Hong Kong and Chile",
+          "url": "https://osf.io/z34es/?view_only=634f9aba0001450d8baef233da73a1a4",
+          "source": "Provider",
+          "evidence": "trusted wiley-browser-data-availability dataset evidence publisher-data-availability-statement-with-verified-data-files",
+          "dataset_title": "Wiley-linked OSF research data (z34es)",
+          "provider": "wiley-browser-data-availability",
+          "relation": "publisher-data-availability-statement-with-verified-data-files",
+          "source_validation": "trusted wiley-browser-data-availability dataset evidence",
+          "canonical_url": "https://osf.io/z34es/?view_only=634f9aba0001450d8baef233da73a1a4",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/z34es/?view_only=634f9aba0001450d8baef233da73a1a4",
+            "final_url": "https://osf.io/z34es/?view_only=634f9aba0001450d8baef233da73a1a4",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen über View-only-Link",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "z34es",
+              "file_count": 6,
+              "data_files": [
+                "Raw data Study 2_Chile.xlsx",
+                "Raw data Study 1_HK.xlsx"
+              ],
+              "code_files": [
+                "Chile survey Spanish.pdf",
+                "HK survey Cantonese.pdf"
+              ]
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien; 2 Datendatei(en) über OSF-API bestätigt"
+        }
+      ],
       "rejected_candidates": [
         {
           "pure_id": "item_3553928",
@@ -14606,7 +15583,7 @@
           "decision_reason": "Dataset-Treffer ohne hinreichend engen Publikationsbezug (0.09)"
         }
       ],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3607522",
@@ -14688,15 +15665,28 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 20,
+              "data_files": [
+                "avoid_punishment_data_main.csv",
+                "avoid_punishment_data_pilot_2.csv",
+                "avoid_punishment_data_pilot_1.csv"
+              ],
+              "code_files": [
+                "power_analyses_main_study.R",
+                "analysis_pipeline_main_study.R",
+                "avoid-punishment-instructions-main-study.pdf",
+                "analysis_pipeline_pilot_2.R",
+                "avoid_punishment_instructions_pilot_2.pdf",
+                "analysis_pipeline_pilot_1.R",
+                "power_analysis_pilot_1.R",
+                "avoid_punishment_instructions_pilot_1.pdf",
+                "Deliberately Ignoring Unfairness – Preprint.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus expliziter Data-Availability-Statement"
+          "decision_reason": "Link aus expliziter Data-Availability-Statement; 3 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -14712,9 +15702,42 @@
     {
       "pure_id": "item_3480602",
       "title": "Competitiveness of entrepreneurs and salaried workers",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3480602",
+          "publication_title": "Competitiveness of entrepreneurs and salaried workers",
+          "url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2023.4838",
+          "source": "Provider",
+          "evidence": "trusted informs-replication dataset evidence publisher-doi-replication-package-with-data-files",
+          "dataset_title": "Management Science replication files for 10.1287/mnsc.2023.4838",
+          "provider": "informs-replication",
+          "relation": "publisher-doi-replication-package-with-data-files",
+          "source_validation": "trusted informs-replication dataset evidence",
+          "canonical_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2023.4838",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+          },
+          "link_audit": {
+            "requested_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2023.4838",
+            "final_url": "https://services.informs.org/dataset/mnsc/download.php?doi=mnsc.2023.4838",
+            "available": true,
+            "http_status": 200,
+            "page_title": "",
+            "access_status": "Zustimmung/E-Mail erforderlich",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Offizielles INFORMS-Replikationsarchiv mit geprüften Datendateien"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3590401",
@@ -14761,9 +15784,61 @@
     {
       "pure_id": "item_3587390",
       "title": "Deliberately ignoring inequality to avoid rejecting unfair offers",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3587390",
+          "publication_title": "Deliberately ignoring inequality to avoid rejecting unfair offers",
+          "url": "https://osf.io/rgeq8",
+          "source": "Provider",
+          "evidence": "trusted publication-version dataset evidence strongly-identified-publication-version",
+          "dataset_title": "Data availability link for 10.1038/s44271-024-00093-6",
+          "provider": "publication-version",
+          "relation": "strongly-identified-publication-version",
+          "source_validation": "trusted publication-version dataset evidence",
+          "canonical_url": "https://osf.io/rgeq8",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung"
+          },
+          "link_audit": {
+            "requested_url": "https://osf.io/rgeq8",
+            "final_url": "https://osf.io/rgeq8",
+            "available": true,
+            "http_status": 200,
+            "page_title": "OSF",
+            "access_status": "offen",
+            "verification_method": "HTTP",
+            "error": "",
+            "page_has_data_terms": false,
+            "page_has_exclusion_terms": false,
+            "osf": {
+              "node_id": "rgeq8",
+              "file_count": 20,
+              "data_files": [
+                "avoid_punishment_data_main.csv",
+                "avoid_punishment_data_pilot_2.csv",
+                "avoid_punishment_data_pilot_1.csv"
+              ],
+              "code_files": [
+                "power_analyses_main_study.R",
+                "analysis_pipeline_main_study.R",
+                "avoid-punishment-instructions-main-study.pdf",
+                "analysis_pipeline_pilot_2.R",
+                "avoid_punishment_instructions_pilot_2.pdf",
+                "analysis_pipeline_pilot_1.R",
+                "power_analysis_pilot_1.R",
+                "avoid_punishment_instructions_pilot_1.pdf",
+                "Deliberately Ignoring Unfairness – Preprint.pdf"
+              ]
+            },
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung; 3 Datendatei(en) über OSF-API bestätigt"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3628548",
@@ -15087,15 +16162,28 @@
             "page_has_exclusion_terms": false,
             "osf": {
               "node_id": "rgeq8",
-              "file_count": null,
-              "data_files": [],
-              "code_files": [],
-              "error": "HTTP 429"
+              "file_count": 20,
+              "data_files": [
+                "avoid_punishment_data_main.csv",
+                "avoid_punishment_data_pilot_2.csv",
+                "avoid_punishment_data_pilot_1.csv"
+              ],
+              "code_files": [
+                "power_analyses_main_study.R",
+                "analysis_pipeline_main_study.R",
+                "avoid-punishment-instructions-main-study.pdf",
+                "analysis_pipeline_pilot_2.R",
+                "avoid_punishment_instructions_pilot_2.pdf",
+                "analysis_pipeline_pilot_1.R",
+                "power_analysis_pilot_1.R",
+                "avoid_punishment_instructions_pilot_1.pdf",
+                "Deliberately Ignoring Unfairness – Preprint.pdf"
+              ]
             },
             "github": null
           },
           "accepted": true,
-          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts"
+          "decision_reason": "Link aus Data-Availability-Abschnitt des öffentlichen PuRe-Volltexts; 3 Datendatei(en) über OSF-API bestätigt"
         }
       ],
       "rejected_candidates": [],
@@ -15293,9 +16381,42 @@
     {
       "pure_id": "item_3558922",
       "title": "Integrating machine behavior into human subject experiments: A user-friendly toolkit and illustrations",
-      "accepted_links": [],
+      "accepted_links": [
+        {
+          "pure_id": "item_3558922",
+          "publication_title": "Integrating machine behavior into human subject experiments: A user-friendly toolkit and illustrations",
+          "url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/SPJFJ5",
+          "source": "Provider",
+          "evidence": "trusted publication-version dataset evidence strongly-identified-publication-version",
+          "dataset_title": "Replication Data for: Integrating Machine Behavior into Human Subject Experiments: A User-friendly Toolkit and an Application to Framed Prisoner’s Dilemmas",
+          "provider": "publication-version",
+          "relation": "strongly-identified-publication-version",
+          "source_validation": "trusted publication-version dataset evidence",
+          "canonical_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/SPJFJ5",
+          "semantic_precheck": {
+            "accepted": true,
+            "reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung"
+          },
+          "link_audit": {
+            "requested_url": "https://dataverse.harvard.edu/citation?persistentId=doi:10.7910/DVN/SPJFJ5",
+            "final_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/SPJFJ5",
+            "available": true,
+            "http_status": 202,
+            "page_title": "Replication Data for: Integrating Machine Behavior into Human Subject Experiments: A User-friendly Toolkit and an Application to Framed Prisoner’s Dilemmas - Harvard Dataverse",
+            "access_status": "offen",
+            "verification_method": "Playwright",
+            "error": "",
+            "page_has_data_terms": true,
+            "page_has_exclusion_terms": true,
+            "osf": null,
+            "github": null
+          },
+          "accepted": true,
+          "decision_reason": "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung"
+        }
+      ],
       "rejected_candidates": [],
-      "research_data": "nein"
+      "research_data": "ja"
     },
     {
       "pure_id": "item_3566027",

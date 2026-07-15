@@ -180,7 +180,7 @@ overview.getRange("A17:F21").values = [
   ["Linkprüfung", "HTTP-Status und Weiterleitungsziel; Playwright als Fallback bei JavaScript oder Zugriffsschutz", "", "", "", ""],
   ["Dateiprüfung", "OSF- und GitHub-Dateibäume rekursiv über die jeweilige API; Zenodo-Archive werden bis auf Dateiebene geprüft", "", "", "", ""],
   ["Konservative Regel", "Nicht erreichbare, mehrdeutige oder nur indirekt referenzierte Treffer werden als nein geführt", "", "", "", ""],
-  ["Zugang", "Paywall, Login, Embargo und Zugriffsbeschränkung erscheinen je Link in einer eigenen Spalte", "", "", "", ""],
+  ["Zugang", "Paywall, Login, Embargo, Zustimmungspflichten und View-only-Zugänge erscheinen je Link in einer eigenen Spalte", "", "", "", ""],
 ];
 for (let row = 17; row <= 21; row += 1) overview.getRange(`B${row}:F${row}`).merge();
 overview.getRange("A17:A21").format.font = { bold: true, color: "#17324D" };
@@ -194,7 +194,7 @@ overview.getRange("A23:B23").format.font = { color: "#17324D", bold: true };
 overview.getRange("A24:B27").values = [
   ["Grün", "Forschungsdaten ja / Link offen"],
   ["Rot", "Forschungsdaten nein"],
-  ["Gelb", "Paywall, Login, Embargo oder Zugriffsbeschränkung"],
+  ["Gelb", "Paywall, Login, Embargo, Zustimmungspflicht oder View-only-Zugang"],
   ["Blau", "Verifizierter Forschungsdatenlink"],
 ];
 overview.getRange("A24").format.fill = { color: "#C6EFCE" };
