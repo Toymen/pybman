@@ -233,9 +233,7 @@ def test_scholexplorer_datasets_for_doi_filters_targets(responses):
 
 
 def test_scholexplorer_reverse_links_report_dataset_sources(responses):
-    responses.get(
-        "https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response()
-    )
+    responses.get("https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response())
     reverse = {
         "RelationshipType": {"Name": "IsSupplementTo"},
         "source": {
@@ -247,9 +245,7 @@ def test_scholexplorer_reverse_links_report_dataset_sources(responses):
         },
         "target": {"Identifier": [{"ID": DOI, "IDScheme": "doi"}], "Type": "publication"},
     }
-    responses.get(
-        "https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response(reverse)
-    )
+    responses.get("https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response(reverse))
     result = ScholexplorerProvider().datasets_for_doi(DOI)
     (hit,) = result.hits
     assert hit.pid == "10.1594/pangaea.2"
@@ -264,9 +260,7 @@ def test_scholexplorer_deduplicates_both_directions(responses):
     )
     reverse = scholix_link("10.1594/pangaea.1")
     reverse["source"], reverse["target"] = reverse["target"], reverse["source"]
-    responses.get(
-        "https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response(reverse)
-    )
+    responses.get("https://api.scholexplorer.openaire.eu/v3/Links", json=scholix_response(reverse))
     result = ScholexplorerProvider().datasets_for_doi(DOI)
     assert len(result.hits) == 1
 
@@ -302,9 +296,7 @@ def ckan_response(*names: str, count: int | None = None):
 
 
 def test_b2find_datasets_for_doi(responses):
-    responses.get(
-        "https://b2find.eudat.eu/api/3/action/package_search", json=ckan_response("abc")
-    )
+    responses.get("https://b2find.eudat.eu/api/3/action/package_search", json=ckan_response("abc"))
     result = B2FindProvider().datasets_for_doi(DOI)
 
     query = _query(responses)
@@ -319,9 +311,7 @@ def test_b2find_datasets_for_doi(responses):
 
 
 def test_b2find_datasets_for_orcid(responses):
-    responses.get(
-        "https://b2find.eudat.eu/api/3/action/package_search", json=ckan_response("xyz")
-    )
+    responses.get("https://b2find.eudat.eu/api/3/action/package_search", json=ckan_response("xyz"))
     result = B2FindProvider().datasets_for_orcid(ORCID)
     assert _query(responses)["q"] == [f'"{ORCID}"']
     assert result.hits[0].pid == "10.23728/xyz"
@@ -397,6 +387,5 @@ def test_crossref_mailto_forwarded(responses):
 def test_google_dataset_search_url():
     url = google_dataset_search_url(DOI)
     assert url == (
-        "https://datasetsearch.research.google.com/search"
-        "?query=10.1038%2Fs41586-020-2649-2"
+        "https://datasetsearch.research.google.com/search?query=10.1038%2Fs41586-020-2649-2"
     )
