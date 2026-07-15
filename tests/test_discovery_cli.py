@@ -37,6 +37,10 @@ def one_dataset(responses):
         json={"header": {"numFound": 0}, "results": []},
     )
     responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        json={"resultList": {"result": []}},
+    )
+    responses.get(
         "https://api.scholexplorer.openaire.eu/v3/Links",
         json={"totalLinks": 0, "totalPages": 0, "result": []},
     )
@@ -80,6 +84,7 @@ def test_cli_json_output(one_dataset, capsys):
     assert payload["hits"][0]["pid"] == "10.5281/zenodo.1"
     assert {r["provider"] for r in payload["results"]} == {
         "datacite",
+        "europepmc",
         "openaire",
         "scholexplorer",
         "b2find",

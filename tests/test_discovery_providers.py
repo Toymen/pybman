@@ -15,8 +15,10 @@ from pybman.discovery import (
     CrossrefProvider,
     DataCiteProvider,
     DiscoveryError,
+    EuropePmcProvider,
     OpenAIREProvider,
     OrcidProvider,
+    OsfProvider,
     ScholexplorerProvider,
     google_dataset_search_url,
 )
@@ -153,6 +155,105 @@ def test_datacite_http_error_raises_discovery_error(responses):
     responses.get("https://api.datacite.org/dois", json={"errors": []}, status=500)
     with pytest.raises(DiscoveryError):
         DataCiteProvider(retries=0).datasets_for_doi(DOI)
+
+
+# -- Open Science Framework ---------------------------------------------------
+
+
+def osf_record(identifier: str, title: str, contributor: str):
+    return {
+        "id": identifier,
+        "type": "nodes",
+        "attributes": {"title": title, "public": True, "category": "project"},
+        "links": {"html": f"https://osf.io/{identifier}/"},
+        "embeds": {
+            "contributors": {
+                "data": [
+                    {
+                        "embeds": {
+                            "users": {
+                                "data": {"attributes": {"full_name": contributor}}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+    }
+
+
+def test_osf_title_lookup_checks_nodes_and_registrations(responses):
+    title = "Intuitive deontology and moral judgments"
+    responses.get(
+        "https://api.osf.io/v2/nodes/",
+        json={"data": [osf_record("sdbgf", title, "Rima-Maria Rahal")]},
+    )
+    responses.get(
+        "https://api.osf.io/v2/registrations/",
+        json={"data": [osf_record("reg42", title, "Someone Else")]},
+    )
+
+    result = OsfProvider().datasets_for_title(
+        title, authors=("Rima-Maria Rahal", "Susann Fiedler")
+    )
+
+    assert len(responses.calls) == 2
+    assert _query(responses, 0)["filter[title]"] == [title]
+    assert _query(responses, 0)["filter[public]"] == ["true"]
+    assert [hit.pid for hit in result.hits] == ["sdbgf"]
+    assert result.hits[0].pid_type == "osf"
+    assert result.hits[0].url == "https://osf.io/sdbgf/"
+
+
+def test_osf_title_lookup_rejects_weak_title(responses):
+    responses.get(
+        "https://api.osf.io/v2/nodes/",
+        json={"data": [osf_record("abc12", "Unrelated moral study", "Rima Rahal")]},
+    )
+    responses.get("https://api.osf.io/v2/registrations/", json={"data": []})
+    result = OsfProvider().datasets_for_title(
+        "Intuitive deontology and moral judgments", authors=("Rima Rahal",)
+    )
+    assert result.hits == []
+
+
+# -- Europe PMC ---------------------------------------------------------------
+
+
+def test_europe_pmc_extracts_current_data_availability_link(responses):
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        json={"resultList": {"result": [{"source": "MED", "id": "42", "pmcid": "PMC42"}]}},
+    )
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC42/fullTextXML",
+        body="""<article><body><sec sec-type="data-availability-statement">
+        <title>Data Availability</title><p>Processed data are available at
+        <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
+        xlink:href="https://osf.io/abc12/">OSF</ext-link>.</p></sec></body></article>""",
+        content_type="application/xml",
+    )
+
+    result = EuropePmcProvider().datasets_for_doi(DOI)
+
+    assert _query(responses, 0)["query"] == [f'DOI:"{DOI}"']
+    assert [hit.url for hit in result.hits] == ["https://osf.io/abc12/"]
+    assert result.hits[0].relation == "data-availability-statement"
+
+
+def test_europe_pmc_does_not_count_future_release_promise(responses):
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        json={"resultList": {"result": [{"pmcid": "PMC43"}]}},
+    )
+    responses.get(
+        "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC43/fullTextXML",
+        body="""<article><body><sec><title>Data availability</title><p>Data will be
+        available at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
+        xlink:href="https://osf.io/future/">OSF</ext-link>.</p></sec></body></article>""",
+        content_type="application/xml",
+    )
+    assert EuropePmcProvider().datasets_for_doi(DOI).hits == []
 
 
 # -- OpenAIRE Graph API ---------------------------------------------------------

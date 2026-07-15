@@ -14,15 +14,13 @@ https://support.datacite.org/docs/api-queries for the query syntax.
 
 from __future__ import annotations
 
-import re
-import unicodedata
-from difflib import SequenceMatcher
 from typing import Any
 
 import requests
 
 from ._client import Provider
 from .identifiers import normalize_doi, normalize_orcid
+from .matching import has_surname_overlap, title_match_score, title_tokens
 from .models import DatasetHit, ProviderResult
 
 DEFAULT_BASE_URL = "https://api.datacite.org"
@@ -91,9 +89,13 @@ class DataCiteProvider(Provider):
             attributes = record.get("attributes", {})
             titles = attributes.get("titles") or []
             candidate = str(titles[0].get("title") or "") if titles else ""
-            score = _title_match_score(title, candidate)
-            author_match = _has_author_overlap(authors, attributes.get("creators") or [])
-            enough_title_evidence = score >= 0.9 and len(_tokens(title)) >= 4
+            score = title_match_score(title, candidate)
+            creator_names = [
+                str(creator.get("familyName") or creator.get("name") or "")
+                for creator in attributes.get("creators") or []
+            ]
+            author_match = has_surname_overlap(authors, creator_names)
+            enough_title_evidence = score >= 0.9 and len(title_tokens(title)) >= 4
             if not enough_title_evidence or (authors and not author_match):
                 continue
             raw = dict(record)
@@ -138,41 +140,3 @@ class DataCiteProvider(Provider):
             url=attributes.get("url"),
             raw=record,
         )
-
-
-def _normalize(value: str) -> str:
-    decomposed = unicodedata.normalize("NFKD", value.casefold())
-    ascii_text = "".join(char for char in decomposed if not unicodedata.combining(char))
-    return " ".join(re.findall(r"[a-z0-9]+", ascii_text))
-
-
-def _tokens(value: str) -> set[str]:
-    return set(_normalize(value).split())
-
-
-def _title_match_score(publication_title: str, dataset_title: str) -> float:
-    publication = _normalize(publication_title)
-    dataset = _normalize(dataset_title)
-    if not publication or not dataset:
-        return 0.0
-    if publication in dataset:
-        return 1.0
-    publication_tokens = set(publication.split())
-    coverage = len(publication_tokens & set(dataset.split())) / len(publication_tokens)
-    return max(coverage, SequenceMatcher(None, publication, dataset).ratio())
-
-
-def _surname(value: str) -> str:
-    parts = _normalize(value).split()
-    return parts[-1] if parts else ""
-
-
-def _has_author_overlap(authors: tuple[str, ...], creators: list[dict[str, Any]]) -> bool:
-    if not authors:
-        return False
-    publication_surnames = {_surname(author) for author in authors} - {""}
-    dataset_surnames = {
-        _surname(str(creator.get("familyName") or creator.get("name") or ""))
-        for creator in creators
-    } - {""}
-    return bool(publication_surnames & dataset_surnames)

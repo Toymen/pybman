@@ -11,10 +11,12 @@ from ._client import make_session
 from .b2find import B2FindProvider
 from .crossref import CrossrefProvider
 from .datacite import DataCiteProvider
+from .europepmc import EuropePmcProvider
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DiscoveryReport, ProviderResult
 from .openaire import OpenAIREProvider
 from .orcid import OrcidProvider
+from .osf import OsfProvider
 from .scholexplorer import ScholexplorerProvider
 
 
@@ -70,11 +72,13 @@ class DataDiscovery:
             common: dict[str, Any] = {"session": shared, "timeout": timeout}
             providers = [
                 DataCiteProvider(**common),
+                EuropePmcProvider(**common),
                 OpenAIREProvider(access_token=openaire_token, **common),
                 ScholexplorerProvider(**common),
                 B2FindProvider(**common),
                 CrossrefProvider(mailto=crossref_mailto, **common),
                 OrcidProvider(**common),
+                OsfProvider(**common),
             ]
         self.providers: list[SupportsDiscovery] = list(providers)
 

@@ -16,11 +16,13 @@ from .aggregator import DataDiscovery, SupportsDiscovery
 from .b2find import B2FindProvider
 from .crossref import CrossrefProvider
 from .datacite import DataCiteProvider
+from .europepmc import EuropePmcProvider
 from .google import google_dataset_search_url
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, DiscoveryReport, ProviderResult
 from .openaire import OpenAIREProvider
 from .orcid import OrcidProvider
+from .osf import OsfProvider
 from .scholexplorer import ScholexplorerProvider
 
 __all__ = [
@@ -31,8 +33,10 @@ __all__ = [
     "DatasetHit",
     "DiscoveryError",
     "DiscoveryReport",
+    "EuropePmcProvider",
     "OpenAIREProvider",
     "OrcidProvider",
+    "OsfProvider",
     "Provider",
     "ProviderResult",
     "ScholexplorerProvider",

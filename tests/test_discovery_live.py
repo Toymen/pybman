@@ -33,6 +33,7 @@ def test_live_doi_lookup_runs_all_providers():
     report = DataDiscovery(crossref_mailto="pybman-tests@example.org").for_doi(DOI)
     assert {r.provider for r in report.results} == {
         "datacite",
+        "europepmc",
         "openaire",
         "scholexplorer",
         "b2find",

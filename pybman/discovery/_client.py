@@ -108,3 +108,23 @@ class Provider:
             return response.json()
         except ValueError as exc:
             raise DiscoveryError(f"{self.name}: GET {response.url} returned invalid JSON") from exc
+
+    def _get_text(
+        self,
+        url: str,
+        *,
+        params: dict[str, Any] | None = None,
+        none_on_404: bool = False,
+    ) -> str | None:
+        """GET text content with the same failure semantics as :meth:`_get_json`."""
+        try:
+            response = self._session.get(url, params=params, timeout=self._timeout)
+        except requests.RequestException as exc:
+            raise DiscoveryError(f"{self.name}: GET {url} failed: {exc}") from exc
+        if none_on_404 and response.status_code == 404:
+            return None
+        if not response.ok:
+            raise DiscoveryError(
+                f"{self.name}: GET {response.url} returned HTTP {response.status_code}"
+            )
+        return response.text
