@@ -1,0 +1,61 @@
+{
+  "generated_at": "2026-07-16T00:45:00Z",
+  "method": "Read-only in-app Playwright inspection of Wiley article DOM; repository files checked separately through the public OSF API.",
+  "observations": [
+    {
+      "PuRe-ID": "item_3686121",
+      "DOI": "10.1002/bdm.70064",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1002/bdm.70064",
+      "page_title": "Who Is Afraid of the Pink Elephant? Evidence on (Not) Ignoring Inadmissible Evidence and Debiasing Interventions",
+      "data_availability_statement": "The studies reported here were preregistered. All materials, data, and code are available on the OSF.",
+      "links": [
+        "https://osf.io/yef3k/?view_only=6d8e23c8ced94e3680c5f459a471fd1f"
+      ]
+    },
+    {
+      "PuRe-ID": "item_3553928",
+      "DOI": "10.1111/pops.12933",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1111/pops.12933",
+      "page_title": "Understanding non-normative civil resistance under repression: Evidence from Hong Kong and Chile",
+      "data_availability_statement": "All study materials, anonymized data, and scripts are available at the linked OSF project.",
+      "links": [
+        "https://osf.io/z34es/?view_only=634f9aba0001450d8baef233da73a1a4"
+      ]
+    },
+    {
+      "PuRe-ID": "item_3655765",
+      "DOI": "10.1002/ejsp.70006",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1002/ejsp.70006",
+      "data_availability_statement": "No data has been collected for this paper.",
+      "links": []
+    },
+    {
+      "PuRe-ID": "item_3565239",
+      "DOI": "10.1002/ejsp.3024",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1002/ejsp.3024",
+      "data_availability_statement": "Data are available upon request to the corresponding authors.",
+      "links": []
+    },
+    {
+      "PuRe-ID": "item_3702867",
+      "DOI": "10.1111/jels.70019",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1111/jels.70019",
+      "data_availability_statement": "Data necessary to replicate the results of this article are available upon request from the corresponding author.",
+      "links": []
+    },
+    {
+      "PuRe-ID": "item_3699100",
+      "DOI": "10.1002/hec.70098",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1002/hec.70098",
+      "data_availability_statement": "The data are available from NYC Department of Health and Mental Hygiene with permission; restrictions apply.",
+      "links": []
+    },
+    {
+      "PuRe-ID": "item_3560081",
+      "DOI": "10.1002/jid.3850",
+      "article_url": "https://onlinelibrary.wiley.com/doi/10.1002/jid.3850",
+      "data_availability_statement": "The data are available from DANE and UNODC with permission; restrictions apply.",
+      "links": []
+    }
+  ]
+}

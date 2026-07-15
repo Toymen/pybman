@@ -20,7 +20,7 @@ const ACCESS_RESTRICTED =
 const ACCESS_LOGIN =
   /\b(login required|sign in to access|log in to access|institutional access required|purchase access|subscribe to access|behind (?:a )?paywall)\b/i;
 const ACCESS_TERMS =
-  /\b(indicate your agreement|I agree|email address\*?|accept (?:the )?terms|terms of use must be accepted)\b/i;
+  /\b(indicate your agreement|I agree|accept (?:the )?terms|terms of use must be accepted)\b/i;
 const FILE_DATA_EXTENSIONS =
   /\.(csv|tsv|sav|dta|rds|rdata|xlsx?|json|parquet|feather|zip|7z|tar|gz|txt|mat|h5|hdf5|sql|sqlite|por|sas7bdat)$/i;
 const FILE_CODE_EXTENSIONS = /\.(r|rmd|py|ipynb|do|m|jl|js|ts|html?|pdf|docx?)$/i;
@@ -201,6 +201,15 @@ function semanticCandidate(candidate) {
   if (candidate.provider === "pure-duplicate-fulltext") {
     return { accepted: true, reason: "Datensatzlink aus öffentlichem Volltext einer DOI-identischen PuRe-Parallelfassung" };
   }
+  if (candidate.provider === "unpaywall-fulltext") {
+    return { accepted: true, reason: "Datensatzlink aus expliziter Datenverfügbarkeitsaussage eines Unpaywall-OA-Volltexts" };
+  }
+  if (candidate.provider === "wiley-browser-data-availability") {
+    return { accepted: true, reason: "Wiley-Datenverfügbarkeitsaussage mit rekursiv geprüften OSF-Datendateien" };
+  }
+  if (candidate.provider === "publication-version") {
+    return { accepted: true, reason: "Bereits auditierter Datensatz einer stark identifizierten Publikationsfassung" };
+  }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
     if (similarity >= 0.55 || /verified-title-author-match/i.test(candidate.relation)) {
@@ -278,36 +287,53 @@ function collectCandidates(publications, discovery) {
   return candidates;
 }
 
-function osfNodeId(urlValue) {
+function osfIdentity(urlValue) {
   try {
     const url = new URL(urlValue);
-    if (!/(^|\.)osf\.io$/i.test(url.hostname)) return "";
-    return url.pathname.split("/").filter(Boolean)[0] ?? "";
+    if (!/(^|\.)osf\.io$/i.test(url.hostname)) return { nodeId: "", viewToken: "" };
+    return {
+      nodeId: url.pathname.split("/").filter(Boolean)[0] ?? "",
+      viewToken: url.searchParams.get("view_only") ?? "",
+    };
   } catch {
-    return "";
+    return { nodeId: "", viewToken: "" };
   }
 }
 
 async function fetchJson(url, timeoutMs = 20000) {
-  const response = await fetch(url, {
-    headers: { "User-Agent": "ResearchDataAudit/1.0 (+link-verification)" },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  let lastStatus = null;
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const response = await fetch(url, {
+      headers: { "User-Agent": "ResearchDataAudit/1.0 (+link-verification)" },
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+    lastStatus = response.status;
+    if (response.ok) return response.json();
+    if (response.status !== 429 && response.status < 500) break;
+    await new Promise((resolve) => setTimeout(resolve, 750 * 2 ** attempt));
+  }
+  throw new Error(`HTTP ${lastStatus ?? "unknown"}`);
 }
 
 async function inspectOsf(url) {
-  const nodeId = osfNodeId(url);
+  const { nodeId, viewToken } = osfIdentity(url);
   if (!nodeId) return null;
+  const withViewToken = (value) => {
+    if (!viewToken) return value;
+    const target = new URL(value);
+    if (!target.searchParams.has("view_only")) target.searchParams.set("view_only", viewToken);
+    return target.toString();
+  };
   try {
-    const providers = await fetchJson(`https://api.osf.io/v2/nodes/${nodeId}/files/`);
+    const providers = await fetchJson(
+      withViewToken(`https://api.osf.io/v2/nodes/${nodeId}/files/`),
+    );
     const names = [];
     const visit = async (listingUrl, depth = 0) => {
       if (!listingUrl || depth > 5) return;
       let nextUrl = listingUrl;
       while (nextUrl) {
-        const listing = await fetchJson(nextUrl);
+        const listing = await fetchJson(withViewToken(nextUrl));
         for (const entry of listing.data ?? []) {
           const name = text(entry.attributes?.name);
           if (entry.attributes?.kind === "folder") {
@@ -324,12 +350,14 @@ async function inspectOsf(url) {
       if (!id || depth > 5 || seenNodes.has(id)) return;
       seenNodes.add(id);
       const nodeProviders =
-        id === nodeId ? providers : await fetchJson(`https://api.osf.io/v2/nodes/${id}/files/`);
+        id === nodeId
+          ? providers
+          : await fetchJson(withViewToken(`https://api.osf.io/v2/nodes/${id}/files/`));
       for (const provider of nodeProviders.data ?? []) {
         await visit(provider.relationships?.files?.links?.related?.href);
       }
       const children = await fetchJson(
-        `https://api.osf.io/v2/nodes/${id}/children/?page%5Bsize%5D=100`,
+        withViewToken(`https://api.osf.io/v2/nodes/${id}/children/?page%5Bsize%5D=100`),
       ).catch(() => ({ data: [] }));
       for (const child of children.data ?? []) await visitNode(text(child.id), depth + 1);
     };
@@ -366,11 +394,16 @@ async function inspectGithub(urlValue) {
   }
 }
 
-function classifyAccess(status, pageText) {
+function classifyAccess(status, pageText, urlValue = "") {
   if (ACCESS_RESTRICTED.test(pageText)) return "zugriffsbeschränkt/embargo";
   if (ACCESS_LOGIN.test(pageText) || status === 401 || status === 402) return "Paywall/Login";
   if (ACCESS_TERMS.test(pageText)) return "Zustimmung/E-Mail erforderlich";
   if (status === 403) return "Paywall/Login oder Zugriffsschutz";
+  try {
+    if (new URL(urlValue).searchParams.has("view_only")) return "offen über View-only-Link";
+  } catch {
+    // Invalid URLs have already failed semantic validation.
+  }
   return "offen";
 }
 
@@ -435,7 +468,7 @@ async function auditUrl(browser, url) {
     page_title: text(page.title).replace(/\s+/g, " ").slice(0, 500),
     access_status:
       page.ok || [401, 402, 403].includes(page.status)
-        ? classifyAccess(page.status, pageText)
+        ? classifyAccess(page.status, pageText, page.final_url || url)
         : "nicht erreichbar",
     verification_method: page.method,
     error: page.error ?? "",
@@ -456,7 +489,8 @@ const urls = [...new Set(candidates.filter((item) => item.semantic_precheck.acce
 const browser = await chromium.launch({ headless: true });
 const audits = new Map();
 let cursor = 0;
-const workers = Array.from({ length: 5 }, async () => {
+const auditWorkers = Math.max(1, Number(process.env.AUDIT_WORKERS ?? 3));
+const workers = Array.from({ length: auditWorkers }, async () => {
   while (cursor < urls.length) {
     const index = cursor;
     cursor += 1;

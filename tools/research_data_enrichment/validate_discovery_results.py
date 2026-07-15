@@ -29,6 +29,9 @@ TRUSTED_EVIDENCE_PROVIDERS = {
     "elife-data-availability",
     "pure-duplicate-file",
     "pure-duplicate-fulltext",
+    "unpaywall-fulltext",
+    "wiley-browser-data-availability",
+    "publication-version",
 }
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 
