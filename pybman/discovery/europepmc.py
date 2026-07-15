@@ -12,7 +12,6 @@ from .identifiers import normalize_doi
 from .models import DatasetHit, ProviderResult
 
 DEFAULT_BASE_URL = "https://www.ebi.ac.uk/europepmc/webservices/rest"
-URL_RE = re.compile(r"https?://[^\s<>\]\[)]+", re.IGNORECASE)
 DATA_HOSTS = (
     "osf.io",
     "doi.org",
@@ -90,12 +89,19 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
             phrase in statement_lower
             for phrase in (
                 "are available",
+                "are openly available",
+                "are publicly available",
                 "is available",
+                "is openly available",
+                "is publicly available",
                 "have been deposited",
                 "can be accessed",
             )
         )
-        if "will be available" in statement_lower and not current_availability:
+        future_release = re.search(
+            r"will be (?:made |openly |publicly )?available", statement_lower
+        )
+        if future_release and not current_availability:
             continue
         candidates = [
             str(value)
@@ -103,7 +109,6 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
             for key, value in element.attrib.items()
             if key.endswith("href")
         ]
-        candidates.extend(URL_RE.findall(statement))
         for candidate in candidates:
             cleaned = candidate.rstrip(".,;:")
             if any(host in cleaned.casefold() for host in DATA_HOSTS):

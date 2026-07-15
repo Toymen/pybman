@@ -249,7 +249,7 @@ def test_europe_pmc_does_not_count_future_release_promise(responses):
     responses.get(
         "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC43/fullTextXML",
         body="""<article><body><sec><title>Data availability</title><p>Data will be
-        available at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
+        openly available at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"
         xlink:href="https://osf.io/future/">OSF</ext-link>.</p></sec></body></article>""",
         content_type="application/xml",
     )

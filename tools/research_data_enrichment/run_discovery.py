@@ -17,6 +17,12 @@ from pybman.discovery import (
     normalize_doi,
 )
 
+DISABLED_PROVIDERS = {
+    provider.strip()
+    for provider in os.environ.get("DISCOVERY_DISABLE_PROVIDERS", "").split(",")
+    if provider.strip()
+}
+
 
 def as_text(value: Any) -> str:
     return str(value or "").strip()
@@ -76,6 +82,10 @@ def run_one(row: dict[str, Any]) -> dict[str, Any]:
     title = as_text(row.get("Titel"))
     started = time.time()
     discovery = DataDiscovery(timeout=12.0, retries=1)
+    if DISABLED_PROVIDERS:
+        discovery.providers = [
+            provider for provider in discovery.providers if provider.name not in DISABLED_PROVIDERS
+        ]
     doi = clean_doi(doi_raw) if doi_raw else ""
     doi_report = discovery.for_doi(doi, limit=20) if doi else None
     title_report = (
