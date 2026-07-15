@@ -147,9 +147,7 @@ def test_query_can_sort_by_tags_and_research_data_flag(tmp_path):
         rows, _total = store.query_items(conn, {}, sort_by="local_tags", sort_dir="asc")
         assert [row["object_id"] for row in rows] == ["item_2", "item_1"]
 
-        rows, _total = store.query_items(
-            conn, {}, sort_by="research_data_flag", sort_dir="desc"
-        )
+        rows, _total = store.query_items(conn, {}, sort_by="research_data_flag", sort_dir="desc")
         assert [row["object_id"] for row in rows] == ["item_2", "item_1"]
 
 

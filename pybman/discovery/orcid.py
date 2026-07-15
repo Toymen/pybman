@@ -65,9 +65,7 @@ class OrcidProvider(Provider):
                     hits.append(hit)
         return hits
 
-    def _hit(
-        self, group: dict[str, Any], summary: dict[str, Any], orcid: str
-    ) -> DatasetHit | None:
+    def _hit(self, group: dict[str, Any], summary: dict[str, Any], orcid: str) -> DatasetHit | None:
         doi, doi_url = _doi_from_group(group)
         if doi:
             pid, pid_type, url = doi, "doi", doi_url or f"https://doi.org/{doi}"

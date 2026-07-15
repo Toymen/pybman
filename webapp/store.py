@@ -293,10 +293,7 @@ def _research_group_tags(tags: list[str]) -> str:
 
 def _replace_item_tags(conn: sqlite3.Connection, object_id: str, tags: list[str]) -> None:
     conn.execute("DELETE FROM item_tags WHERE object_id = ?", (object_id,))
-    rows = [
-        (object_id, tag, 1 if "prime" in tag.lower() else 0)
-        for tag in dict.fromkeys(tags)
-    ]
+    rows = [(object_id, tag, 1 if "prime" in tag.lower() else 0) for tag in dict.fromkeys(tags)]
     if rows:
         conn.executemany(
             "INSERT INTO item_tags (object_id, tag, is_prime) VALUES (?, ?, ?)",
@@ -629,9 +626,7 @@ def upsert_person(conn: sqlite3.Connection, cone_id: str, payload: Any) -> None:
         "ON CONFLICT(cone_id) DO UPDATE SET name=excluded.name, data=excluded.data",
         (cone_id, name, json.dumps(payload)),
     )
-    _replace_fields(
-        conn, "entity_fields", {"entity_type": "person", "entity_id": cone_id}, payload
-    )
+    _replace_fields(conn, "entity_fields", {"entity_type": "person", "entity_id": cone_id}, payload)
 
 
 def upsert_organization(conn: sqlite3.Connection, ou_id: str, payload: Any) -> None:
