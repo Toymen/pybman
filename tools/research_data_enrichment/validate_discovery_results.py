@@ -35,6 +35,7 @@ TRUSTED_EVIDENCE_PROVIDERS = {
     "cambridge-osf-data",
     "degruyter-browser-data-availability",
     "huggingface-arxiv-dataset",
+    "osf-exact-title-data",
 }
 DATACITE_URL = "https://api.datacite.org/dois/{doi}"
 

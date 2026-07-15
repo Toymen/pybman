@@ -219,6 +219,9 @@ function semanticCandidate(candidate) {
   if (candidate.provider === "huggingface-arxiv-dataset") {
     return { accepted: true, reason: "Öffentlicher Hugging-Face-Datensatz mit exaktem arXiv-Tag und geprüften Datendateien" };
   }
+  if (candidate.provider === "osf-exact-title-data") {
+    return { accepted: true, reason: "Exakter Titel- und Autor:innenbezug zu einem OSF-Projekt mit rekursiv geprüften Datendateien" };
+  }
   if (candidate.provider === "datacite" || candidate.provider === "osf" || candidate.provider === "b2find") {
     const similarity = titleSimilarity(candidate.publication_title, candidate.dataset_title);
     if (similarity >= 0.55 || /verified-title-author-match/i.test(candidate.relation)) {
