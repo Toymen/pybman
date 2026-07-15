@@ -16,6 +16,7 @@ from pybman.discovery import (
     DataCiteProvider,
     DiscoveryError,
     OpenAIREProvider,
+    OrcidProvider,
     ScholexplorerProvider,
     google_dataset_search_url,
 )
@@ -175,6 +176,90 @@ def test_openaire_result_without_doi_pid_keeps_openaire_id(responses):
     result = OpenAIREProvider().datasets_for_orcid(ORCID)
     assert result.hits[0].pid == "openaire____::0"
     assert result.hits[0].pid_type == "openaire"
+
+
+# -- ORCID ---------------------------------------------------------------------
+
+
+def orcid_works_response():
+    return {
+        "group": [
+            {
+                "external-ids": {
+                    "external-id": [
+                        {
+                            "external-id-type": "doi",
+                            "external-id-value": "10.5281/zenodo.42",
+                            "external-id-url": {"value": "https://doi.org/10.5281/zenodo.42"},
+                        }
+                    ]
+                },
+                "work-summary": [
+                    {
+                        "title": {"title": {"value": "Dataset from ORCID"}},
+                        "type": "data-set",
+                        "journal-title": {"value": "Zenodo"},
+                        "publication-date": {"year": {"value": "2023"}},
+                    }
+                ],
+            },
+            {
+                "external-ids": {
+                    "external-id": [
+                        {
+                            "external-id-type": "doi",
+                            "external-id-value": "10.1038/article",
+                        }
+                    ]
+                },
+                "work-summary": [
+                    {"title": {"title": {"value": "Article"}}, "type": "journal-article"}
+                ],
+            },
+        ]
+    }
+
+
+def test_orcid_datasets_for_orcid_reads_public_works(responses):
+    responses.get(f"https://pub.orcid.org/v3.0/{ORCID}/works", json=orcid_works_response())
+    result = OrcidProvider().datasets_for_orcid(f"https://orcid.org/{ORCID}")
+
+    assert responses.calls[0].request.headers["Accept"] == "application/vnd.orcid+json"
+    assert result.provider == "orcid"
+    assert result.total == 1
+    (hit,) = result.hits
+    assert hit.pid == "10.5281/zenodo.42"
+    assert hit.pid_type == "doi"
+    assert hit.title == "Dataset from ORCID"
+    assert hit.publisher == "Zenodo"
+    assert hit.year == 2023
+    assert hit.url == "https://doi.org/10.5281/zenodo.42"
+
+
+def test_orcid_works_without_doi_fall_back_to_put_code(responses):
+    body = {
+        "group": [
+            {
+                "external-ids": {"external-id": []},
+                "work-summary": [
+                    {
+                        "put-code": 123,
+                        "title": {"title": {"value": "Public metadata-only dataset"}},
+                        "type": "data-set",
+                    }
+                ],
+            }
+        ]
+    }
+    responses.get(f"https://pub.orcid.org/v3.0/{ORCID}/works", json=body)
+    result = OrcidProvider().datasets_for_orcid(ORCID)
+    assert result.hits[0].pid == f"{ORCID}/work/123"
+    assert result.hits[0].pid_type == "orcid-work"
+    assert result.hits[0].url == f"https://orcid.org/{ORCID}/work/123"
+
+
+def test_orcid_does_not_support_doi():
+    assert OrcidProvider().supports_doi is False
 
 
 # -- ScholeXplorer (Scholix) ----------------------------------------------------

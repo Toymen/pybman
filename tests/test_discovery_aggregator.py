@@ -114,7 +114,7 @@ def test_report_summary_lists_providers():
 
 def test_default_providers_cover_expected_services():
     names = {p.name for p in DataDiscovery().providers}
-    assert names == {"datacite", "openaire", "scholexplorer", "b2find", "crossref"}
+    assert names == {"datacite", "openaire", "scholexplorer", "b2find", "crossref", "orcid"}
 
 
 def test_limit_is_forwarded():

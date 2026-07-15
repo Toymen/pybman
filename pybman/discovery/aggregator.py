@@ -14,6 +14,7 @@ from .datacite import DataCiteProvider
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DiscoveryReport, ProviderResult
 from .openaire import OpenAIREProvider
+from .orcid import OrcidProvider
 from .scholexplorer import ScholexplorerProvider
 
 
@@ -63,6 +64,7 @@ class DataDiscovery:
                 ScholexplorerProvider(**common),
                 B2FindProvider(**common),
                 CrossrefProvider(mailto=crossref_mailto, **common),
+                OrcidProvider(**common),
             ]
         self.providers: list[SupportsDiscovery] = list(providers)
 

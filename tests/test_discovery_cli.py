@@ -64,6 +64,7 @@ def test_cli_orcid_detected_automatically(responses, capsys):
         "https://b2find.eudat.eu/api/3/action/package_search",
         json={"success": True, "result": {"count": 0, "results": []}},
     )
+    responses.get(f"https://pub.orcid.org/v3.0/{ORCID}/works", json={"group": []})
     exit_code = main([ORCID])
     # exit code 1 signals "no datasets found" (grep-style semantics)
     assert exit_code == 1

@@ -20,6 +20,7 @@ from .google import google_dataset_search_url
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, DiscoveryReport, ProviderResult
 from .openaire import OpenAIREProvider
+from .orcid import OrcidProvider
 from .scholexplorer import ScholexplorerProvider
 
 __all__ = [
@@ -31,6 +32,7 @@ __all__ = [
     "DiscoveryError",
     "DiscoveryReport",
     "OpenAIREProvider",
+    "OrcidProvider",
     "Provider",
     "ProviderResult",
     "ScholexplorerProvider",

@@ -44,5 +44,5 @@ def test_live_doi_lookup_runs_all_providers():
 
 def test_live_orcid_lookup_runs_orcid_capable_providers():
     report = DataDiscovery().for_orcid(ORCID)
-    assert {r.provider for r in report.results} == {"datacite", "openaire", "b2find"}
+    assert {r.provider for r in report.results} == {"datacite", "openaire", "b2find", "orcid"}
     assert any(r.ok for r in report.results), report.summary()

@@ -177,7 +177,8 @@ inspector.clean_titles()
 `pybman.discovery` answers the question *"do research data exist for this
 publication DOI (e.g. from MPG.PuRe) or for this researcher's ORCID?"* by
 querying several public scholarly APIs — DataCite, OpenAIRE Graph,
-ScholeXplorer (Scholix), B2FIND and Crossref — and aggregating the results:
+ScholeXplorer (Scholix), B2FIND, Crossref and ORCID — and aggregating the
+results:
 
 ```python
 from pybman.discovery import DataDiscovery
