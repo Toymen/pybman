@@ -1,0 +1,28 @@
+{
+  "item_3532287": [
+    {
+      "doi": "10.3886/e193522v2",
+      "url": "https://doi.org/10.3886/e193522v2",
+      "title": "ECIN Replication Package for Outcomes or Participation? Experimentally Testing Competing Sources of Legitimacy for Taxation",
+      "publisher": "Inter-university Consortium for Political and Social Research",
+      "relation": "IsRelatedTo",
+      "quelle": [
+        "scholexplorer"
+      ],
+      "konfidenz": "hoch"
+    }
+  ],
+  "item_3670253": [
+    {
+      "doi": "10.6084/m9.figshare.c.8011177.v1",
+      "url": "https://doi.org/10.6084/m9.figshare.c.8011177.v1",
+      "title": "Combining mental health and climate-smart agricultural interventions... study protocol for the THRIVE cluster-randomized controlled trial",
+      "publisher": "figshare",
+      "relation": "References",
+      "quelle": [
+        "scholexplorer"
+      ],
+      "konfidenz": "hoch"
+    }
+  ]
+}
