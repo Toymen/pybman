@@ -15,7 +15,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 from pybman import __about__
-from pybman.exceptions import AuthenticationError, error_for_response
+from pybman.exceptions import AuthenticationError, PubManHTTPError, error_for_response
 from pybman.models import UserAccount
 
 logger = logging.getLogger(__name__)
@@ -129,7 +129,10 @@ class Transport:
     def _ensure_token(self) -> str:
         if self.token is None:
             self.login()
-        assert self.token is not None
+        if self.token is None:
+            # login() either raises or sets self.token; this is defensive
+            # against a future bug in that contract, not a normal path.
+            raise AuthenticationError("login succeeded but no token was set")
         return self.token
 
     # -- generic requests ------------------------------------------------
@@ -198,7 +201,15 @@ class Transport:
         response = self.request(method, path, **kwargs)
         if not response.content:
             return None
-        return response.json()
+        try:
+            return response.json()
+        except ValueError as exc:
+            # a 2xx response with a non-JSON body (e.g. an HTML error page
+            # from a misbehaving reverse proxy) shouldn't surface as a raw
+            # json.JSONDecodeError outside the library's exception hierarchy
+            raise PubManHTTPError(
+                f"{method} {response.url} returned a non-JSON body", response=response
+            ) from exc
 
     def close(self) -> None:
         self._session.close()

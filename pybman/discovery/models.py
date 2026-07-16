@@ -43,6 +43,15 @@ class ProviderResult:
 
     ``error`` is set (and ``hits`` empty) when the provider failed; the
     aggregator never lets one broken service break the whole lookup.
+
+    ``total``, when set, is the provider's *own* count for the query —
+    typically the raw remote result count *before* this library's
+    ``limit``/verification-based filtering is applied, so it can exceed
+    ``len(hits)``. Its exact meaning is provider-specific (a few providers
+    report ``len(hits)`` after filtering instead, when the remote API gives
+    no total of its own) and it is not guaranteed comparable across
+    providers; treat it as an approximate, provider-reported figure rather
+    than an authoritative count.
     """
 
     provider: str

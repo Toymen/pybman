@@ -152,9 +152,9 @@ class DataSet:
     # -- titles ---------------------------------------------------------------
 
     def get_titles(self) -> dict[str, list[str]]:
-        """Titles mapped to record ids."""
+        """Titles mapped to record ids (records without a title are skipped)."""
         return self._group(
-            lambda r: [r["data"]["metadata"]["title"]],
+            lambda r: [title] if (title := r["data"]["metadata"].get("title")) else [],
             lambda r: r["data"]["objectId"],
         )
 
@@ -170,21 +170,26 @@ class DataSet:
     # -- genres -----------------------------------------------------------------
 
     def get_genres(self) -> dict[str, list[str]]:
-        """Genres mapped to record ids."""
+        """Genres mapped to record ids (records without a genre are skipped)."""
         return self._group(
-            lambda r: [r["data"]["metadata"]["genre"]],
+            lambda r: [genre] if (genre := r["data"]["metadata"].get("genre")) else [],
             lambda r: r["data"]["objectId"],
         )
 
     def get_genre_data(self) -> dict[str, list[Record]]:
-        """Genres mapped to records."""
-        return self._group(lambda r: [r["data"]["metadata"]["genre"]], lambda r: r)
+        """Genres mapped to records (records without a genre are skipped)."""
+        return self._group(
+            lambda r: [genre] if (genre := r["data"]["metadata"].get("genre")) else [], lambda r: r
+        )
 
     def get_genre_relationships(self) -> dict[str, dict[str, list[str]]]:
         """Genres mapped to source genres mapped to record ids."""
         genres: dict[str, dict[str, list[str]]] = {}
         for record in self.records:
-            genre = record["data"]["metadata"]["genre"]
+            genre = record["data"]["metadata"].get("genre")
+            if genre is None:
+                logger.debug("no genre found for %s", record["data"].get("objectId"))
+                continue
             by_source = genres.setdefault(genre, {})
             sources = record["data"]["metadata"].get("sources")
             if sources:
@@ -357,7 +362,7 @@ class DataSet:
         return {
             record["data"]["objectId"]: record
             for record in self.records
-            if record["data"]["metadata"]["genre"] == genre
+            if record["data"]["metadata"].get("genre") == genre
         }
 
     def get_items_released(self) -> list[Record]:

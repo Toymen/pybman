@@ -53,11 +53,12 @@ def test_pubinfo_extraction():
     assert extract.place_from_item(record) == ""
 
 
-def test_identifiers_default_to_empty_pair():
+def test_identifiers_default_to_empty_list():
     record = make_record()
-    assert extract.identifiers_from_item(record) == [("", "")]
+    assert extract.identifiers_from_item(record) == []
     record["data"]["metadata"]["identifiers"] = [{"id": "10.1/x", "type": "DOI"}]
     assert extract.identifiers_from_item(record) == [("DOI", "10.1/x")]
+    assert extract.identifers_from_item(record) == [("DOI", "10.1/x")]  # deprecated alias
 
 
 def test_source_helpers():
