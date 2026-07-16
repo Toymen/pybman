@@ -13,9 +13,7 @@ from urllib.parse import quote
 import requests
 
 ARXIV_DOI_RE = re.compile(r"^10\.48550/arxiv\.([0-9]{4}\.[0-9]{4,5})$", re.I)
-DATA_FILE_RE = re.compile(
-    r"\.(?:parquet|arrow|csv|tsv|jsonl|ndjson|json|sqlite|h5|hdf5)$", re.I
-)
+DATA_FILE_RE = re.compile(r"\.(?:parquet|arrow|csv|tsv|jsonl|ndjson|json|sqlite|h5|hdf5)$", re.I)
 
 
 def as_text(value: Any) -> str:
@@ -27,9 +25,7 @@ def arxiv_id_from_doi(doi: str) -> str | None:
     return match.group(1) if match else None
 
 
-def discover_datasets(
-    session: requests.Session, arxiv_id: str
-) -> list[dict[str, Any]]:
+def discover_datasets(session: requests.Session, arxiv_id: str) -> list[dict[str, Any]]:
     tag = f"arxiv:{arxiv_id}"
     response = session.get(
         "https://huggingface.co/api/datasets", params={"filter": tag}, timeout=30
@@ -82,10 +78,7 @@ def discover_datasets(
 
 def main() -> int:
     if len(sys.argv) != 3:
-        print(
-            "Usage: discover_huggingface_arxiv_datasets.py "
-            "<publications.json> <results.json>"
-        )
+        print("Usage: discover_huggingface_arxiv_datasets.py <publications.json> <results.json>")
         return 2
     input_path, output_path = map(Path, sys.argv[1:])
     rows = json.loads(input_path.read_text(encoding="utf8"))["publications"]["rows"]

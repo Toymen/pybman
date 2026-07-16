@@ -165,8 +165,7 @@ def main() -> int:
                 checked = sum(1 for result in results if result["status"].startswith("checked"))
                 found = sum(1 for result in results if result["found"])
                 print(
-                    f"{idx}/{len(rows)} rows completed; "
-                    f"checked={checked}; provider-found={found}",
+                    f"{idx}/{len(rows)} rows completed; checked={checked}; provider-found={found}",
                     flush=True,
                 )
 

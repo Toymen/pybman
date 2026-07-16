@@ -16,8 +16,7 @@ def test_matching_version_requires_same_authors_and_title_prefix():
     }
     source = {
         "Titel": (
-            "Integrating machine behavior into human subject experiments: "
-            "A toolkit and application"
+            "Integrating machine behavior into human subject experiments: A toolkit and application"
         ),
         "Autor:innen": "Christoph Engel; Max Grossmann; Axel Ockenfels",
     }

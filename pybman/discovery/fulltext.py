@@ -162,8 +162,7 @@ def extract_fulltext_data_links(
     seen: set[str] = set()
     sections = data_availability_sections(text)
     sections.extend(
-        ("Explizite Datenverfügbarkeitsaussage", value)
-        for value in explicit_data_statements(text)
+        ("Explizite Datenverfügbarkeitsaussage", value) for value in explicit_data_statements(text)
     )
     for heading, statement in sections:
         urls = [_clean_url(match.group(0)) for match in _URL_RE.finditer(statement)]

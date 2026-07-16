@@ -36,9 +36,7 @@ def validated_hits(
     statement = as_text(observation.get("data_availability_statement"))
     if REQUEST_ONLY_RE.search(statement) or FUTURE_RELEASE_RE.search(statement):
         return []
-    publication_authors = publication_surnames(
-        as_text(publication.get("Autor:innen"))
-    )
+    publication_authors = publication_surnames(as_text(publication.get("Autor:innen")))
     hits = []
     for publisher_link in observation.get("links") or []:
         node_id = osf_node_from_publisher_link(as_text(publisher_link))
@@ -81,12 +79,8 @@ def main() -> int:
         )
         return 2
     publications_path, observations_path, output_path = map(Path, sys.argv[1:])
-    rows = json.loads(publications_path.read_text(encoding="utf8"))["publications"][
-        "rows"
-    ]
-    observations = json.loads(observations_path.read_text(encoding="utf8"))[
-        "observations"
-    ]
+    rows = json.loads(publications_path.read_text(encoding="utf8"))["publications"]["rows"]
+    observations = json.loads(observations_path.read_text(encoding="utf8"))["observations"]
     by_id = {as_text(item.get("PuRe-ID")): item for item in observations}
     session = requests.Session()
     session.headers["User-Agent"] = "pybman-degruyter-browser-evidence/1.0"
@@ -100,17 +94,13 @@ def main() -> int:
                 "PuRe-ID": item_id,
                 "DOI": as_text(row.get("DOI")).lstrip("/"),
                 "status": (
-                    "checked_degruyter_browser_evidence"
-                    if observation
-                    else "not_applicable"
+                    "checked_degruyter_browser_evidence" if observation else "not_applicable"
                 ),
                 "found": bool(hits),
                 "doi_found": bool(hits),
                 "title_found": False,
                 "hits": hits,
-                "provider_summary": (
-                    f"degruyter-browser-data-availability: {len(hits)}"
-                ),
+                "provider_summary": (f"degruyter-browser-data-availability: {len(hits)}"),
                 "provider_errors": "",
                 "elapsed_s": 0,
             }

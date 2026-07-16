@@ -74,9 +74,7 @@ class GitHubClient:
         return response.json()
 
 
-def repository_hit(
-    client: GitHubClient, full_name: str, title: str
-) -> dict[str, Any] | None:
+def repository_hit(client: GitHubClient, full_name: str, title: str) -> dict[str, Any] | None:
     repository = client.get(f"repos/{full_name}")
     default_branch = as_text(repository.get("default_branch"))
     tree = client.get(f"repos/{full_name}/git/trees/{default_branch}", recursive="1")

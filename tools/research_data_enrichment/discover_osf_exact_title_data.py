@@ -42,18 +42,14 @@ def retrying_session() -> requests.Session:
     return session
 
 
-def matching_nodes(
-    row: dict[str, Any], payload: dict[str, Any]
-) -> list[dict[str, Any]]:
+def matching_nodes(row: dict[str, Any], payload: dict[str, Any]) -> list[dict[str, Any]]:
     title = as_text(row.get("Titel"))
     author_surnames = publication_surnames(as_text(row.get("Autor:innen")))
     matches = []
     for record in payload.get("data") or []:
         attributes = record.get("attributes") or {}
         candidate_title = as_text(attributes.get("title"))
-        contributor_surnames = publication_surnames(
-            ";".join(_contributor_names(record))
-        )
+        contributor_surnames = publication_surnames(";".join(_contributor_names(record)))
         if (
             len(title_tokens(title)) >= 4
             and title_match_score(title, candidate_title) >= 0.9
@@ -63,9 +59,7 @@ def matching_nodes(
     return matches
 
 
-def discover_row(
-    row: dict[str, Any], session: requests.Session
-) -> list[dict[str, Any]]:
+def discover_row(row: dict[str, Any], session: requests.Session) -> list[dict[str, Any]]:
     title = as_text(row.get("Titel"))
     response = session.get(
         OSF_NODES_URL,
@@ -115,9 +109,7 @@ def discover_row(
 
 def main() -> int:
     if len(sys.argv) != 3:
-        print(
-            "Usage: discover_osf_exact_title_data.py <publications.json> <results.json>"
-        )
+        print("Usage: discover_osf_exact_title_data.py <publications.json> <results.json>")
         return 2
     input_path, output_path = map(Path, sys.argv[1:])
     rows = json.loads(input_path.read_text(encoding="utf8"))["publications"]["rows"]
