@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable, Sequence
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Protocol, runtime_checkable
 
 import requests
@@ -90,21 +91,15 @@ class DataDiscovery:
     def for_doi(self, doi: str, *, limit: int = 100) -> DiscoveryReport:
         """Query all DOI-capable providers for datasets related to ``doi``."""
         query = normalize_doi(doi)
-        results = [
-            self._run(provider, provider.datasets_for_doi, query, limit)
-            for provider in self.providers
-            if getattr(provider, "supports_doi", False)
-        ]
+        providers = [p for p in self.providers if getattr(p, "supports_doi", False)]
+        results = self._run_all(providers, lambda p: p.datasets_for_doi, query, limit)
         return DiscoveryReport(query=query, query_type="doi", results=results)
 
     def for_orcid(self, orcid: str, *, limit: int = 100) -> DiscoveryReport:
         """Query all ORCID-capable providers for datasets by ``orcid``."""
         query = normalize_orcid(orcid)
-        results = [
-            self._run(provider, provider.datasets_for_orcid, query, limit)
-            for provider in self.providers
-            if getattr(provider, "supports_orcid", False)
-        ]
+        providers = [p for p in self.providers if getattr(p, "supports_orcid", False)]
+        results = self._run_all(providers, lambda p: p.datasets_for_orcid, query, limit)
         return DiscoveryReport(query=query, query_type="orcid", results=results)
 
     def for_title(
@@ -125,19 +120,42 @@ class DataDiscovery:
         if not query:
             raise ValueError("publication title must not be empty")
         author_tuple = tuple(author.strip() for author in authors if author.strip())
-        results = [
-            self._run(
-                provider,
-                provider.datasets_for_title,
-                query,
-                limit,
-                authors=author_tuple,
-                year=year,
-            )
-            for provider in self.providers
-            if getattr(provider, "supports_title", False)
-        ]
+        providers = [p for p in self.providers if getattr(p, "supports_title", False)]
+        results = self._run_all(
+            providers,
+            lambda p: p.datasets_for_title,
+            query,
+            limit,
+            authors=author_tuple,
+            year=year,
+        )
         return DiscoveryReport(query=query, query_type="title", results=results)
+
+    @staticmethod
+    def _run_all(
+        providers: list[SupportsDiscovery],
+        lookup_for: Callable[[SupportsDiscovery], Callable[..., ProviderResult]],
+        query: str,
+        limit: int,
+        **kwargs: Any,
+    ) -> list[ProviderResult]:
+        """Fan out ``lookup_for(provider)(query, ...)`` across all providers.
+
+        Providers hit independent, unrelated APIs, so a thread per provider
+        bounds the wall-clock cost of a lookup to the slowest provider
+        instead of their sum. A single provider erroring never fails the
+        others; its failure is captured on its own :class:`ProviderResult`.
+        """
+        if not providers:
+            return []
+        with ThreadPoolExecutor(max_workers=len(providers)) as pool:
+            futures = [
+                pool.submit(
+                    DataDiscovery._run, provider, lookup_for(provider), query, limit, **kwargs
+                )
+                for provider in providers
+            ]
+            return [future.result() for future in futures]
 
     @staticmethod
     def _run(

@@ -32,10 +32,11 @@ class CrossrefProvider(Provider):
     name = "crossref"
     supports_doi = True
     supports_orcid = False
+    default_base_url = DEFAULT_BASE_URL
 
     def __init__(
         self,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: str | None = None,
         *,
         mailto: str | None = None,
         relations: Iterable[str] = DATASET_RELATIONS,
@@ -43,8 +44,7 @@ class CrossrefProvider(Provider):
         timeout: float = 15.0,
         retries: int = 2,
     ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+        super().__init__(base_url, session=session, timeout=timeout, retries=retries)
         self._mailto = mailto
         self._relations = frozenset(relations)
 

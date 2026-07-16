@@ -14,9 +14,7 @@ from __future__ import annotations
 
 from typing import Any
 
-import requests
-
-from ._client import Provider
+from ._client import Provider, year_from_date_str
 from .identifiers import normalize_doi
 from .models import DatasetHit, ProviderResult
 
@@ -36,17 +34,7 @@ class ScholexplorerProvider(Provider):
     name = "scholexplorer"
     supports_doi = True
     supports_orcid = False
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
         doi = normalize_doi(doi)
@@ -93,14 +81,14 @@ class ScholexplorerProvider(Provider):
         relationship = _get(link, "RelationshipType", "relationshipType", default={}) or {}
         publishers = _get(entity, "Publisher", "publisher", default=[]) or []
         publisher = _get(publishers[0], "name", "Name") if publishers else None
-        date = str(_get(entity, "PublicationDate", "publicationDate", default="") or "")
+        date = _get(entity, "PublicationDate", "publicationDate", default="")
         return DatasetHit(
             provider=self.name,
             pid=pid,
             pid_type="doi",
             title=_get(entity, "Title", "title"),
             publisher=publisher,
-            year=int(date[:4]) if date[:4].isdigit() else None,
+            year=year_from_date_str(date),
             relation=_get(relationship, "Name", "name"),
             url=f"https://doi.org/{pid}",
             raw=link,

@@ -17,4 +17,8 @@ VOLUME ["/data"]
 EXPOSE 8000
 USER app
 
-CMD ["python", "-m", "webapp.app"]
+# A single worker process is required: the sync loop and its lock live in
+# process memory, and multiple gunicorn workers would each run their own
+# duplicate background sync against the same SQLite file. --threads gives
+# concurrency for request handling within that one process.
+CMD ["sh", "-c", "gunicorn -w 1 --threads 4 -b 0.0.0.0:${PORT} webapp.wsgi:app"]

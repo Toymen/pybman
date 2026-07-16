@@ -285,9 +285,14 @@ def _sync_loop(client: Client, cfg: Config, app: Flask) -> None:
         time.sleep(cfg.interval_hours * 3600)
 
 
-def main() -> None:
+def build_app(cfg: Config | None = None) -> Flask:
+    """Build the Flask app and start its background sync loop.
+
+    Shared by the dev entry point (``python -m webapp.app``) and the
+    production WSGI entry point (``webapp.wsgi:app``, served by gunicorn).
+    """
     logging.basicConfig(level=logging.INFO)
-    cfg = Config.from_env()
+    cfg = cfg or Config.from_env()
     client = Client(base_url=cfg.base_url)
     store.init_db(cfg.db_path)
 
@@ -296,6 +301,12 @@ def main() -> None:
     # (showing "no data yet" until the first pass commits) instead of
     # blocking the port on a potentially long initial fetch.
     threading.Thread(target=_sync_loop, args=(client, cfg, app), daemon=True).start()
+    return app
+
+
+def main() -> None:
+    cfg = Config.from_env()
+    app = build_app(cfg)
     app.run(host="0.0.0.0", port=cfg.port, threaded=True)
 
 

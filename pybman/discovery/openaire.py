@@ -20,7 +20,7 @@ from typing import Any
 
 import requests
 
-from ._client import Provider, safe_get
+from ._client import Provider, safe_get, year_from_date_str
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, ProviderResult
 
@@ -31,18 +31,18 @@ class OpenAIREProvider(Provider):
     name = "openaire"
     supports_doi = True
     supports_orcid = True
+    default_base_url = DEFAULT_BASE_URL
 
     def __init__(
         self,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: str | None = None,
         *,
         access_token: str | None = None,
         session: requests.Session | None = None,
         timeout: float = 15.0,
         retries: int = 2,
     ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+        super().__init__(base_url, session=session, timeout=timeout, retries=retries)
         self._access_token = access_token
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
@@ -73,8 +73,7 @@ class OpenAIREProvider(Provider):
                 pid, pid_type = candidate.get("value", ""), "doi"
                 url = f"https://doi.org/{pid}"
                 break
-        date = record.get("publicationDate") or ""
-        year = int(date[:4]) if date[:4].isdigit() else None
+        year = year_from_date_str(record.get("publicationDate"))
         return DatasetHit(
             provider=self.name,
             pid=pid,

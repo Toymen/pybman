@@ -34,3 +34,13 @@ _/
 *.db
 *.db-shm
 *.db-wal
+
+# generated pipeline outputs (tools/research_data_enrichment/*) — reproducible
+# from the discover_*/build_*/verify_* scripts, not source; regenerate rather
+# than commit
+/outputs/
+*.xlsx
+tools/research_data_enrichment/discovery_results_*.json
+tools/research_data_enrichment/publications.json
+tools/research_data_enrichment/audited_research_data.json
+tools/research_data_enrichment/*_observations.json

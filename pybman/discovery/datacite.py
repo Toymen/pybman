@@ -16,8 +16,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import requests
-
 from ._client import Provider, safe_get
 from .identifiers import normalize_doi, normalize_orcid
 from .matching import has_surname_overlap, title_match_score, title_tokens
@@ -31,17 +29,7 @@ class DataCiteProvider(Provider):
     supports_doi = True
     supports_orcid = True
     supports_title = True
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
         doi = normalize_doi(doi)

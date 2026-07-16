@@ -10,9 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-import requests
-
-from ._client import DiscoveryError, Provider, safe_get
+from ._client import DiscoveryError, Provider, safe_get, year_from_date_str
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, ProviderResult
 
@@ -23,17 +21,7 @@ class B2FindProvider(Provider):
     name = "b2find"
     supports_doi = True
     supports_orcid = True
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
         return self._search(normalize_doi(doi), limit=limit)
@@ -66,7 +54,6 @@ class B2FindProvider(Provider):
             doi = _try_doi(str(package.get("url") or ""))
             if doi:
                 pid, pid_type = doi, "doi"
-        created = str(package.get("metadata_created") or "")
         organization = package.get("organization") or {}
         return DatasetHit(
             provider=self.name,
@@ -74,7 +61,7 @@ class B2FindProvider(Provider):
             pid_type=pid_type,
             title=package.get("title"),
             publisher=organization.get("title"),
-            year=int(created[:4]) if created[:4].isdigit() else None,
+            year=year_from_date_str(package.get("metadata_created")),
             url=f"{self._base_url}/dataset/{name}" if name else None,
             raw=package,
         )

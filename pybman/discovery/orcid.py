@@ -10,9 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
-import requests
-
-from ._client import Provider
+from ._client import Provider, year_from_date_str
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, ProviderResult
 
@@ -25,17 +23,7 @@ class OrcidProvider(Provider):
     name = "orcid"
     supports_doi = False
     supports_orcid = True
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_orcid(self, orcid: str, *, limit: int = 100) -> ProviderResult:
         orcid = normalize_orcid(orcid)
@@ -109,5 +97,4 @@ def _nested_value(mapping: dict[str, Any], *keys: str) -> str | None:
 
 
 def _publication_year(summary: dict[str, Any]) -> int | None:
-    year = _nested_value(summary, "publication-date", "year", "value")
-    return int(year) if year and year.isdigit() else None
+    return year_from_date_str(_nested_value(summary, "publication-date", "year", "value"))
