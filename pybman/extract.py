@@ -142,17 +142,16 @@ def languages_from_item(item: Record) -> list[str]:
     return field_from_metadata("languages", item, value=False)
 
 
-def identifers_from_item(item: Record) -> list[tuple[str, str]]:
-    """``(type, id)`` pairs of the item's identifiers."""
-    result = [
+def identifiers_from_item(item: Record) -> list[tuple[str, str]]:
+    """``(type, id)`` pairs of the item's identifiers (``[]`` when absent)."""
+    return [
         (value_from_level("type", idx), value_from_level("id", idx))
         for idx in iter_fields("identifiers", metadata(item))
     ]
-    return result or [("", "")]
 
 
-#: Alias with the corrected spelling.
-identifiers_from_item = identifers_from_item
+#: Deprecated misspelled alias, kept for backward compatibility.
+identifers_from_item = identifiers_from_item
 
 
 def pubinfo_from_item(item: Record) -> Any:
@@ -270,19 +269,14 @@ def sources_persons_id_from_item(
 
 
 def sources_identifiers_from_item(item: Record) -> list[list[tuple[str, str]]]:
-    """``(type, id)`` pairs per source of an item."""
-    result = []
-    for source in sources(item):
-        if field_in_level("identifiers", source):
-            result.append(
-                [
-                    (value_from_level("type", idx), value_from_level("id", idx))
-                    for idx in iter_fields("identifiers", source)
-                ]
-            )
-        else:
-            result.append([("", "")])
-    return result
+    """``(type, id)`` pairs per source of an item (``[]`` per source without any)."""
+    return [
+        [
+            (value_from_level("type", idx), value_from_level("id", idx))
+            for idx in iter_fields("identifiers", source)
+        ]
+        for source in sources(item)
+    ]
 
 
 def items(records: list[Record]) -> Iterator[Record]:

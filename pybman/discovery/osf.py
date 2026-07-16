@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ._client import Provider
+from ._client import DiscoveryError, Provider
 from .matching import has_surname_overlap, title_match_score, title_tokens
 from .models import DatasetHit, ProviderResult
 
@@ -42,6 +42,10 @@ class OsfProvider(Provider):
                     "embed": "contributors",
                 },
             )
+            if "errors" in payload:
+                errors = payload.get("errors") or [{}]
+                detail = str(errors[0].get("detail") or errors[0] or "unknown error")
+                raise DiscoveryError(f"{self.name}: API reported failure: {detail}")
             for record in payload.get("data", []):
                 hit = self._verified_hit(record, title, authors, collection)
                 if hit is not None and hit.pid not in seen:

@@ -16,6 +16,7 @@ __all__ = [
     "AuthenticationError",
     "AuthorizationError",
     "BadRequestError",
+    "ConflictError",
     "NotFoundError",
     "PubManError",
     "PubManHTTPError",
@@ -57,6 +58,17 @@ class NotFoundError(PubManHTTPError):
     """The requested resource does not exist (HTTP 404)."""
 
 
+class ConflictError(PubManHTTPError):
+    """The request conflicts with the resource's current state (HTTP 409).
+
+    PubMan returns this for optimistic-locking failures — e.g. updating or
+    releasing an item whose ``lastModificationDate`` no longer matches the
+    server's, because someone else modified it in the meantime. Callers
+    that want to retry on a stale version should catch this specifically
+    rather than the generic :class:`PubManHTTPError`.
+    """
+
+
 class ServerError(PubManHTTPError):
     """The PubMan service reported an internal error (HTTP 5xx)."""
 
@@ -77,6 +89,8 @@ def error_for_response(response: requests.Response) -> PubManHTTPError:
         cls = AuthorizationError
     elif status == 404:
         cls = NotFoundError
+    elif status == 409:
+        cls = ConflictError
     elif status >= 500:
         cls = ServerError
     else:

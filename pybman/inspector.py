@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 Record = dict[str, Any]
 
 #: Matches "[et al.]" style omission markers in publisher/place values.
-_ET_AL = re.compile(r"\s\[et\.? ?al\.?\s?\]|\s\[u\.?\s?a\.?\]|\s\[etc\.?\]")
+_ET_AL = re.compile(r"\s?\[et\.? ?al\.?\s?\]|\s?\[u\.?\s?a\.?\]|\s?\[etc\.?\]")
 
 
 class Inspector:
@@ -157,10 +157,27 @@ class Inspector:
     # -- write-back operations ------------------------------------------------
 
     def _push(self, updates: dict[str, Record], comment: str) -> int:
+        """Push each update, continuing past individual failures.
+
+        A single item failing to update (transient server error, stale
+        ``lastModificationDate`` from a concurrent edit) used to abort the
+        whole batch, silently discarding whichever updates hadn't been
+        pushed yet with no record of which ones. Failures are now logged
+        with the offending item id and the batch continues; the return
+        value is the count that actually succeeded.
+        """
         total = 0
+        failed: list[str] = []
         for item_id, record in updates.items():
-            self.client.update_and_release(item_id, record["data"], comment)
+            try:
+                self.client.update_and_release(item_id, record["data"], comment)
+            except Exception:
+                logger.exception("failed to push update for %s", item_id)
+                failed.append(item_id)
+                continue
             total += 1
+        if failed:
+            logger.warning("%d of %d updates failed to push: %s", len(failed), len(updates), failed)
         return total
 
     def update_genre(self, new_genre: str, old_genre: str) -> int:
