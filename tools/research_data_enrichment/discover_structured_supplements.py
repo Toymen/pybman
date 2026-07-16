@@ -43,9 +43,9 @@ def make_session() -> requests.Session:
 
 
 def elsevier_pii(crossref_message: dict[str, Any]) -> str | None:
-    values = [
-        as_text(link.get("URL")) for link in crossref_message.get("link") or []
-    ] + [as_text((crossref_message.get("resource") or {}).get("primary", {}).get("URL"))]
+    values = [as_text(link.get("URL")) for link in crossref_message.get("link") or []] + [
+        as_text((crossref_message.get("resource") or {}).get("primary", {}).get("URL"))
+    ]
     for value in values:
         match = ELSEVIER_PII_RE.search(value)
         if match:
@@ -74,10 +74,7 @@ def probe_elsevier_supplements(
     hits = []
     for sequence in range(1, 7):
         for extension in STRUCTURED_EXTENSIONS:
-            url = (
-                "https://ars.els-cdn.com/content/image/"
-                f"1-s2.0-{pii}-mmc{sequence}.{extension}"
-            )
+            url = f"https://ars.els-cdn.com/content/image/1-s2.0-{pii}-mmc{sequence}.{extension}"
             response = session.get(url, timeout=20)
             if response.status_code == 404:
                 continue
@@ -121,9 +118,7 @@ def process(row: dict[str, Any]) -> dict[str, Any]:
         }
     session = make_session()
     try:
-        response = session.get(
-            f"https://api.crossref.org/works/{quote(doi, safe='')}", timeout=30
-        )
+        response = session.get(f"https://api.crossref.org/works/{quote(doi, safe='')}", timeout=30)
         response.raise_for_status()
         pii = elsevier_pii(response.json().get("message") or {})
         hits = probe_elsevier_supplements(session, pii, as_text(row.get("Titel"))) if pii else []

@@ -7,15 +7,10 @@ from tools.research_data_enrichment.discover_degruyter_browser_evidence import (
 
 
 def test_osf_node_from_publisher_doi_link():
-    assert (
-        osf_node_from_publisher_link("https://doi.org/10.17605/OSF.IO/JZ6WP")
-        == "jz6wp"
-    )
+    assert osf_node_from_publisher_link("https://doi.org/10.17605/OSF.IO/JZ6WP") == "jz6wp"
 
 
-@patch(
-    "tools.research_data_enrichment.discover_degruyter_browser_evidence.osf_project_evidence"
-)
+@patch("tools.research_data_enrichment.discover_degruyter_browser_evidence.osf_project_evidence")
 def test_validated_hit_requires_matching_author_and_data_file(project_evidence):
     project_evidence.return_value = (
         "Supplementary materials",
@@ -24,8 +19,7 @@ def test_validated_hit_requires_matching_author_and_data_file(project_evidence):
     )
     observation = {
         "data_availability_statement": (
-            "Experimental data and code is available here: "
-            "https://doi.org/10.17605/OSF.IO/JZ6WP"
+            "Experimental data and code is available here: https://doi.org/10.17605/OSF.IO/JZ6WP"
         ),
         "links": ["https://doi.org/10.17605/OSF.IO/JZ6WP"],
     }
@@ -38,9 +32,7 @@ def test_validated_hit_requires_matching_author_and_data_file(project_evidence):
     assert "data.csv" in hits[0]["evidence"]
 
 
-@patch(
-    "tools.research_data_enrichment.discover_degruyter_browser_evidence.osf_project_evidence"
-)
+@patch("tools.research_data_enrichment.discover_degruyter_browser_evidence.osf_project_evidence")
 def test_request_only_statement_is_rejected(project_evidence):
     observation = {
         "data_availability_statement": "Data are available upon request.",

@@ -68,9 +68,7 @@ def extract_osf_links(page_html: str) -> list[str]:
     return list(dict.fromkeys(links))
 
 
-def osf_project_evidence(
-    session: requests.Session, url: str
-) -> tuple[str, set[str], list[str]]:
+def osf_project_evidence(session: requests.Session, url: str) -> tuple[str, set[str], list[str]]:
     identity = osf_identity(url)
     if not identity:
         return "", set(), []
@@ -87,27 +85,21 @@ def osf_project_evidence(
 
     contributors_url = f"https://api.osf.io/v2/nodes/{node_id}/contributors/"
     contributor_payloads = []
-    contributors_response = session.get(
-        contributors_url, params=params, timeout=30
-    )
+    contributors_response = session.get(contributors_url, params=params, timeout=30)
     contributors_response.raise_for_status()
     contributor_payloads.append(contributors_response.json())
     if token and contributor_payloads[0].get("meta", {}).get("anonymous"):
-        public_response = session.get(
-            contributors_url, params={"page[size]": 100}, timeout=30
-        )
+        public_response = session.get(contributors_url, params={"page[size]": 100}, timeout=30)
         if public_response.ok:
             contributor_payloads.append(public_response.json())
 
     contributor_surnames = set()
     for payload in contributor_payloads:
         for record in payload.get("data") or []:
-            attributes = (
-                ((record.get("embeds") or {}).get("users") or {}).get("data") or {}
-            ).get("attributes") or {}
-            words = re.findall(
-                r"[A-Za-zÀ-ÖØ-öø-ÿ'-]+", as_text(attributes.get("full_name"))
-            )
+            attributes = (((record.get("embeds") or {}).get("users") or {}).get("data") or {}).get(
+                "attributes"
+            ) or {}
+            words = re.findall(r"[A-Za-zÀ-ÖØ-öø-ÿ'-]+", as_text(attributes.get("full_name")))
             if words:
                 contributor_surnames.add(normalized_surname(words[-1]))
 
@@ -154,9 +146,7 @@ def discover_row(row: dict[str, Any], session: requests.Session) -> list[dict[st
     hits = []
     for url in extract_osf_links(publisher_response.text):
         try:
-            project_title, contributor_surnames, data_files = osf_project_evidence(
-                session, url
-            )
+            project_title, contributor_surnames, data_files = osf_project_evidence(session, url)
         except (KeyError, TypeError, ValueError, requests.RequestException):
             continue
         matching_authors = sorted(publication_authors & contributor_surnames)
@@ -186,9 +176,7 @@ def discover_row(row: dict[str, Any], session: requests.Session) -> list[dict[st
 
 def main() -> int:
     if len(sys.argv) != 3:
-        print(
-            "Usage: discover_cambridge_osf_data.py <publications.json> <results.json>"
-        )
+        print("Usage: discover_cambridge_osf_data.py <publications.json> <results.json>")
         return 2
     input_path, output_path = map(Path, sys.argv[1:])
     rows = json.loads(input_path.read_text(encoding="utf8"))["publications"]["rows"]

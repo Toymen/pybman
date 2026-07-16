@@ -8,13 +8,7 @@ from tools.research_data_enrichment.discover_structured_supplements import (
 
 
 def test_extracts_elsevier_pii_from_crossref_text_mining_link():
-    message = {
-        "link": [
-            {
-                "URL": "https://api.elsevier.com/content/article/PII:S0167268126001940"
-            }
-        ]
-    }
+    message = {"link": [{"URL": "https://api.elsevier.com/content/article/PII:S0167268126001940"}]}
 
     assert elsevier_pii(message) == "S0167268126001940"
 

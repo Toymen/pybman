@@ -20,7 +20,7 @@ from typing import Any
 
 import requests
 
-from ._client import Provider
+from ._client import Provider, safe_get
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, ProviderResult
 
@@ -60,8 +60,8 @@ class OpenAIREProvider(Provider):
             params={**params, "type": "dataset", "pageSize": limit},
             headers=headers,
         )
-        hits = [self._hit(record) for record in payload.get("results", [])]
-        total = payload.get("header", {}).get("numFound")
+        hits = [self._hit(record) for record in payload.get("results", []) if record.get("id")]
+        total = safe_get(payload, "header", {}).get("numFound")
         if isinstance(total, str) and total.isdigit():
             total = int(total)
         return ProviderResult(provider=self.name, hits=hits, total=total)

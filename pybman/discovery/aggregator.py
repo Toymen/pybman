@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable, Sequence
 from typing import Any, Protocol, runtime_checkable
 
 import requests
 
-from ._client import make_session
+from ._client import DiscoveryError, make_session
 from .aea import AeaDataProvider
 from .b2find import B2FindProvider
 from .crossref import CrossrefProvider
@@ -19,6 +20,8 @@ from .openaire import OpenAIREProvider
 from .orcid import OrcidProvider
 from .osf import OsfProvider
 from .scholexplorer import ScholexplorerProvider
+
+logger = logging.getLogger(__name__)
 
 
 @runtime_checkable
@@ -146,5 +149,9 @@ class DataDiscovery:
     ) -> ProviderResult:
         try:
             return lookup(query, limit=limit, **kwargs)
-        except Exception as exc:  # one provider must not sink the rest
+        except DiscoveryError as exc:  # expected failure mode: network/HTTP/bad payload
+            logger.debug("%s: lookup failed: %s", provider.name, exc)
+            return ProviderResult(provider=provider.name, hits=[], error=str(exc))
+        except Exception as exc:  # one provider must not sink the rest, but log the bug
+            logger.exception("%s: unexpected error during lookup", provider.name)
             return ProviderResult(provider=provider.name, hits=[], error=str(exc))

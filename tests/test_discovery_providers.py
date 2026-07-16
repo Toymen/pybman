@@ -190,13 +190,7 @@ def osf_record(identifier: str, title: str, contributor: str):
         "embeds": {
             "contributors": {
                 "data": [
-                    {
-                        "embeds": {
-                            "users": {
-                                "data": {"attributes": {"full_name": contributor}}
-                            }
-                        }
-                    }
+                    {"embeds": {"users": {"data": {"attributes": {"full_name": contributor}}}}}
                 ]
             }
         },
@@ -214,9 +208,7 @@ def test_osf_title_lookup_checks_nodes_and_registrations(responses):
         json={"data": [osf_record("reg42", title, "Someone Else")]},
     )
 
-    result = OsfProvider().datasets_for_title(
-        title, authors=("Rima-Maria Rahal", "Susann Fiedler")
-    )
+    result = OsfProvider().datasets_for_title(title, authors=("Rima-Maria Rahal", "Susann Fiedler"))
 
     assert len(responses.calls) == 2
     assert _query(responses, 0)["filter[title]"] == [title]

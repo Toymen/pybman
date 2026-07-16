@@ -44,9 +44,7 @@ def test_discover_datasets_requires_exact_tag_and_real_data_files():
 def test_gated_dataset_is_rejected():
     session = Mock()
     search = Mock()
-    search.json.return_value = [
-        {"id": "author/private", "tags": ["arxiv:2503.01372"]}
-    ]
+    search.json.return_value = [{"id": "author/private", "tags": ["arxiv:2503.01372"]}]
     detail = Mock()
     detail.json.return_value = {
         "private": False,

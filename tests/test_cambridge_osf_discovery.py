@@ -21,9 +21,7 @@ def test_extract_osf_links_decodes_and_deduplicates_view_token():
         f'<a href="https://osf.io/abc12/?view_only={token}&amp;x=1">data</a>'
         f" https://osf.io/abc12/?view_only={token}&amp;x=1"
     )
-    assert extract_osf_links(page) == [
-        f"https://osf.io/abc12/?view_only={token}&x=1"
-    ]
+    assert extract_osf_links(page) == [f"https://osf.io/abc12/?view_only={token}&x=1"]
 
 
 def test_publication_surnames_handles_diacritics():
@@ -41,15 +39,7 @@ def test_discover_row_requires_author_overlap_and_data_file():
     )
     node = response({"data": {"attributes": {"title": "Safety compliance data"}}})
     contributors = response(
-        {
-            "data": [
-                {
-                    "embeds": {
-                        "users": {"data": {"attributes": {"full_name": "Jerome Olsen"}}}
-                    }
-                }
-            ]
-        }
+        {"data": [{"embeds": {"users": {"data": {"attributes": {"full_name": "Jerome Olsen"}}}}}]}
     )
     files = response(
         {
@@ -79,15 +69,7 @@ def test_discover_row_rejects_nonmatching_repository_contributors():
     )
     node = response({"data": {"attributes": {"title": "Unrelated data"}}})
     contributors = response(
-        {
-            "data": [
-                {
-                    "embeds": {
-                        "users": {"data": {"attributes": {"full_name": "Other Author"}}}
-                    }
-                }
-            ]
-        }
+        {"data": [{"embeds": {"users": {"data": {"attributes": {"full_name": "Other Author"}}}}}]}
     )
     files = response(
         {
@@ -117,11 +99,7 @@ def test_view_only_project_retries_public_contributors_when_anonymous():
     public_contributors = response(
         {
             "data": [
-                {
-                    "embeds": {
-                        "users": {"data": {"attributes": {"full_name": "Christoph Engel"}}}
-                    }
-                }
+                {"embeds": {"users": {"data": {"attributes": {"full_name": "Christoph Engel"}}}}}
             ]
         }
     )

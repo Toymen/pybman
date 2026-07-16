@@ -15,13 +15,7 @@ def osf_record(title="Legal interpretation as coordination"):
                 "data": [
                     {
                         "embeds": {
-                            "users": {
-                                "data": {
-                                    "attributes": {
-                                        "full_name": "Piotr Bystranowski"
-                                    }
-                                }
-                            }
+                            "users": {"data": {"attributes": {"full_name": "Piotr Bystranowski"}}}
                         }
                     }
                 ]
@@ -40,9 +34,7 @@ def test_matching_nodes_requires_title_and_contributor():
     assert matching_nodes(row, {"data": [osf_record()]}) == []
 
 
-@patch(
-    "tools.research_data_enrichment.discover_osf_exact_title_data.osf_project_evidence"
-)
+@patch("tools.research_data_enrichment.discover_osf_exact_title_data.osf_project_evidence")
 def test_discover_row_requires_verified_data_files(project_evidence):
     project_evidence.return_value = (
         "Legal interpretation as coordination",
@@ -65,9 +57,7 @@ def test_discover_row_requires_verified_data_files(project_evidence):
     assert "main_study_long.csv" in hits[0]["evidence"]
 
 
-@patch(
-    "tools.research_data_enrichment.discover_osf_exact_title_data.osf_project_evidence"
-)
+@patch("tools.research_data_enrichment.discover_osf_exact_title_data.osf_project_evidence")
 def test_discover_row_rejects_fileless_project(project_evidence):
     project_evidence.return_value = (
         "Legal interpretation as coordination",

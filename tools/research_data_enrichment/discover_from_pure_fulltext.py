@@ -104,10 +104,7 @@ def pdf_hits(
                     "public PuRe ZIP attachment contains "
                     f"{len(data_members)} structured data file(s)"
                 )
-        if (
-            category == "research-data"
-            or data_file_evidence
-        ):
+        if category == "research-data" or data_file_evidence:
             hits.append(
                 {
                     "provider": "pure-file",
@@ -153,9 +150,7 @@ def pdf_hits(
         links = extract_fulltext_data_links(full_text, annotation_urls=annotation_urls)
         for page_index, page_text in enumerate(page_texts):
             page_annotations = pdf_annotations(reader, {page_index})
-            links.extend(
-                extract_fulltext_data_links(page_text, annotation_urls=page_annotations)
-            )
+            links.extend(extract_fulltext_data_links(page_text, annotation_urls=page_annotations))
         for link in links:
             hits.append(
                 {

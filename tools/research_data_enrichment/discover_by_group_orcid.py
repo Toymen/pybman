@@ -113,8 +113,7 @@ def resolve_orcid(
 ) -> tuple[str | None, str]:
     given, family = person_parts(name)
     query = (
-        f'family-name:"{family}" AND given-names:"{given}" '
-        'AND affiliation-org-name:"Max Planck"'
+        f'family-name:"{family}" AND given-names:"{given}" AND affiliation-org-name:"Max Planck"'
     )
     matches = orcid_search(session, query)
     if len(matches) == 1:
@@ -122,11 +121,7 @@ def resolve_orcid(
     fallback_query = f'family-name:"{family}" AND given-names:"{given.split()[0]}"'
     candidates = orcid_search(session, fallback_query)
     expected_dois = publication_dois(rows)
-    verified = [
-        orcid
-        for orcid in candidates
-        if expected_dois & orcid_work_dois(session, orcid)
-    ]
+    verified = [orcid for orcid in candidates if expected_dois & orcid_work_dois(session, orcid)]
     if len(verified) == 1:
         return verified[0], "exact-name ORCID verified by shared PuRe publication DOI"
     return None, (

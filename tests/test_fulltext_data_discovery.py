@@ -87,6 +87,7 @@ def test_explicit_data_sentence_outside_named_section_is_supported():
 def test_unrelated_pdf_annotation_is_not_attached_to_request_only_statement():
     text = "Data availability\nData will be made available on request."
 
-    assert extract_fulltext_data_links(
-        text, annotation_urls=("https://doi.org/10.5281/zenodo.999",)
-    ) == []
+    assert (
+        extract_fulltext_data_links(text, annotation_urls=("https://doi.org/10.5281/zenodo.999",))
+        == []
+    )

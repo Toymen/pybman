@@ -37,9 +37,7 @@ def test_osf_data_files_recurses_and_excludes_documentation():
     }
     session.get.side_effect = [root, folder]
 
-    assert osf_data_files(session, "https://osf.io/yef3k/?view_only=" + "b" * 32) == [
-        "raw.csv"
-    ]
+    assert osf_data_files(session, "https://osf.io/yef3k/?view_only=" + "b" * 32) == ["raw.csv"]
 
 
 def test_request_only_statement_is_not_accepted():
