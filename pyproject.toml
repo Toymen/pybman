@@ -52,6 +52,7 @@ dev = [
     "ruff>=0.6",
     "mypy>=1.11",
     "types-requests",
+    "types-defusedxml",
 ]
 research = [
     "pypdf>=5",
