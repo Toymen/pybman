@@ -7,6 +7,7 @@ from collections.abc import Iterator
 from typing import IO, Any, BinaryIO
 
 from pybman._http import Transport
+from pybman.api._search import search_body as _search_body
 from pybman.models import Item, Record, SearchResult
 
 #: Hard server-side cap on ``size`` for one search request.
@@ -14,28 +15,6 @@ MAX_PAGE_SIZE = 5000
 
 #: Default page size used by the scrolling helpers.
 DEFAULT_PAGE_SIZE = 100
-
-
-def _search_body(
-    query: dict[str, Any],
-    *,
-    size: int | None,
-    from_: int | None,
-    sort: list[dict[str, Any]] | None,
-) -> dict[str, Any]:
-    if "query" in query:
-        # a complete request body was passed (bare ES queries never have a
-        # top-level "query" key — their top-level key is the query type)
-        body = dict(query)
-    else:
-        body = {"query": query}
-    if size is not None:
-        body.setdefault("size", size)
-    if from_ is not None:
-        body.setdefault("from", from_)
-    if sort is not None:
-        body.setdefault("sort", sort)
-    return body
 
 
 class ItemsAPI:

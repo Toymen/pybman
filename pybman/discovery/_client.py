@@ -38,6 +38,17 @@ class DiscoveryError(Exception):
     """A discovery provider request failed (network, HTTP or bad payload)."""
 
 
+def year_from_date_str(date: str | None) -> int | None:
+    """Extract a leading 4-digit year from a date-ish string, or ``None``.
+
+    Handles ``"2021"``, ``"2021-05-01"``, ``"2021-05-01T00:00:00Z"`` and
+    similar ISO-ish prefixes uniformly, which several providers otherwise
+    reimplement with ``date[:4].isdigit()``.
+    """
+    prefix = (date or "")[:4]
+    return int(prefix) if prefix.isdigit() else None
+
+
 def make_session(retries: int = 2) -> requests.Session:
     """A session with a polite User-Agent and bounded GET retries."""
     session = requests.Session()
@@ -67,8 +78,12 @@ class Provider:
     supports_orcid: bool = False
     supports_title: bool = False
 
+    #: Overridden by subclasses; used when ``base_url`` isn't passed in.
+    default_base_url: str = ""
+
     def __init__(
         self,
+        base_url: str | None = None,
         *,
         session: requests.Session | None = None,
         timeout: float = 15.0,
@@ -76,6 +91,7 @@ class Provider:
     ) -> None:
         self._session = session if session is not None else make_session(retries)
         self._timeout = timeout
+        self._base_url = (base_url if base_url is not None else self.default_base_url).rstrip("/")
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
         """Datasets related to the publication identified by ``doi``."""

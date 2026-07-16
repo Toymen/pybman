@@ -7,7 +7,6 @@ import xml.etree.ElementTree as ET
 from urllib.parse import urlsplit
 
 import defusedxml.ElementTree as DefusedET
-import requests
 from defusedxml.common import DefusedXmlException
 
 from ._client import Provider
@@ -37,17 +36,7 @@ class EuropePmcProvider(Provider):
 
     name = "europepmc"
     supports_doi = True
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_doi(self, doi: str, *, limit: int = 100) -> ProviderResult:
         doi = normalize_doi(doi)

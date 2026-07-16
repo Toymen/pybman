@@ -4,8 +4,6 @@ from __future__ import annotations
 
 from typing import Any
 
-import requests
-
 from ._client import Provider
 from .matching import has_surname_overlap, title_match_score, title_tokens
 from .models import DatasetHit, ProviderResult
@@ -18,17 +16,7 @@ class OsfProvider(Provider):
 
     name = "osf"
     supports_title = True
-
-    def __init__(
-        self,
-        base_url: str = DEFAULT_BASE_URL,
-        *,
-        session: requests.Session | None = None,
-        timeout: float = 15.0,
-        retries: int = 2,
-    ) -> None:
-        super().__init__(session=session, timeout=timeout, retries=retries)
-        self._base_url = base_url.rstrip("/")
+    default_base_url = DEFAULT_BASE_URL
 
     def datasets_for_title(
         self,

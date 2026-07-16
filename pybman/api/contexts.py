@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from pybman._http import Transport
+from pybman.api._search import search_body
 from pybman.models import SearchResult
 
 
@@ -37,10 +38,6 @@ class ContextsAPI:
         from_: int | None = 0,
     ) -> SearchResult:
         """POST /contexts/search — Elasticsearch query over contexts."""
-        body: dict[str, Any] = dict(query) if "query" in query else {"query": query}
-        if size is not None:
-            body.setdefault("size", size)
-        if from_ is not None:
-            body.setdefault("from", from_)
+        body = search_body(query, size=size, from_=from_)
         payload = self._transport.request_json("POST", "/contexts/search", json=body)
         return SearchResult.from_api(payload)
