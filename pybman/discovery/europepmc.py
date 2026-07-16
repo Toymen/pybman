@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import re
 import xml.etree.ElementTree as ET
+from urllib.parse import urlsplit
 
+import defusedxml.ElementTree as DefusedET
 import requests
+from defusedxml.common import DefusedXmlException
 
 from ._client import Provider
 from .identifiers import normalize_doi
@@ -77,8 +80,8 @@ class EuropePmcProvider(Provider):
 
 def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
     try:
-        root = ET.fromstring(xml)
-    except ET.ParseError:
+        root = DefusedET.fromstring(xml)
+    except (ET.ParseError, DefusedXmlException):
         return []
     links: list[str] = []
     elements_by_id = {
@@ -126,7 +129,7 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
         ]
         for candidate in candidates:
             cleaned = candidate.rstrip(".,;:")
-            if any(host in cleaned.casefold() for host in DATA_HOSTS):
+            if _matches_data_host(cleaned):
                 links.append(cleaned)
     hits: list[DatasetHit] = []
     for url in dict.fromkeys(links):
@@ -150,6 +153,30 @@ def _data_links(xml: str, publication_doi: str, pmcid: str) -> list[DatasetHit]:
             )
         )
     return hits
+
+
+def _matches_data_host(url: str) -> bool:
+    """True if ``url``'s host is (or is a subdomain of) a known data host.
+
+    Matches against the URL's netloc rather than the whole URL string, so a
+    lookalike like ``https://fakegithub.com.evil.example/x`` (matched only
+    on path/query in the old substring-over-full-URL check) can no longer
+    spoof ``github.com``. Full domains (containing a dot, e.g. ``osf.io``)
+    require an exact host or subdomain match; bare keywords (``dataverse``,
+    ``dryad``) that stand for a family of installations keep a substring
+    match, but scoped to the host label only, not the full URL.
+    """
+    netloc = urlsplit(url if "//" in url else f"//{url}").netloc.casefold()
+    host = netloc.rpartition("@")[2].partition(":")[0]
+    if not host:
+        return False
+    for data_host in DATA_HOSTS:
+        if "." in data_host:
+            if host == data_host or host.endswith(f".{data_host}"):
+                return True
+        elif data_host in host:
+            return True
+    return False
 
 
 def _is_data_availability_section(section: ET.Element) -> bool:

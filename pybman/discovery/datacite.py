@@ -18,7 +18,7 @@ from typing import Any
 
 import requests
 
-from ._client import Provider
+from ._client import Provider, safe_get
 from .identifiers import normalize_doi, normalize_orcid
 from .matching import has_surname_overlap, title_match_score, title_tokens
 from .models import DatasetHit, ProviderResult
@@ -109,7 +109,7 @@ class DataCiteProvider(Provider):
             params={"query": query, "resource-type-id": "dataset", "page[size]": limit},
         )
         hits = [self._hit(record, related_to) for record in payload.get("data", [])]
-        total = payload.get("meta", {}).get("total")
+        total = safe_get(payload, "meta", {}).get("total")
         return ProviderResult(provider=self.name, hits=hits, total=total)
 
     def _hit(

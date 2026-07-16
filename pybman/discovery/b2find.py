@@ -12,7 +12,7 @@ from typing import Any
 
 import requests
 
-from ._client import DiscoveryError, Provider
+from ._client import DiscoveryError, Provider, safe_get
 from .identifiers import normalize_doi, normalize_orcid
 from .models import DatasetHit, ProviderResult
 
@@ -47,9 +47,9 @@ class B2FindProvider(Provider):
             params={"q": f'"{term}"', "rows": limit},
         )
         if not payload.get("success"):
-            message = payload.get("error", {}).get("message", "unknown error")
+            message = safe_get(payload, "error", {}).get("message", "unknown error")
             raise DiscoveryError(f"{self.name}: CKAN reported failure: {message}")
-        result = payload.get("result", {})
+        result = safe_get(payload, "result", {})
         hits = [self._hit(package) for package in result.get("results", [])]
         return ProviderResult(provider=self.name, hits=hits, total=result.get("count"))
 

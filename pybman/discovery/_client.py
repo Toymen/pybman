@@ -21,6 +21,19 @@ _RETRY_STATUSES = (429, 500, 502, 503, 504)
 USER_AGENT = f"pybman-discovery/{__about__.__version__} (https://github.com/Toymen/pybman)"
 
 
+def safe_get(mapping: Any, key: str, default: dict[str, Any]) -> dict[str, Any]:
+    """``mapping.get(key, default)`` that also coalesces an explicit ``null``.
+
+    A plain ``dict.get(key, default)`` only falls back to ``default`` when
+    ``key`` is absent; if the API returns ``{"key": null}`` (a legal JSON
+    value), ``.get`` happily returns ``None`` and the next ``.get(...)`` on
+    it raises ``AttributeError``. Several providers hit exactly this when an
+    upstream API includes an empty envelope field instead of omitting it.
+    """
+    value = mapping.get(key) if isinstance(mapping, dict) else None
+    return value if isinstance(value, dict) else default
+
+
 class DiscoveryError(Exception):
     """A discovery provider request failed (network, HTTP or bad payload)."""
 

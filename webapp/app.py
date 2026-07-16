@@ -107,11 +107,12 @@ def _sort_url(column: str, current_sort: str, current_dir: str) -> str:
 
 
 def sync_now(client: Client, cfg: Config, app: Flask) -> None:
-    """Run one sync pass, tracking progress in ``app.config['SYNCING']``.
+    """Run one sync pass, tracking progress via ``app.config['SYNC_LOCK']``.
 
     Safe to call from any thread; a no-op while a sync is already running.
     """
-    if app.config["SYNCING"]:
+    lock: threading.Lock = app.config["SYNC_LOCK"]
+    if not lock.acquire(blocking=False):
         return
     app.config["SYNCING"] = True
     try:
@@ -125,11 +126,13 @@ def sync_now(client: Client, cfg: Config, app: Flask) -> None:
         logger.exception("sync failed")
     finally:
         app.config["SYNCING"] = False
+        lock.release()
 
 
 def create_app(client: Client, cfg: Config) -> Flask:
     app = Flask(__name__)
     app.config["SYNCING"] = False
+    app.config["SYNC_LOCK"] = threading.Lock()
 
     @app.get("/")
     def index():
@@ -141,7 +144,10 @@ def create_app(client: Client, cfg: Config) -> Flask:
         visible_columns = _columns_from_request()
         sort_by, sort_dir = _sort_from_request()
         q = request.args.get("q", "")
-        page = max(int(request.args.get("page", 1) or 1), 1)
+        try:
+            page = max(int(request.args.get("page", 1) or 1), 1)
+        except ValueError:
+            page = 1
         page_size = 50
         with store.connect(cfg.db_path) as conn:
             rows, total = store.query_items(

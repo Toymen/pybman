@@ -21,6 +21,7 @@ from .identifiers import normalize_doi
 from .models import DatasetHit, ProviderResult
 
 DEFAULT_BASE_URL = "https://api.scholexplorer.openaire.eu/v3"
+_MAX_PAGES = 50
 
 
 def _get(mapping: dict[str, Any], *keys: str, default: Any = None) -> Any:
@@ -70,7 +71,7 @@ class ScholexplorerProvider(Provider):
                 if len(hits) >= limit:
                     break
                 page += 1
-                total_pages = int(payload.get("totalPages") or 1)
+                total_pages = min(int(payload.get("totalPages") or 1), _MAX_PAGES)
                 if page >= total_pages:
                     break
             if len(hits) >= limit:
@@ -78,7 +79,7 @@ class ScholexplorerProvider(Provider):
         return ProviderResult(provider=self.name, hits=hits, total=total)
 
     def _hit(self, link: dict[str, Any], entity_key: str) -> DatasetHit | None:
-        entity = _get(link, entity_key, entity_key.capitalize(), default={})
+        entity = _get(link, entity_key, entity_key.capitalize(), default={}) or {}
         if str(_get(entity, "Type", "type", default="")).lower() != "dataset":
             return None
         pid = None
