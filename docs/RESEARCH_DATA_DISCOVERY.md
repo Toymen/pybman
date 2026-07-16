@@ -71,6 +71,122 @@ flowchart TD
 | Group-leader ORCID fallback | ORCID resolution by exact identity and publication overlap, then DataCite dataset matching. | Uses publication DOI/title overlap to establish the ORCID identity before matching datasets. | Resolves and queries the verified ORCID. | Recovers datasets whose metadata names the researcher but omits the publication DOI. | Accepted only with exact title or DOI evidence; name-only matches are insufficient. |
 | Publisher structured supplements | Publisher metadata and attachment endpoints. | Probes publication-specific supplement records and validates actual data-file formats. | Not supported. | Can identify spreadsheets, archives, and statistical data attached directly to an article. | Publisher-specific and conservative; HTML article pages or PDF-only supplements do not count as research data. |
 
+## Tool and Application Inventory
+
+The following inventory is the operational map for the enrichment workflow. A
+service appearing here is a discovery application or evidence source, not an
+automatic assertion that research data exist. Every candidate still passes the
+strict validator and final link/file audit.
+
+### Discovery tools
+
+| Tool | Applications and sources | Durable purpose |
+| --- | --- | --- |
+| `tools/research_data_enrichment/run_discovery.py` | DataCite, ScholeXplorer, OpenAIRE, B2FIND, Crossref, ORCID, OSF, Europe PMC, AEA | Runs the provider framework for DOI, title, author, and relation-graph discovery while retaining provider errors. |
+| `discover_from_pure_fulltext.py` | PuRe REST/file services, PDF text and annotations | Uses institutionally maintained links, attachments, supplements, and data-availability statements. |
+| `discover_pure_duplicate_files.py` | PuRe Elasticsearch and file endpoints | Searches exact-DOI parallel PuRe records and verifies additional public files and archives. |
+| `discover_structured_supplements.py` | Publisher supplement endpoints | Accepts only publication-specific structured data files, not generic article or supplement pages. |
+| `discover_from_openalex_fulltext.py` | OpenAlex and open-access PDFs | Extracts explicit repository links from data-availability sections in OpenAlex-indexed PDFs. |
+| `discover_from_unpaywall_fulltext.py` | Unpaywall and open-access PDFs | Repeats the full-text evidence path with Unpaywall OA locations; requires `UNPAYWALL_EMAIL`. |
+| `discover_elife_data.py` | eLife Article API | Reads structured publisher-maintained dataset availability and repository links. |
+| `discover_cambridge_osf_data.py` | Cambridge Core, DOI resolution, OSF | Follows Cambridge article links to OSF and verifies contributor overlap and actual data files. |
+| `discover_wiley_browser_evidence.py` | Wiley rendered article pages, Playwright/in-app browser, OSF | Converts recorded publisher observations into evidence only after an OSF file-tree audit. |
+| `discover_degruyter_browser_evidence.py` | De Gruyter Brill rendered pages, Playwright/in-app browser, OSF | Handles publisher WAF/paywall pages through recorded browser evidence and separately verifies the repository. |
+| `discover_osf_exact_title_data.py` | OSF project, contributor, and file APIs | Performs a rate-limit-aware periodic exact-title refresh and recursively confirms structured data files. |
+| `discover_zenodo_replication_packages.py` | Zenodo Records API and archive downloads | Verifies long-title and exact short-title replication packages, creator overlap, and data files inside ZIP archives. |
+| `discover_harvard_dataverse.py` | Harvard Dataverse Search API | Requires a published record, strong title/author evidence, persistent DOI, and a positive file count. |
+| `discover_github_data_repositories.py` | GitHub code search, repository metadata, and recursive trees | Uses exact publication-title README evidence plus structured data files. |
+| `discover_github_doi_repositories.py` | GitHub code search, DOI evidence, repository metadata, and recursive trees | Uses an exact publication DOI plus title/author checks and real data files; requires `GITHUB_TOKEN`. |
+| `discover_huggingface_arxiv_datasets.py` | Hugging Face Datasets API and exact arXiv tags | Finds public, ungated dataset repositories that explicitly tag the publication and contain structured files. |
+| `discover_informs_replication.py` | INFORMS Management Science replication service | Retrieves DOI-specific publisher packages, records the terms gate, and audits archive members. |
+| `discover_by_group_orcid.py` | ORCID, DataCite, OpenAIRE, B2FIND | Resolves research-group identities through publication overlap before accepting author-linked datasets. |
+| `discover_publication_versions.py` | PuRe metadata and previously audited links | Propagates evidence only between strongly identical publication versions or explicit PuRe duplicates. |
+
+### Consolidation, audit, and report tools
+
+| Tool | Application | Purpose |
+| --- | --- | --- |
+| `extract_publications.mjs` | `@oai/artifact-tool` | Extracts the source workbook into normalized `publications.json`. |
+| `merge_discovery_results.py` | Discovery JSON snapshots | Merges provider results without dropping earlier successful evidence and deduplicates stable identifiers. |
+| `validate_discovery_results.py` | DataCite metadata plus trusted evidence-provider rules | Rejects aggregator noise and non-dataset DOI records before network/link auditing. |
+| `audit_research_data_links.mjs` | HTTP, Playwright, OSF API, GitHub API, Zenodo archives | Rechecks final URLs, access restrictions, semantic relevance, and actual repository data files. |
+| `create_three_sheet_research_data_report.mjs` | `@oai/artifact-tool` and Excel `.xlsx` | Builds exactly `Übersicht`, `Forschungsdaten`, and `Forschungsgruppen`, including filters, colors, separate link columns, and access labels. |
+| `verify_three_sheet_report.mjs` | `@oai/artifact-tool` render and inspect APIs | Verifies workbook structure and formula errors and renders all three sheets for visual review. |
+| `build_enriched_workbook.mjs` | Legacy source-workbook enrichment | Retains the earlier workbook-in-place workflow; the three-sheet report is the current final deliverable. |
+| `merge_detail_sheets.mjs`, `create_final_research_data_table.mjs` | Legacy workbook transformation | Supports the earlier merged-detail and final-table stages when reproducing historical artifacts. |
+| `verify_workbook.mjs`, `verify_merged_workbook.mjs`, `verify_final_research_data_table.mjs` | Legacy workbook verification | Verifies and renders the corresponding historical workbook stages. |
+
+### Browser and desktop applications
+
+| Application | Use | Acceptance boundary |
+| --- | --- | --- |
+| Playwright | Fallback for JavaScript-heavy pages, redirects, WAF responses, paywalls, and terms/login screens. | Browser visibility alone is insufficient; the publication relationship and data files must still be independently verified. |
+| Codex in-app browser | Uses an existing institutional session for read-only publisher inspection and records exact data-availability statements/links. | Observations are stored in `wiley_browser_observations.json` or `degruyter_browser_observations.json` and revalidated by code. |
+| Microsoft Excel-compatible viewer | Opens the final `.xlsx` with filters, tables, colors, hyperlinks, and access-status columns. | The workbook is generated from audited JSON; manual formatting never changes the underlying `ja`/`nein` decision. |
+| Git and GitHub | Versions provider code, evidence snapshots, audits, tests, and the final workbook. | Generated scratch files and previews are not authoritative and should not be committed. |
+
+### Newly integrated applications
+
+- **Hugging Face Datasets** adds exact `arxiv:<id>` discovery for benchmark and
+  corpus repositories with file-level verification.
+- **Cambridge Core** and **De Gruyter Brill** add publisher-maintained
+  data-availability evidence that is subsequently checked against OSF.
+- **OSF exact-title refresh** adds retry-aware periodic discovery for newly
+  public deposits that have not yet reached DOI relation graphs.
+- **Zenodo exact short-title matching** covers concise publication titles only
+  when the normalized title core is identical, at least two authors overlap,
+  and the package contains verified data files.
+
+## Reproducible Pipeline
+
+Use the repository virtual environment for Python tools and the bundled Codex
+Node runtime for spreadsheet tools. Provider snapshots remain separate until
+validation so the provenance of every hit stays inspectable.
+
+```bash
+# 1. Run or refresh individual discovery providers.
+.venv/bin/python tools/research_data_enrichment/run_discovery.py \
+  tools/research_data_enrichment/publications.json \
+  tools/research_data_enrichment/discovery_results.json
+
+OSF_DISCOVERY_DELAY_SECONDS=0.7 .venv/bin/python \
+  tools/research_data_enrichment/discover_osf_exact_title_data.py \
+  tools/research_data_enrichment/publications.json \
+  tools/research_data_enrichment/discovery_results_osf_exact_title_data.json
+
+.venv/bin/python \
+  tools/research_data_enrichment/discover_zenodo_replication_packages.py \
+  tools/research_data_enrichment/publications.json \
+  tools/research_data_enrichment/discovery_results_zenodo_replication_verified.json
+
+# 2. Merge all intended snapshots, then validate the merged candidates.
+.venv/bin/python tools/research_data_enrichment/merge_discovery_results.py \
+  <input1.json> <input2.json> <inputN.json> <merged.json>
+.venv/bin/python tools/research_data_enrichment/validate_discovery_results.py \
+  <merged.json> tools/research_data_enrichment/discovery_results_extended_strict.json
+
+# 3. Audit URLs, access status, semantics, and repository files.
+AUDIT_WORKERS=2 node tools/research_data_enrichment/audit_research_data_links.mjs \
+  tools/research_data_enrichment/publications.json \
+  tools/research_data_enrichment/discovery_results_extended_strict.json \
+  tools/research_data_enrichment/audited_research_data.json
+
+# 4. Build and verify the final three-sheet workbook.
+node tools/research_data_enrichment/create_three_sheet_research_data_report.mjs \
+  tools/research_data_enrichment/publications.json \
+  tools/research_data_enrichment/audited_research_data.json \
+  outputs/research_data_enrichment/Forschungsdaten_2024-heute_3_Sheets_konsolidiert_geprueft.xlsx
+node tools/research_data_enrichment/verify_three_sheet_report.mjs \
+  outputs/research_data_enrichment/Forschungsdaten_2024-heute_3_Sheets_konsolidiert_geprueft.xlsx \
+  /tmp/research_data_previews
+```
+
+Relevant optional environment variables are `GITHUB_TOKEN`, `UNPAYWALL_EMAIL`,
+`DISCOVERY_WORKERS`, `DISCOVERY_DISABLE_PROVIDERS`,
+`OSF_DISCOVERY_DELAY_SECONDS`, and `AUDIT_WORKERS`. An OpenAIRE access token can
+also be supplied through the `DataDiscovery` Python API. Credentials must never
+be written to result snapshots or committed files.
+
 `DataDiscovery.for_title(...)` provides a high-precision title fallback through
 DataCite and OSF. Both providers only retain records with a strong normalized
 title match and at least one matching author surname. This finds replication
